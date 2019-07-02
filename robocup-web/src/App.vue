@@ -19,6 +19,10 @@
         <span class="mr-2">Matches</span>
       </v-btn>
 
+      <v-btn flat href="/login">
+        <span class="mr-2">Login (test)</span>
+      </v-btn>
+
       <v-spacer></v-spacer>
 
       <v-btn
@@ -31,7 +35,7 @@
     </v-toolbar>
 
     <v-content>
-      <router-view></router-view>
+      <router-view></router-view> 
     </v-content>
   </v-app>
 </template>
