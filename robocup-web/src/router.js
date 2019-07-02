@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './components/home/Home.vue'
 import News from './components/news/News.vue'
+import NewsAdd from './components/news/add/NewsAdd.vue'
 import Teams from './components/teams/Teams.vue'
 import Matches from './components/matches/Matches.vue'
 import Login from './components/login/Login.vue'
@@ -21,6 +22,11 @@ export default new Router({
       path: '/news',
       name: 'news',
       component: News
+    },
+    {
+      path: '/news/add',
+      name: 'add news',
+      component: NewsAdd
     },
     {
       path: '/teams',
