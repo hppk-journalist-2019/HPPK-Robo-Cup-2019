@@ -1,19 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>robocup-web</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but robocup-web doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title>robocup-web</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons">
+
+  <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-storage.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDMcHf7TPIkz0FlgmuACKbtJYiTzKJuqjM",
+      authDomain: "hppk-robocup-2019.firebaseapp.com",
+      databaseURL: "https://hppk-robocup-2019.firebaseio.com",
+      projectId: "hppk-robocup-2019",
+      storageBucket: "hppk-robocup-2019.appspot.com",
+      messagingSenderId: "723338469831",
+      appId: "1:723338469831:web:9f56a397386d123b"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
+  <script src="https://cdn.firebase.com/libs/firebaseui/4.0.0/firebaseui.js"></script>
+  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/4.0.0/firebaseui.css" />
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but robocup-web doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+
+</body>
+
 </html>
