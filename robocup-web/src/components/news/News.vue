@@ -19,7 +19,7 @@
         </v-list-tile>
       </template>
     </v-list>
-    <v-btn fab dark large color="cyan" href="/news/add">
+    <v-btn v-show="isSignIn" fab dark large color="cyan" href="/news/add">
       <v-icon dark>add</v-icon>
     </v-btn>
   </div>
@@ -28,10 +28,14 @@
 <script>
 export default {
   data: () => ({
+    isSignIn: false,
     articles: [],
     ref: firebase.firestore().collection("articles")
   }),
   created() {
+    this.isSignIn =
+      localStorage.getItem("firebaseui::rememberedAccounts") != null;
+
     this.ref.onSnapshot(querySnapshot => {
       this.articles = [];
       querySnapshot.forEach(doc => {

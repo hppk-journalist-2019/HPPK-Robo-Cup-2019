@@ -26,6 +26,8 @@ export default {
     save() {
       const db = firebase.firestore();
 
+      const userInfo = JSON.parse(localStorage.getItem("firebaseui::rememberedAccounts"))[0]
+
       const id = new Date().getTime();
       const router = this.$router
       
@@ -38,8 +40,8 @@ export default {
           contents: this.contents,
           createdAt: id,
           lastEditedAt: id,
-          writerId: "test", // todo: Temp value, should be changed to Login ccount id
-          writerName: "Yoonho Aaron Kim", // todo: Temp value, should be changed to Login account name
+          writerId: userInfo.email,
+          writerName: userInfo.displayName,
           attachments: generateAttachments(this.imageFilePath)
         })
         .then(function() {
