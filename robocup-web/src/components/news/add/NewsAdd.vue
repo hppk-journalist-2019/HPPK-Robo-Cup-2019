@@ -14,15 +14,34 @@
 
 <script>
 export default {
-  data() {
-    return {
-      title: "",
-      contents: ""
-    };
-  },
+  data: () => ({
+    title: "Test Title", // Temp value, should be removed 
+    contents: "Test Article" // Temp value, should be removed 
+  }),
   methods: {
     save() {
-      console.log("Save!");
+      const db = firebase.firestore();
+
+      console.log("Save!: " + this.title + ", " + this.contents);
+      const id = new Date().getTime();
+      db.collection("articles")
+        .doc(id.toString())
+        .set({
+          id: id,
+          title: this.title,
+          contents: this.contents,
+          createdAt: id,
+          lastEditedAt: id,
+          writerId: "test", // Temp value, should be changed to Login ccount id
+          writerName: "Yoonho Aaron Kim", // Temp value, should be changed to Login account name
+          // attachment: List<Attachment>
+        })
+        .then(function() {
+          console.log("Document successfully written!");
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+        });
     }
   }
 };
