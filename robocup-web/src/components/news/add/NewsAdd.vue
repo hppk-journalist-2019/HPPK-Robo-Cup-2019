@@ -6,6 +6,9 @@
       <v-textarea v-model="contents" solo name="input-7-4" label="Contents..."></v-textarea>
     </v-flex>
 
+    <v-icon @click="uploadImage">image</v-icon>
+    <input type="file" accept="image" @change="uploadImage" />
+
     <v-btn fab dark large color="cyan" @click="save">
       <v-icon dark>check</v-icon>
     </v-btn>
@@ -15,15 +18,17 @@
 <script>
 export default {
   data: () => ({
-    title: "Test Title", // Temp value, should be removed 
-    contents: "Test Article" // Temp value, should be removed 
+    title: "Test Title", // todo: Temp value, should be removed
+    contents: "Test Article", // todo: Temp value, should be removed
+    imageFilePath: ""
   }),
   methods: {
     save() {
       const db = firebase.firestore();
 
-      console.log("Save!: " + this.title + ", " + this.contents);
       const id = new Date().getTime();
+      
+      // Save into the Fiebase Firestore
       db.collection("articles")
         .doc(id.toString())
         .set({
@@ -32,19 +37,59 @@ export default {
           contents: this.contents,
           createdAt: id,
           lastEditedAt: id,
-          writerId: "test", // Temp value, should be changed to Login ccount id
-          writerName: "Yoonho Aaron Kim", // Temp value, should be changed to Login account name
-          // attachment: List<Attachment>
+          writerId: "test", // todo: Temp value, should be changed to Login ccount id
+          writerName: "Yoonho Aaron Kim", // todo: Temp value, should be changed to Login account name
+          attachments: generateAttachments(this.imageFilePath)
         })
         .then(function() {
-          console.log("Document successfully written!");
+          this.$router.push('/news')
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
+          // todo: Show error popup
         });
+    },
+    uploadImage(e) {
+      const image = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = e => {
+        this.previewImage = e.target.result;
+        console.log(this.previewImage);
+      };
+
+      const fileName = generateImageFileName(image.name);
+      this.imageFilePath = `images/${fileName}`;
+
+      // Upload on the Firebase Storage
+      const storageRef = firebase.storage().ref();
+      const ref = storageRef.child(this.imageFilePath);
+      ref.put(image).then(function(snapshot) {
+        console.log("Uploaded a blob or file");
+      });
     }
   }
 };
+
+function generateImageFileName(originName) {
+  const temp = originName.split(".");
+  return `${temp[0]}_${new Date().getTime()}.${temp[1]}`;
+}
+
+function generateAttachments(imageFilePath) {
+  const attachments = [];
+  const imgAttachment = {
+    path: imageFilePath,
+    type: "img"
+  };
+  const videoAttachment = {
+    path: "",
+    type: "video"
+  };
+  attachments.push(imgAttachment);
+  attachments.push(videoAttachment);
+  return attachments
+}
 </script>
 
 <style>
