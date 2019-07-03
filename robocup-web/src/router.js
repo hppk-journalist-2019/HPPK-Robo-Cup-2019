@@ -9,6 +9,18 @@ import Login from './components/login/Login.vue'
 
 Vue.use(Router)
 
+const onlySignInUser = (to, from, next) => {
+  if (isSignInUser()) {
+    next()
+  } else {
+    next("/")
+  }
+}
+
+function isSignInUser() {
+  return localStorage.getItem("firebaseui::rememberedAccounts") != null
+}
+
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
@@ -26,7 +38,8 @@ export default new Router({
     {
       path: '/news/add',
       name: 'add news',
-      component: NewsAdd
+      component: NewsAdd,
+      beforeEnter: onlySignInUser
     },
     {
       path: '/teams',

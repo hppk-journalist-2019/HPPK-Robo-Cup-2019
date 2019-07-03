@@ -19,11 +19,19 @@
         <span class="mr-2">Matches</span>
       </v-btn>
 
-      <v-btn flat href="/login">
+      <v-btn v-show="!isSignIn" flat href="/login">
         <span class="mr-2">Login (test)</span>
       </v-btn>
 
       <v-spacer></v-spacer>
+      <v-avatar v-show="isSignIn" :size="32" color="grey lighten-4" style="margin-right: 16px">
+        <img v-bind:src="userIcon" alt="avatar" />
+      </v-avatar>
+      <span v-show="isSignIn" class="mr-2">{{ userName }}</span>
+
+      <v-btn v-show="isSignIn" flat>
+        <span class="mr-2" @click="signOut()">Sign Out</span>
+      </v-btn>
 
       <v-btn
         flat
@@ -34,22 +42,57 @@
       </v-btn>
     </v-toolbar>
 
+    <v-snackbar v-model="snackbar" :timeout="3000">You have successfully signed out!</v-snackbar>
     <v-content>
-      <router-view></router-view> 
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>
 
 <script>
-
+import { mapActions } from "vuex";
 
 export default {
   name: "App",
-  components: {
-    
-  },
+  components: {},
   data() {
-    return {}
+    return {
+      snackbar: false,
+      isSignIn: false
+    };
+  },
+  mounted() {
+    this.isSignIn = this.isSignInUser;
+  },
+  computed: {
+    userInfo() {
+      return JSON.parse(localStorage.getItem("firebaseui::rememberedAccounts"));
+    },
+
+    isSignInUser() {
+      return this.userInfo != null;
+    },
+    userName() {
+      if (this.isSignInUser) {
+        return this.userInfo[0].displayName;
+      } else {
+        return null;
+      }
+    },
+    userIcon() {
+      if (this.isSignInUser) {
+        return this.userInfo[0].photoUrl;
+      } else {
+        return null;
+      }
+    }
+  },
+  methods: {
+    signOut() {
+      this.isSignIn = false;
+      this.$store.dispatch("signOut");
+      this.snackbar = true;
+    }
   }
 };
 </script>
