@@ -8,11 +8,9 @@
 export default {
   mounted: function() {
     // FirebaseUI config.
-    var uiConfig = {
+    const uiConfig = {
       signInSuccessUrl: "/",
       signInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
-      // tosUrl and privacyPolicyUrl accept either url string or a callback
-      // function.
       // Terms of service url/callback.
       tosUrl: "/",
       // Privacy policy url/callback.
@@ -21,9 +19,7 @@ export default {
       }
     };
 
-    // Initialize the FirebaseUI Widget using Firebase.
-    var ui = new firebaseui.auth.AuthUI(firebase.auth());
-    // The start method will wait until the DOM is loaded.
+    const ui = new firebaseui.auth.AuthUI(firebase.auth());
     ui.start("#firebaseui-auth-container", uiConfig);
   }
 };
