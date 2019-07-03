@@ -1,8 +1,7 @@
 <template>
   <div>
     <v-list two-line>
-      <template v-for="(article, index) in articles
-">
+      <template v-for="(article, index) in articles">
         <v-subheader v-if="article.header" :key="article.header">{{ article.header }}</v-subheader>
 
         <v-divider v-else-if="article.divider" :key="index" :inset="article.inset"></v-divider>
@@ -26,6 +25,34 @@
 </template>
 
 <script>
+//Basic Editor
+import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
+
+//Title & Contents
+import { Placeholder } from 'tiptap-extensions';
+import Contents from './Contents'
+import Title from './Title'
+
+//Button
+import { 
+    Image,
+    Bold,  
+    Italic,
+    Strike,
+    HardBreak,
+    Heading,
+    HorizontalRule,
+    OrderedList,
+    BulletList,
+    ListItem,
+    Code,
+    Underline,
+    History,
+    Blockquote,
+    Link
+} from 'tiptap-extensions';
+import Modal from "./ImageUploadModal";
+
 export default {
   data: () => ({
     isSignIn: false,
@@ -58,5 +85,15 @@ function getThumbnailUrl(article) {
 }
 </script>
 
-<style>
+<style lang="scss">
+    // Title & Content
+    .editor *.is-empty:nth-child(1)::before,
+    .editor *.is-empty:nth-child(2)::before {
+        content: attr(data-empty-text);
+        float: left;
+        color: #aaa;
+        pointer-events: none;
+        height: 0;
+        font-style: italic;
+    }
 </style>
