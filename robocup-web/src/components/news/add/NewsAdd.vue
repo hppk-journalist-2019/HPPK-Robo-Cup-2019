@@ -27,6 +27,7 @@ export default {
       const db = firebase.firestore();
 
       const id = new Date().getTime();
+      const router = this.$router
       
       // Save into the Fiebase Firestore
       db.collection("articles")
@@ -42,7 +43,7 @@ export default {
           attachments: generateAttachments(this.imageFilePath)
         })
         .then(function() {
-          this.$router.push('/news')
+          router.push('/news')
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
