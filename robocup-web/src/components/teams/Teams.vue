@@ -1,25 +1,23 @@
 <template>
   <div>
-    <h1>Teams</h1>
-    <v-list two-line>
+    <v-list two-line style="width:800px; position:relative;margin:8px auto;">
       <template v-for="(team, index) in teams">
-        <v-subheader v-if="team.header" :key="team.header">{{ team.header }}</v-subheader>
-
-        <v-divider v-else-if="team.divider" :key="index" :inset="team.inset"></v-divider>
-
-        <v-list-tile v-else :key="team.teamName" avatar @click="showTeam(team)">
+        <v-list-tile :key="team.teamName" avatar @click="">
           <v-list-tile-avatar>
-            <img :src="team.avatar" />
+            <img :src="team.logo" />
           </v-list-tile-avatar>
 
-          <v-list-tile-content>
+          <v-list-tile-content @click="showTeam(team)">
             <v-list-tile-title v-html="team.teamName"></v-list-tile-title>
             <v-list-tile-sub-title v-html="team.teamLeader"></v-list-tile-sub-title>
           </v-list-tile-content>
+          <v-btn v-show="isSignIn" fab dark small color="cyan" @click="deleteTeam(team, index)">
+            <v-icon dark>delete</v-icon>
+          </v-btn>
         </v-list-tile>
       </template>
     </v-list>
-    <v-btn v-show="isSignIn" fab dark large color="cyan" href="/teams/add">
+    <v-btn id="btnAddTeams" v-show="isSignIn" fab dark large color="cyan" href="/teams/add">
       <v-icon dark>add</v-icon>
     </v-btn>
   </div>
@@ -44,6 +42,7 @@ export default {
           id: team.id,
           teamName: team.teamName,
           teamLeader: team.members.teamLeader[0],
+          logo: getTeamLogo(team)
         });
       });
     });
@@ -51,10 +50,35 @@ export default {
   methods: {
     showTeam(team) {
         this.$router.push({ name: "team", params: { teamId: team.id } });
+    },
+    deleteTeam(team, index) {
+      this.ref
+        .doc(team.id.toString())
+        .delete()
+        .then(function() {
+          console.log("Team successfully deleted!");
+        })
+        .catch(function(error) {
+          console.error("Error removing team: ", error);
+        });
     }
   }
 };
+
+function getTeamLogo(team) {
+  if (!team.logo) {
+    return "icon_hp.png";
+  } else {
+    return team.logo;
+  }
+}
 </script>
 
 <style>
+#btnAddTeams {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  margin: 56px;
+}
 </style>
