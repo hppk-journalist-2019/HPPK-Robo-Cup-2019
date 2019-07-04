@@ -1,18 +1,15 @@
 <template>
   <div>
     <v-container
-      fluid
-      style="height: 400px; background-image: url('stadium.png'); background-size: cover;"
+      fluid pa-0 
+      style="max-width:100%;height:400px; background-image: url('bg_home.jpg'); background-size: cover; "
     >
-      <!-- <v-layout text-xs-center wrap>
-        <v-flex mb-4>
-          <h1 class="display-2 font-weight-bold mb-3">Welcome to HPPK 2019 Robocup</h1>
+      <v-layout pa-5 text-xs-center style="background-color: #00000055; color:#FFFFFF; height:400px">
+        <v-flex>
+          <h1 class="font-weight-bold mt-5">Welcome to</h1>
+          <h1 class="display-4 font-weight-bold mt-5">HPPK 2019 Robocup</h1>
         </v-flex>
-      </v-layout>-->
-
-      <header align="center">
-        <h1 style="padding-top: 32px">HPPK 2019 Robocup</h1>
-      </header>
+      </v-layout>
     </v-container>
   </div>
 </template>

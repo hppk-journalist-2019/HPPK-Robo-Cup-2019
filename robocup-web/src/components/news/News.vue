@@ -6,15 +6,19 @@
 
         <v-divider v-else-if="article.divider" :key="index" :inset="article.inset"></v-divider>
 
-        <v-list-tile v-else :key="article.title" avatar @click="showArticle(article)">
+        <v-list-tile v-else :key="article.title" avatar @click>
           <v-list-tile-avatar>
             <img :src="article.avatar" />
           </v-list-tile-avatar>
 
-          <v-list-tile-content>
+          <v-list-tile-content @click="showArticle(article)">
             <v-list-tile-title v-html="article.title"></v-list-tile-title>
             <v-list-tile-sub-title v-html="article.writer"></v-list-tile-sub-title>
           </v-list-tile-content>
+
+          <v-btn v-show="isSignIn" fab dark small color="cyan" @click="deleteArticle(article, index)">
+            <v-icon dark>delete</v-icon>
+          </v-btn>
         </v-list-tile>
       </template>
     </v-list>
@@ -80,6 +84,17 @@ export default {
   methods: {
     showArticle(article) {
       this.$router.push({ name: "article", params: { newsId: article.id } });
+    },
+    deleteArticle(article, index) {
+      this.ref
+        .doc(article.id.toString())
+        .delete()
+        .then(function() {
+          console.log("Document successfully deleted!");
+        })
+        .catch(function(error) {
+          console.error("Error removing document: ", error);
+        });
     }
   }
 };
