@@ -10,7 +10,7 @@
         <v-layout align-center justify-center row fill-height>
           <v-text-field v-model="userName" label="Name" required :rules="memberNameRules"></v-text-field>
           <v-select
-            v-model="userRole"
+            v-model="userRoles"
             :items="roles"
             label="Role"
             multiple
@@ -36,7 +36,7 @@
         <v-list-tile-content style="height: 76px">
           <v-list-tile-title v-html="member.name"></v-list-tile-title>
           <v-layout>
-            <template column v-for="role in member.role">
+            <template column v-for="role in member.roles">
               <div class="text-xs-center" :key="role">
                 <v-chip>{{ role }}</v-chip>
               </div>
@@ -85,7 +85,7 @@ export default {
     ],
     teamName: null,
     userName: null,
-    userRole: null,
+    userRoles: null,
     teamMembers: []
   }),
   created() {
@@ -97,11 +97,11 @@ export default {
       if (this.$refs.form2.validate()) {
         const member = {
           name: this.userName,
-          role: this.userRole
+          roles: this.userRoles
         };
         this.teamMembers.push(member);
         this.userName = null;
-        this.userRole = null;
+        this.userRoles = null;
         this.$refs.form2.resetValidation();
       }
     },
@@ -111,6 +111,41 @@ export default {
     save() {
       if (this.$refs.form.validate()) {
         const router = this.$router;
+        console.log(this.teamMembers);
+
+        const members = {
+          teamLeader: [],
+          architect: [],
+          mechanicalEngineer: [],
+          swEngineer: [],
+          player: [],
+          markting: []
+        };
+        this.teamMembers.forEach(m => {
+          m.roles.forEach(r => {
+            switch (r) {
+              case "Team Leader":
+                members.teamLeader.push(m.name);
+                break;
+              case "Architect":
+                members.architect.push(m.name);
+                break;
+              case "Mchanical Engineer":
+                members.mechanicalEngineer.push(m.name);
+                break;
+              case "SW Engineer":
+                members.swEngineer.push(m.name);
+                break;
+              case "Player":
+                members.player.push(m.name);
+                break;
+              default:
+                members.markting.push(m.name);
+                break;
+            }
+          });
+        });
+
         // Save into the Fiebase Firestore
         firebase
           .firestore()
@@ -118,7 +153,7 @@ export default {
           .doc(this.teamName)
           .set({
             teamName: this.teamName,
-            members: this.teamMembers
+            members: members
           })
           .then(function() {
             router.push("/teams");
