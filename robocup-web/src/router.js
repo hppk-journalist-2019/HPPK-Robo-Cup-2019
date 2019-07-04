@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './components/home/Home.vue'
 import News from './components/news/News.vue'
+import Article from './components/news/article/Article.vue'
 import NewsAdd from './components/news/add/NewsAdd.vue'
 import Teams from './components/teams/Teams.vue'
 import Matches from './components/matches/Matches.vue'
@@ -40,6 +41,11 @@ export default new Router({
       name: 'add news',
       component: NewsAdd,
       beforeEnter: onlySignInUser
+    },
+    {
+      path: '/news/:newsId',
+      name: 'article',
+      component: Article
     },
     {
       path: '/teams',
