@@ -119,7 +119,7 @@ export default {
           mechanicalEngineer: [],
           swEngineer: [],
           player: [],
-          markting: []
+          marketing: []
         };
         this.teamMembers.forEach(m => {
           m.roles.forEach(r => {
@@ -130,7 +130,7 @@ export default {
               case "Architect":
                 members.architect.push(m.name);
                 break;
-              case "Mchanical Engineer":
+              case "Mechanical Engineer":
                 members.mechanicalEngineer.push(m.name);
                 break;
               case "SW Engineer":
@@ -140,18 +140,20 @@ export default {
                 members.player.push(m.name);
                 break;
               default:
-                members.markting.push(m.name);
+                members.marketing.push(m.name);
                 break;
             }
           });
         });
 
+        const teamId = `team_${new Date().getTime()}`;
         // Save into the Fiebase Firestore
         firebase
           .firestore()
           .collection("teams")
-          .doc(this.teamName)
+          .doc(teamId)
           .set({
+            id: teamId,
             teamName: this.teamName,
             members: members
           })

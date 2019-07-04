@@ -41,6 +41,7 @@ export default {
       querySnapshot.forEach(doc => {
         const team = doc.data();
         this.teams.push({
+          id: team.id,
           teamName: team.teamName,
           teamLeader: team.members.teamLeader[0],
         });
@@ -48,8 +49,8 @@ export default {
     });
   },
   methods: {
-    showTeam() {
-
+    showTeam(team) {
+        this.$router.push({ name: "team", params: { teamId: team.id } });
     }
   }
 };
