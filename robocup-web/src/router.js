@@ -5,6 +5,7 @@ import News from './components/news/News.vue'
 import Article from './components/news/article/Article.vue'
 import NewsAdd from './components/news/add/NewsAdd.vue'
 import Teams from './components/teams/Teams.vue'
+import TeamsAdd from './components/teams//add/TeamsAdd.vue'
 import Matches from './components/matches/Matches.vue'
 import Login from './components/login/Login.vue'
 
@@ -51,6 +52,12 @@ export default new Router({
       path: '/teams',
       name: 'teams',
       component: Teams
+    },
+    {
+      path: '/teams/add',
+      name: 'add teams',
+      component: TeamsAdd,
+      beforeEnter: onlySignInUser
     },
     {
       path: '/matches',
