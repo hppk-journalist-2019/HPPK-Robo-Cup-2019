@@ -1,14 +1,10 @@
 <template>
   <div>
-    <v-list two-line>
+    <v-list two-line style="width:800px; position:relative;margin:8px auto;">
       <template v-for="(article, index) in articles">
-        <v-subheader v-if="article.header" :key="article.header">{{ article.header }}</v-subheader>
-
-        <v-divider v-else-if="article.divider" :key="index" :inset="article.inset"></v-divider>
-
-        <v-list-tile v-else :key="article.title" avatar @click>
+        <v-list-tile :key="article.title" avatar @click>
           <v-list-tile-avatar>
-            <img :src="article.avatar" />
+            <img :src="article.thumbnailUrl" />
           </v-list-tile-avatar>
 
           <v-list-tile-content @click="showArticle(article)">
@@ -24,7 +20,7 @@
         </v-list-tile>
       </template>
     </v-list>
-    <v-btn v-show="isSignIn" fab dark large color="cyan" href="/news/add">
+    <v-btn id="btnAddNews" v-show="isSignIn" fab dark large color="cyan" href="/news/add">
       <v-icon dark>add</v-icon>
     </v-btn>
   </div>
@@ -76,7 +72,7 @@ export default {
 
         const d = new Date(article.createdAt);
         const createdAt = `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()} ${d.getHours()}:${d.getMinutes()}`
-          
+
         this.articles.push({
           id: article.id,
           thumbnailUrl: getThumbnailUrl(article),
@@ -97,19 +93,21 @@ export default {
         .doc(article.id.toString())
         .delete()
         .then(function() {
-          console.log("Document successfully deleted!");
+          console.log("Article successfully deleted!");
         })
         .catch(function(error) {
-          console.error("Error removing document: ", error);
+          console.error("Error removing article: ", error);
         });
     }
   }
 };
 
 function getThumbnailUrl(article) {
-  // const article = {
-  //   attachments: generateAttachments(this.imageFilePath)
-  // };
+  if (!article.thumbnailUrl) {
+    return "icon_hp.png";
+  } else {
+    return article.thumbnailUrl;
+  }
 }
 </script>
 
@@ -123,5 +121,12 @@ function getThumbnailUrl(article) {
   pointer-events: none;
   height: 0;
   font-style: italic;
+}
+
+#btnAddNews {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  margin: 56px;
 }
 </style>
