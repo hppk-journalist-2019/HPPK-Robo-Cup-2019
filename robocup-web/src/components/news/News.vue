@@ -67,7 +67,7 @@ export default {
     this.isSignIn =
       localStorage.getItem("firebaseui::rememberedAccounts") != null;
 
-    this.ref.onSnapshot(querySnapshot => {
+    this.ref.orderBy("createdAt", "desc").onSnapshot(querySnapshot => {
       this.articles = [];
       querySnapshot.forEach(doc => {
         const article = doc.data();
