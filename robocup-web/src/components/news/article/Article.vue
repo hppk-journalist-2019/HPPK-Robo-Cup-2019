@@ -1,18 +1,10 @@
 <template>
-  <div class="details">
-    <div class="container">
-      <h1 class="text-primary text-center">{{title}}</h1>
-      <v-carousel>
-        <v-carousel-item v-for="(item,i) in items" :key="i" :src="item.src"></v-carousel-item>
-      </v-carousel>
-      <h4>{{ writer }}</h4>
-      <h2>{{ contents }}</h2>
-    </div>
-  </div>
+  <div id="article-view"></div>
 </template>
 
 <script>
-const BASE_FIREBASE_STORAGE_URL = "https://firebasestorage.googleapis.com/v0/b/hppk-robocup-2019.appspot.com/o/";
+const BASE_FIREBASE_STORAGE_URL =
+  "https://firebasestorage.googleapis.com/v0/b/hppk-robocup-2019.appspot.com/o/";
 
 export default {
   data() {
@@ -20,7 +12,6 @@ export default {
       isSignIn: false,
       title: null,
       writer: null,
-      contents: null,
       ref: firebase
         .firestore()
         .collection("articles")
@@ -33,37 +24,42 @@ export default {
     };
   },
   created() {
+    console.log("created");
     this.isSignIn =
       localStorage.getItem("firebaseui::rememberedAccounts") != null;
 
-    let self = this;
+    var totalDoc;
+    var articleView = document.getElementById("article-view");
 
     this.ref
       .get()
       .then(function(doc) {
         if (doc.exists) {
           const article = doc.data();
-          console.log("Document data:", article);
-          self.title = article.title;
-          self.writer = article.writerName;
-          self.contents = article.contents;
-
-          article.attachments
-            .filter(a => a.path.length > 0 && a.type == "img")
-            .map(a => {
-              return {
-                src: `${BASE_FIREBASE_STORAGE_URL}${a.path.replace("/", "%2F")}?alt=media`
-              };
+          totalDoc = article.title;
+          firebase
+            .firestore()
+            .collection("articles-contents")
+            .doc(this.$route.params.newsId.toString())
+            .get()
+            .then(function(doc) {
+              if (doc.exists) {
+                const articleContents = doc.data();
+                totalDoc = totalDoc + articleContents.contents;
+                articleView.innerHTML = totalDoc;
+              } else {
+                console.error("No such Contents!");
+              }
             })
-            .forEach(item => {
-              self.items.push(item);
+            .catch(function(error) {
+              console.error("Error getting Contents:", error);
             });
         } else {
-          console.error("No such document!");
+          console.error("No such Title!");
         }
       })
       .catch(function(error) {
-        console.error("Error getting document:", error);
+        console.error("Error getting Title:", error);
       });
   }
 };

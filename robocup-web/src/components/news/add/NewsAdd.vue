@@ -1,123 +1,142 @@
 <template>
   <div class="editor">
     <Modal ref="ytmodal" @onConfirm="addCommand" />
-    <editor-menu-bar
-      :editor="editor"
-      v-slot="{ commands, isActive}"
-      style="height:35px;border-bottom:1px solid;padding-top:5px;"
-    >
-      <div class="menubar">
-        <button @click="openModal(commands.image)">
-          <v-icon color="green">add_photo_alternate</v-icon>
-        </button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.bold() }"
-          @click="commands.bold"
-        >
-          <v-icon color="black">format_bold</v-icon>
-        </button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.italic() }"
-          @click="commands.italic"
-        >
-          <v-icon color="black">format_italic</v-icon>
-        </button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.strike() }"
-          @click="commands.strike"
-        >
-          <v-icon color="black">format_strikethrough</v-icon>
-        </button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.underline() }"
-          @click="commands.underline"
-        >
-          <v-icon color="black">format_underlined</v-icon>
-        </button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.code() }"
-          @click="commands.code"
-        >
-          <v-icon color="black">code</v-icon>
-        </button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 1 }) }"
-          @click="commands.heading({ level: 1 })"
-        >H1</button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 2 }) }"
-          @click="commands.heading({ level: 2 })"
-        >H2</button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.heading({ level: 3 }) }"
-          @click="commands.heading({ level: 3 })"
-        >H3</button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.bullet_list() }"
-          @click="commands.bullet_list"
-        >
-          <v-icon color="black">format_list_bulleted</v-icon>
-        </button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.ordered_list() }"
-          @click="commands.ordered_list"
-        >
-          <v-icon color="black">format_list_numbered</v-icon>
-        </button>
-        &nbsp;
-        <button
-          class="menubar__button"
-          :class="{ 'is-active': isActive.blockquote() }"
-          @click="commands.blockquote"
-        >
-          <v-icon color="black">format_quote</v-icon>
-        </button>
-        &nbsp;
-        <button class="menubar__button" @click="commands.horizontal_rule">
-          <v-icon color="black">remove</v-icon>
-        </button>
-        &nbsp;
-        <button class="menubar__button" @click="commands.undo">
-          <v-icon color="green">undo</v-icon>
-        </button>
-        &nbsp;
-        <button class="menubar__button" @click="commands.redo">
-          <v-icon color="green">redo</v-icon>
-        </button>
+    <div class="header" style="height:40px">
+      <editor-menu-bar
+        :editor="editor"
+        v-slot="{ commands, isActive}"
+        style="height:35px;border-bottom:1px solid;padding-top:5px;"
+      >
+        <div class="menubar">
+          <button @click="openModal(commands.image)">
+            <v-icon color="green">add_photo_alternate</v-icon>
+          </button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.bold() }"
+            @click="commands.bold"
+          >
+            <v-icon color="black">format_bold</v-icon>
+          </button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.italic() }"
+            @click="commands.italic"
+          >
+            <v-icon color="black">format_italic</v-icon>
+          </button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.strike() }"
+            @click="commands.strike"
+          >
+            <v-icon color="black">format_strikethrough</v-icon>
+          </button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.underline() }"
+            @click="commands.underline"
+          >
+            <v-icon color="black">format_underlined</v-icon>
+          </button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.code() }"
+            @click="commands.code"
+          >
+            <v-icon color="black">code</v-icon>
+          </button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.heading({ level: 1 }) }"
+            @click="commands.heading({ level: 1 })"
+          >H1</button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.heading({ level: 2 }) }"
+            @click="commands.heading({ level: 2 })"
+          >H2</button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.heading({ level: 3 }) }"
+            @click="commands.heading({ level: 3 })"
+          >H3</button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.bullet_list() }"
+            @click="commands.bullet_list"
+          >
+            <v-icon color="black">format_list_bulleted</v-icon>
+          </button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.ordered_list() }"
+            @click="commands.ordered_list"
+          >
+            <v-icon color="black">format_list_numbered</v-icon>
+          </button>
+          &nbsp;
+          <button
+            class="menubar__button"
+            :class="{ 'is-active': isActive.blockquote() }"
+            @click="commands.blockquote"
+          >
+            <v-icon color="black">format_quote</v-icon>
+          </button>
+          &nbsp;
+          <button class="menubar__button" @click="commands.horizontal_rule">
+            <v-icon color="black">remove</v-icon>
+          </button>
+          &nbsp;
+          <button class="menubar__button" @click="commands.undo">
+            <v-icon color="green">undo</v-icon>
+          </button>
+          &nbsp;
+          <button class="menubar__button" @click="commands.redo">
+            <v-icon color="green">redo</v-icon>
+          </button>
+          <button class="menubar__button" @click="tmpMethod">
+            <v-icon color="black">redo</v-icon>
+          </button>
+        </div>
+      </editor-menu-bar>
+    </div>
+    <div class="container" style="overflow:scroll;height:600px">
+      <div class="content-body" style="height:600px">
+        <editor-content
+          style="border:1px solid;height:500px"
+          class="editor__content"
+          :editor="editor"
+        />
       </div>
-    </editor-menu-bar>
-    <editor-content class="editor__content" :editor="editor" />
-
+    </div>
     <!-- Simple Editor -->
-    <v-text-field v-model="title" :counter="10" label="Title" required></v-text-field>
-    <v-flex xs6>
-      <v-textarea v-model="contents" solo name="input-7-4" label="Contents..."></v-textarea>
-    </v-flex>
-    <v-icon @click="uploadImage">image</v-icon>
-    <input type="file" accept="image" @change="uploadImage" />
-    <v-btn fab dark large color="cyan" @click="save">
-      <v-icon dark>check</v-icon>
-    </v-btn>
+    <div class="footer" style="height:100px;padding-left:15px">
+      <div>
+        <h1>Please select thumbnail</h1>
+      </div>
+      <div>
+        <img id="thumbnail" height="100px" width="100px" style="border:1px solid" />
+      </div>
+      <div style="padding-left:10px">
+        <input id="sel" type="file" @change="selectImage" ref="file" />
+      </div>
+      <div class="save-article" style="float:right">
+        <v-btn color="cyan" @click="save">
+          <v-icon dark>check</v-icon>
+        </v-btn>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -129,7 +148,6 @@ import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 import { Placeholder } from "tiptap-extensions";
 import Contents from "./Contents";
 import Title from "./Title";
-
 //Button
 import {
   Image,
@@ -161,6 +179,7 @@ export default {
       title: "Test Title", // todo: Temp value, should be removed
       contents: "Test Article", // todo: Temp value, should be removed
       imageFilePath: "",
+      thumbnailFile: null,
       editor: new Editor({
         autoFocus: true,
         extensions: [
@@ -201,6 +220,11 @@ export default {
     this.editor.destroy();
   },
   methods: {
+    tmpMethod() {
+      this.editor.content = `<h1>dsfsaf</h1>`;
+      this.editor.setContent();
+
+    },
     openModal(command) {
       //open image uploading pop-up
       this.$refs.ytmodal.showModal(command);
@@ -214,54 +238,114 @@ export default {
     save() {
       const db = firebase.firestore();
 
-      const userInfo = JSON.parse(localStorage.getItem("firebaseui::rememberedAccounts"))[0]
+      const userInfo = JSON.parse(
+        localStorage.getItem("firebaseui::rememberedAccounts")
+      )[0];
 
       const id = new Date().getTime();
       const router = this.$router;
+      var articleHTML = this.editor.getHTML();
+      console.log(articleHTML);
+      var title = getTitle(articleHTML);
+      var contents = getCotents(articleHTML);
 
-      // Save into the Fiebase Firestore
+      //Upload thumbnail file      
+      const fileName = id + "_thumb.jpg";      
+      const imageFilePath = `images/${fileName}`;
+
+      // Upload on the Firebase Storage
+      const storageRef = firebase.storage().ref();
+      const ref = storageRef.child(imageFilePath);
+      ref.put(this.thumbnailFile).then(function(snapshot) {
+        console.log("Uploaded a blob or file");
+      });
+
+      // Save article information into the Fiebase Firestore
       db.collection("articles")
         .doc(id.toString())
         .set({
           id: id,
-          title: this.title,
-          contents: this.contents,
+          title: title,
           createdAt: id,
           lastEditedAt: id,
           writerId: userInfo.email,
           writerName: userInfo.displayName,
-          attachments: generateAttachments(this.imageFilePath)
+          thumbnailUrl: imageFilePath
         })
         .then(function() {
           router.push("/news");
         })
         .catch(function(error) {
-          console.error("Error writing document: ", error);
+          console.error("Error writing information: ", error);
+          // todo: Show error popup
+        });
+
+      // Save article contents
+      
+        db.collection("articles-contents")
+        .doc(id.toString())
+        .set({
+          id: id,
+          contents: contents
+        })
+        .then(function() {
+          router.push("/news");
+        })
+        .catch(function(error) {
+          console.error("Error writing contents: ", error);
           // todo: Show error popup
         });
     },
-    uploadImage(e) {
-      const image = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onload = e => {
-        this.previewImage = e.target.result;
-        console.log(this.previewImage);
+    selectImage(e) {
+      const file = this.$refs.file.files[0];
+
+      //Change image file size
+      var _URL = window.URL || window.webkitURL;
+      var img = document.createElement("img");
+      img.onload = f => {
+        const elem = document.createElement("canvas");
+        elem.width = 100;
+        elem.height = 100;
+        const ctx = elem.getContext("2d");
+        ctx.drawImage(img, 0, 0, elem.width, elem.height);
+
+        //display thumbnail image
+        document.querySelector("#thumbnail").src = elem.toDataURL("image/jpeg");
+
+        ctx.canvas.toBlob(
+          blob => {
+            this.thumbnailFile = new File([blob], "tmpFileName", {
+              type: "image/jpeg",
+              lastModified: Date.now()
+            });
+          },
+          "image/jpeg",
+          1
+        );
       };
-
-      const fileName = generateImageFileName(image.name);
-      this.imageFilePath = `images/${fileName}`;
-
-      // Upload on the Firebase Storage
-      const storageRef = firebase.storage().ref();
-      const ref = storageRef.child(this.imageFilePath);
-      ref.put(image).then(function(snapshot) {
-        console.log("Uploaded a blob or file");
-      });
+      img.src = _URL.createObjectURL(file);
     }
   }
 };
+function uploadImage(image, id) {
+  const fileName = generateImageFileName(id + "_thumb");
+  console.log(fileName);
+  const imageFilePath = `images/${fileName}`;
 
+  // Upload on the Firebase Storage
+  const storageRef = firebase.storage().ref();
+  const ref = storageRef.child(imageFilePath);
+  ref.put(image).then(function(snapshot) {
+    console.log("Uploaded a blob or file");
+  });
+  return imageFilePath;
+}
+function getTitle(articleHTML) {
+  return articleHTML.split("</h1>")[0] + "</h1>";
+}
+function getCotents(articleHTML) {
+  return articleHTML.slice(articleHTML.indexOf("</h1>") + 5);
+}
 function generateImageFileName(originName) {
   const temp = originName.split(".");
   return `${temp[0]}_${new Date().getTime()}.${temp[1]}`;
