@@ -32,14 +32,6 @@
       <v-btn v-show="isSignIn" flat>
         <span class="mr-2" @click="signOut()">Sign Out</span>
       </v-btn>
-
-      <v-btn
-        flat
-        href="https://github.com/hppk-journalist-2019/HPPK-Robo-Cup-2019/"
-        target="_blank"
-      >
-        <span class="mr-2">Github Repo</span>
-      </v-btn>
     </v-toolbar>
 
     <v-snackbar v-model="snackbar" :timeout="3000">You have successfully signed out!</v-snackbar>

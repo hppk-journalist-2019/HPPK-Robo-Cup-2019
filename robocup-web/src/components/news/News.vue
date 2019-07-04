@@ -6,7 +6,7 @@
 
         <v-divider v-else-if="article.divider" :key="index" :inset="article.inset"></v-divider>
 
-        <v-list-tile v-else :key="article.title" avatar @click>
+        <v-list-tile v-else :key="article.title" avatar @click="showArticle(article)">
           <v-list-tile-avatar>
             <img :src="article.avatar" />
           </v-list-tile-avatar>
@@ -26,31 +26,31 @@
 
 <script>
 //Basic Editor
-import { Editor, EditorContent, EditorMenuBar } from 'tiptap';
+import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 
 //Title & Contents
-import { Placeholder } from 'tiptap-extensions';
-import Contents from './Contents'
-import Title from './Title'
+import { Placeholder } from "tiptap-extensions";
+import Contents from "./Contents";
+import Title from "./Title";
 
 //Button
-import { 
-    Image,
-    Bold,  
-    Italic,
-    Strike,
-    HardBreak,
-    Heading,
-    HorizontalRule,
-    OrderedList,
-    BulletList,
-    ListItem,
-    Code,
-    Underline,
-    History,
-    Blockquote,
-    Link
-} from 'tiptap-extensions';
+import {
+  Image,
+  Bold,
+  Italic,
+  Strike,
+  HardBreak,
+  Heading,
+  HorizontalRule,
+  OrderedList,
+  BulletList,
+  ListItem,
+  Code,
+  Underline,
+  History,
+  Blockquote,
+  Link
+} from "tiptap-extensions";
 import Modal from "./ImageUploadModal";
 
 export default {
@@ -68,6 +68,7 @@ export default {
       querySnapshot.forEach(doc => {
         const article = doc.data();
         this.articles.push({
+          id: article.id,
           thumbnailUrl: getThumbnailUrl(article),
           title: article.title,
           subtitle: article.contents,
@@ -75,6 +76,11 @@ export default {
         });
       });
     });
+  },
+  methods: {
+    showArticle(article) {
+      this.$router.push({ name: "article", params: { newsId: article.id } });
+    }
   }
 };
 
@@ -86,14 +92,14 @@ function getThumbnailUrl(article) {
 </script>
 
 <style lang="scss">
-    // Title & Content
-    .editor *.is-empty:nth-child(1)::before,
-    .editor *.is-empty:nth-child(2)::before {
-        content: attr(data-empty-text);
-        float: left;
-        color: #aaa;
-        pointer-events: none;
-        height: 0;
-        font-style: italic;
-    }
+// Title & Content
+.editor *.is-empty:nth-child(1)::before,
+.editor *.is-empty:nth-child(2)::before {
+  content: attr(data-empty-text);
+  float: left;
+  color: #aaa;
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+}
 </style>
