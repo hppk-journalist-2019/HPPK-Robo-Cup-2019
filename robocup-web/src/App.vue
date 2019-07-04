@@ -35,9 +35,7 @@
     </v-toolbar>
 
     <v-snackbar v-model="snackbar" :timeout="3000">You have successfully signed out!</v-snackbar>
-    <v-content>
-      <router-view></router-view>
-    </v-content>
+    <router-view></router-view>
   </v-app>
 </template>
 
