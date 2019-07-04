@@ -16,6 +16,8 @@
             <v-list-tile-sub-title v-html="article.writer"></v-list-tile-sub-title>
           </v-list-tile-content>
 
+          <span>{{ article.createdAt }}</span>
+
           <v-btn v-show="isSignIn" fab dark small color="cyan" @click="deleteArticle(article, index)">
             <v-icon dark>delete</v-icon>
           </v-btn>
@@ -67,16 +69,21 @@ export default {
     this.isSignIn =
       localStorage.getItem("firebaseui::rememberedAccounts") != null;
 
-    this.ref.onSnapshot(querySnapshot => {
+    this.ref.orderBy("createdAt", "desc").onSnapshot(querySnapshot => {
       this.articles = [];
       querySnapshot.forEach(doc => {
         const article = doc.data();
+
+        const d = new Date(article.createdAt);
+        const createdAt = `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()} ${d.getHours()}:${d.getMinutes()}`
+          
         this.articles.push({
           id: article.id,
           thumbnailUrl: getThumbnailUrl(article),
           title: article.title,
           subtitle: article.contents,
-          writer: article.writerName
+          writer: article.writerName,
+          createdAt: createdAt
         });
       });
     });
