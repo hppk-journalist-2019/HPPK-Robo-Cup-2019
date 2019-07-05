@@ -19,10 +19,6 @@
         <span class="mr-2">Matches</span>
       </v-btn>
 
-      <v-btn v-show="!isSignIn" flat href="/login">
-        <span class="mr-2">Login (test)</span>
-      </v-btn>
-
       <v-spacer></v-spacer>
       <v-avatar v-show="isSignIn" :size="32" color="grey lighten-4" style="margin-right: 16px">
         <img v-bind:src="userIcon" alt="avatar" />
