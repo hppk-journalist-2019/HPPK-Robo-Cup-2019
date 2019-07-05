@@ -2,21 +2,9 @@
   <div class="modal" v-if="show">
     <div class="modal-content">
       <h1>Add image</h1>
-      <header class="tab-header">
-        <button @click="tab = 1;" :class="{ active: tab == 1 }">Link</button>       
-        <button @click="tab = 2;" :class="{ active: tab == 2 }">
-          Upload (Simple)
-        </button>
-      </header>
-
-      <div v-if="tab == 1">
-        <p>Here is a test image URL</p>
-        <pre>https://i.imgur.com/0ogkTp7.jpg</pre>
-        <label for="url">Image URL:</label>
-        <input v-model="imageSrc" id="url" style="width:100%;border:1px solid" autocomplete="off"/>
-      </div>
-      <div v-if="tab == 2">
-        <label for="up">Really simple input upload:</label>
+        
+      <div>
+        <label for="up">Please select image file</label>
         <input type="file" @change="fileChange" id="up" ref="file" />
       </div>
       <div>          
