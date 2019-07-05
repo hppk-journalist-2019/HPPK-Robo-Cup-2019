@@ -1,26 +1,30 @@
 <template>
-  <div>
+  <v-container style="max-width: 800px">
     <v-form ref="form" v-model="valid">
       <h1>Resgister a new Team</h1>
       <v-text-field v-model="teamName" :rules="teamNameRules" label="Team Name" required></v-text-field>
+      <h1>Team Logo</h1>
+      <input id="teamLogo" type="file" @change="selectImage" ref="file">
     </v-form>
-    <v-form ref="form2" v-model="valid2">
+
+
+    <v-form ref="form2" v-model="valid2" class="mt-5">
       <v-flex xs10>
         <h2>Add Members</h2>
         <v-layout align-center justify-center row fill-height>
-          <v-text-field v-model="userName" label="Name" required :rules="memberNameRules"></v-text-field>
+          <v-text-field class="mr-5" v-model="userName" label="Name" required :rules="memberNameRules" />
           <v-select
+          class="ml-5 mr-5"
             v-model="userRoles"
             :items="roles"
             label="Role"
             multiple
             chips
-            persistent-hint
             :rules="memberRoleRules"
-          ></v-select>
+          />
 
-          <v-btn fab dark small color="cyan" @click="addMember">
-            <v-icon dark>add</v-icon>
+          <v-btn fab outline small color="cyan" @click="addMember">
+            <v-icon>add</v-icon>
           </v-btn>
         </v-layout>
       </v-flex>
@@ -52,7 +56,7 @@
     <!-- <v-icon @click="uploadImage">image</v-icon> -->
     <!-- <input type="file" accept="image" @change="uploadImage" /> -->
     <v-btn dark large color="cyan" @click="save">Save</v-btn>
-  </div>
+  </v-container>
 </template>
 
 <script>
