@@ -132,7 +132,7 @@
         <input id="sel" type="file" @change="selectImage" ref="file" />
       </div>
       <div class="save-article" style="float:right">
-        <v-btn color="cyan" @click="save">
+        <v-btn id="save-btn" color="cyan" @click="save">
           <v-icon dark>check</v-icon>
         </v-btn>
       </div>
@@ -180,6 +180,7 @@ export default {
       contents: "Test Article", // todo: Temp value, should be removed
       imageFilePath: "",
       thumbnailFile: null,
+      isUploading: false,
       editor: new Editor({
         autoFocus: true,
         extensions: [
@@ -236,6 +237,10 @@ export default {
       }
     },
     save() {
+      if(this.isUploading){
+        return;
+      }
+      this.isUploading = true;
       const db = firebase.firestore();
 
       const userInfo = JSON.parse(
