@@ -1,5 +1,5 @@
 <template>
-  <div id="article-view"></div>
+  <div id="article-view" style="margin:20px 20px 20px 20px"></div>
 </template>
 
 <script>
@@ -12,6 +12,7 @@ export default {
       isSignIn: false,
       title: null,
       writer: null,
+      newsID : this.$route.params.newsId.toString(),
       ref: firebase
         .firestore()
         .collection("articles")
@@ -29,23 +30,28 @@ export default {
       localStorage.getItem("firebaseui::rememberedAccounts") != null;
 
     var totalDoc;
-    var articleView = document.getElementById("article-view");
+    
+    var newsID = this.newsID;
 
     this.ref
       .get()
       .then(function(doc) {
         if (doc.exists) {
           const article = doc.data();
-          totalDoc = article.title;
+          totalDoc = "<h1>" + article.title + "</h1>";
+          console.log(totalDoc);
+          
           firebase
             .firestore()
             .collection("articles-contents")
-            .doc(this.$route.params.newsId.toString())
+            .doc(newsID)
             .get()
             .then(function(doc) {
               if (doc.exists) {
                 const articleContents = doc.data();
                 totalDoc = totalDoc + articleContents.contents;
+                console.log(totalDoc);                
+                var articleView = document.getElementById("article-view");
                 articleView.innerHTML = totalDoc;
               } else {
                 console.error("No such Contents!");

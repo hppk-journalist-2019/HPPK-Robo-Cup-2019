@@ -304,8 +304,8 @@ export default {
       var img = document.createElement("img");
       img.onload = f => {
         const elem = document.createElement("canvas");
-        elem.width = 100;
-        elem.height = 100;
+        elem.width = 920;
+        elem.height = 518;
         const ctx = elem.getContext("2d");
         ctx.drawImage(img, 0, 0, elem.width, elem.height);
 
@@ -341,7 +341,7 @@ function uploadImage(image, id) {
   return imageFilePath;
 }
 function getTitle(articleHTML) {
-  return articleHTML.split("</h1>")[0] + "</h1>";
+  return articleHTML.split("</h1>")[0].slice(4);
 }
 function getCotents(articleHTML) {
   return articleHTML.slice(articleHTML.indexOf("</h1>") + 5);
