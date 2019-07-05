@@ -55,6 +55,9 @@ import {
 } from "tiptap-extensions";
 import Modal from "./ImageUploadModal";
 
+const BASE_FIREBASE_STORAGE_URL =
+  "https://firebasestorage.googleapis.com/v0/b/hppk-robocup-2019.appspot.com/o/";
+
 export default {
   data: () => ({
     isSignIn: false,
@@ -71,7 +74,7 @@ export default {
         const article = doc.data();
 
         const d = new Date(article.createdAt);
-        const createdAt = `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()} ${d.getHours()}:${d.getMinutes()}`
+        const createdAt = `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;
 
         this.articles.push({
           id: article.id,
@@ -103,10 +106,10 @@ export default {
 };
 
 function getThumbnailUrl(article) {
-  if (!article.thumbnailUrl) {
-    return "icon_hp.png";
+  if (article.thumbnailUrl) {
+    return `${BASE_FIREBASE_STORAGE_URL}${article.thumbnailUrl.replace("/", "%2F")}?alt=media`;
   } else {
-    return article.thumbnailUrl;
+    return "icon_hp.png";
   }
 }
 </script>
