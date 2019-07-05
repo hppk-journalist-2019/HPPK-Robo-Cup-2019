@@ -270,7 +270,9 @@ export default {
           lastEditedAt: id,
           writerId: userInfo.email,
           writerName: userInfo.displayName,
-          thumbnailUrl: imageFilePath
+          thumbnailUrl: imageFilePath,
+          writerPhotoUrl:userInfo.photoUrl,
+
         })
         .then(function() {
           router.push("/news");
