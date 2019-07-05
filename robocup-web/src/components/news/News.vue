@@ -2,18 +2,21 @@
   <div>
     <v-list>
       <template v-for="(article, index) in articles">
-        <v-flex :key="article.title" sm6 offset-sm3 mt-3 @click>
-          <v-card @click="showArticle(article)">
-            <v-img height="196px" :src="article.thumbnailUrl" aspect-ratio="2.75"></v-img>
-
-            <v-card-title>
+        <v-flex :key="article.title" sm6 offset-sm3 mt-3>
+          <v-card hover="true">
+            <v-img
+              height="196px"
+              :src="article.thumbnailUrl"
+              aspect-ratio="2.75"
+              @click="showArticle(article)"
+            ></v-img>
+            <v-card-title @click="showArticle(article)">
               <div>
                 <span class="grey--text">{{ article.createdAt }}</span>
                 <br />
                 <h1>{{article.title}}</h1>
               </div>
             </v-card-title>
-
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-list-tile-avatar>
