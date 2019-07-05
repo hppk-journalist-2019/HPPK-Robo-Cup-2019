@@ -1,25 +1,5 @@
 <template>
   <div>
-    <!-- <v-list two-line style="width:800px; position:relative;margin:8px auto;">
-      <template v-for="(article, index) in articles">
-        <v-list-tile :key="article.title" avatar @click>
-          <v-list-tile-avatar>
-            <img :src="article.thumbnailUrl" />
-          </v-list-tile-avatar>
-
-          <v-list-tile-content @click="showArticle(article)">
-            <v-list-tile-title v-html="article.title"></v-list-tile-title>
-            <v-list-tile-sub-title v-html="article.writer"></v-list-tile-sub-title>
-          </v-list-tile-content>
-
-          <span>{{ article.createdAt }}</span>
-
-          <v-btn v-show="isSignIn" fab dark small color="cyan" @click="deleteArticle(article, index)">
-            <v-icon dark>delete</v-icon>
-          </v-btn>
-        </v-list-tile>
-      </template>
-    </v-list>-->
     <v-list>
       <template v-for="(article, index) in articles">
         <v-flex :key="article.title" sm6 offset-sm3 mt-3 @click>
@@ -36,6 +16,9 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
+              <v-list-tile-avatar>
+                <img :src="article.writerPhotoUrl" />
+              </v-list-tile-avatar>
               {{ article.writer }}
               <v-btn
                 v-show="isSignIn"
@@ -112,6 +95,7 @@ export default {
           title: article.title,
           subtitle: article.contents,
           writer: article.writerName,
+          writerPhotoUrl: article.writerPhotoUrl,
           createdAt: createdAt
         });
       });
