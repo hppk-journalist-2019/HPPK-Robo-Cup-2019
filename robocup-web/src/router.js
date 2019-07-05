@@ -9,6 +9,7 @@ import TeamsAdd from './components/teams/add/TeamsAdd.vue'
 import Team from './components/teams/team/Team.vue'
 import Matches from './components/matches/Matches.vue'
 import Login from './components/login/Login.vue'
+import NotFound from './components/NotFound.vue'
 
 Vue.use(Router)
 
@@ -65,15 +66,23 @@ export default new Router({
       name: 'team',
       component: Team
     },
-    {
-      path: '/matches',
-      name: 'matches',
-      component: Matches
-    },
+    // {
+    //   path: '/matches',
+    //   name: 'matches',
+    //   component: Matches
+    // },
     {
       path: '/login',
       name: 'login',
       component: Login
-    }
+    },
+    {
+      path: '/404',
+      component: NotFound
+    },
+    {
+      path: '*',
+      redirect: '/404'
+    },
   ]
 })
