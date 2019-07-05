@@ -112,9 +112,9 @@
       </editor-menu-bar>
     </div>
     <div class="container" style="overflow:scroll;height:600px">
-      <div class="content-body" style="height:600px">
+      <div class="content-body" style="height:600px;border:1px solid">
         <editor-content
-          style="border:1px solid;height:500px"
+          style="height:500px"
           class="editor__content"
           :editor="editor"
         />
