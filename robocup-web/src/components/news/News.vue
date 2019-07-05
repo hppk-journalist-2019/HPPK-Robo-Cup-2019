@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-list two-line style="width:800px; position:relative;margin:8px auto;">
+    <!-- <v-list two-line style="width:800px; position:relative;margin:8px auto;">
       <template v-for="(article, index) in articles">
         <v-list-tile :key="article.title" avatar @click>
           <v-list-tile-avatar>
@@ -19,7 +19,36 @@
           </v-btn>
         </v-list-tile>
       </template>
+    </v-list>-->
+    <v-list>
+      <template v-for="(article, index) in articles">
+        <v-flex :key="article.title" sm6 offset-sm3 mt-3 @click>
+          <v-card @click="showArticle(article)">
+            <v-img height="196px" :src="article.thumbnailUrl" aspect-ratio="2.75"></v-img>
+
+            <v-card-title>
+              <div>
+                <span class="grey--text">{{ article.createdAt }}</span>
+                <br />
+                <h1>{{article.title}}</h1>
+              </div>
+            </v-card-title>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              {{ article.writer }}
+              <v-btn
+                v-show="isSignIn"
+                flat
+                color="cyan"
+                @click="deleteArticle(article, index)"
+              >delete</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </template>
     </v-list>
+
     <v-btn id="btnAddNews" v-show="isSignIn" fab dark large color="cyan" href="/news/add">
       <v-icon dark>add</v-icon>
     </v-btn>
@@ -74,7 +103,8 @@ export default {
         const article = doc.data();
 
         const d = new Date(article.createdAt);
-        const createdAt = `${d.getFullYear()}. ${d.getMonth()+1}. ${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;
+        const createdAt = `${d.getFullYear()}. ${d.getMonth() +
+          1}. ${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;
 
         this.articles.push({
           id: article.id,
@@ -107,7 +137,10 @@ export default {
 
 function getThumbnailUrl(article) {
   if (article.thumbnailUrl) {
-    return `${BASE_FIREBASE_STORAGE_URL}${article.thumbnailUrl.replace("/", "%2F")}?alt=media`;
+    return `${BASE_FIREBASE_STORAGE_URL}${article.thumbnailUrl.replace(
+      "/",
+      "%2F"
+    )}?alt=media`;
   } else {
     return "icon_hp.png";
   }
