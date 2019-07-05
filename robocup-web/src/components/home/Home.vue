@@ -15,7 +15,7 @@
           <h1 class="display-4 font-weight-bold mt-5">HPPK 2019 Robocup</h1>
           <h1 class="title" align="center" style="margin-top:150px">2019. 7. 19 (Fri)</h1>
           <h2 class="title mt-3" align="center">12:00 ~ 16:00</h2>
-          <h1 class="title mt-3" align="center">이비스앰배서더수원</h1>
+          <h1 class="title mt-3" align="center">Hotel IBIS AMBASSADOR SUWON (이비스 앰배서더 수원)</h1>
         </v-flex>
       </v-layout>
     </v-container>
@@ -40,10 +40,9 @@
       >
         <v-flex>
           <h1 class="display-4 font-weight-bold" align="center" style="margin-top:150px">Lunch</h1>
-          <h1 class="display-1 ma-5" align="center">12:00 ~ 13:30</h1>
-          <h1 class="display-1 ma-5" align="center">이비스앰배서더수원 3F</h1>
-          <h1 class="body-1 mt-5" align="center">행사 당일 오전에 식권 배부 예정</h1>
-          <h1 class="body-1 ma-3" align="center">칸막이로 분리된 공간</h1>
+          <h1 class="display-1 ma-5" align="center">12:00 - 13:30 / 3F</h1>
+          <h1 class="title" align="center" style="margin-top:150px">Meal coupon will be distributed on event day</h1>
+          <h1 class="title ma-3" align="center">Layout: Seperated space</h1>
         </v-flex>
       </v-layout>
     </v-container>
@@ -64,9 +63,9 @@
       >
         <v-flex>
           <h1 class="display-4 font-weight-bold" align="center" style="margin-top:150px">Robocup</h1>
-          <h1 class="display-1 ma-5" align="center">14:00 ~ 16:00</h1>
-          <h1 class="display-1 ma-5" align="center">6F 리웅홀</h1>
-          <h1 class="body-1 ma-5" align="center">커피, 음료 및 과자 제공</h1>
+          <h1 class="display-1 ma-5" align="center">14:00 - 16:00</h1>
+          <h1 class="display-1 ma-5" align="center">6F Hall Rion</h1>
+          <h1 class="title" align="center" style="margin-top:150px">Providing coffee, beverages and snacks</h1>
         </v-flex>
       </v-layout>
     </v-container>
@@ -80,10 +79,10 @@
       <v-layout pa-5 style="background-color: #000000AA; height:800px; color:#FFFFFF">
         <v-flex>
           <h1 class="display-4 font-weight-bold" align="center" style="margin-top:150px">How to go</h1>
-          <h1 class="display-1 mt-5" align="center">자차 및 호텔 제공 버스</h1>
-          <h1 class="display-1 ma-3" align="center">11:40 / 동문 앞</h1>
-          <h1 class="title mt-5" align="center">25인승 1대 / 스타렉스 3대 (50명 탑승 가능)</h1>
-          <h1 class="title ma-3" align="center">자차 이동 인원은 호텔 주차장 이용 (주차권 제공 예정)</h1>
+          <h1 class="display-1 mt-5" align="center">Own car or Hotel Bus</h1>
+          <h1 class="display-1 ma-3" align="center">11:40 / at East gate</h1>
+          <h1 class="title mt-5" align="center" style="margin-top:150px">1 Bus(25person capacity) / 3 Small Bus</h1>
+          <h1 class="title ma-3" align="center">Car parking is available at the hotel parking lot (parking ticket will be provided)</h1>
           <h1
             class="body-1 ma-5"
             align="center"
