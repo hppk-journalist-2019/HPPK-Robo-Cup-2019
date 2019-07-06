@@ -1,30 +1,50 @@
 <template>
-  <div>
-    <v-form ref="form" v-model="valid">
-      <h1>Resgister a new Team</h1>
-      <v-text-field v-model="teamName" :rules="teamNameRules" label="Team Name" required></v-text-field>
-    </v-form>
-    <v-form ref="form2" v-model="valid2">
-      <v-flex xs10>
-        <h2>Add Members</h2>
-        <v-layout align-center justify-center row fill-height>
-          <v-text-field v-model="userName" label="Name" required :rules="memberNameRules"></v-text-field>
-          <v-select
-            v-model="userRoles"
-            :items="roles"
-            label="Role"
-            multiple
-            chips
-            persistent-hint
-            :rules="memberRoleRules"
-          ></v-select>
+  <v-container style="max-width: 800px" grid-list-xl>
+    <v-layout wrap align-center>
+      <v-form ref="form" v-model="valid">
+        <h1>Resgister a new Team</h1>
+        <v-select
+          style="display:inline"
+          class="ml-5 mr-5"
+          v-model="teamId"
+          :items="teamIds"
+          label="Team Id"
+          :rules="baseRules"
+          @change="selectTeamId()"
+          required
+        />
+        <v-text-field v-model="teamName" :rules="baseRules" label="Team Name" required></v-text-field>
 
-          <v-btn fab dark small color="cyan" @click="addMember">
-            <v-icon dark>add</v-icon>
-          </v-btn>
-        </v-layout>
-      </v-flex>
-    </v-form>
+        <h1>Team Logo</h1>
+        <v-icon>group</v-icon>
+        <input id="teamLogo" type="file" accept="image" @change="selectTeamLogo" ref="file" />
+
+        <h1>Team's Goal (포부, 한마디)</h1>
+        <v-text-field v-model="teamsGoal" :rules="baseRules" label="Team's Goal" required></v-text-field>
+      </v-form>
+
+      <v-form ref="form2" v-model="valid2" class="mt-5">
+        <v-flex xs10>
+          <h2>Add Members</h2>
+          <v-layout align-center justify-center row fill-height>
+            <v-text-field class="mr-5" v-model="userName" label="Name" required :rules="baseRules" />
+            <v-select
+              class="ml-5 mr-5"
+              v-model="userRoles"
+              :items="roles"
+              label="Role"
+              multiple
+              chips
+              :rules="baseRules"
+            />
+
+            <v-btn fab outline small color="cyan" @click="addMember">
+              <v-icon>add</v-icon>
+            </v-btn>
+          </v-layout>
+        </v-flex>
+      </v-form>
+    </v-layout>
 
     <template v-for="(member, index) in teamMembers">
       <v-subheader v-if="member.header" :key="member.header">{{ member.header }}</v-subheader>
@@ -52,7 +72,7 @@
     <!-- <v-icon @click="uploadImage">image</v-icon> -->
     <!-- <input type="file" accept="image" @change="uploadImage" /> -->
     <v-btn dark large color="cyan" @click="save">Save</v-btn>
-  </div>
+  </v-container>
 </template>
 
 <script>
@@ -61,7 +81,27 @@ export default {
     valid: true,
     valid2: true,
     isSignIn: false,
-    roles: [
+    teamIds: [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "10",
+      "11",
+      "12",
+      "13",
+      "14",
+      "15",
+      "16",
+      "OP",
+      "JN"
+    ],
+    devRoles: [
       "Team Leader",
       "Architect",
       "Mechanical Engineer",
@@ -69,24 +109,20 @@ export default {
       "Player",
       "Marketing"
     ],
-    teamNameRules: [
-      v => !!v || "Team name is required",
+    opRoles: ["Setting", "Manage", "Rule Maker"],
+    jnRoles: ["Team Leader", "취재", "웹 개발"],
+    roles: [],
+    baseRules: [
+      v => !!v || "required",
       v => (v && v.length <= 30) || "Team name must be less than 30 characters"
     ],
-    memberNameRules: [
-      v => !!v || "Member name is required",
-      v =>
-        (v && v.length <= 20) || "Member name must be less than 30 characters"
-    ],
-    memberRoleRules: [
-      v => !!v || "Member role is required",
-      v =>
-        (v && v.length <= 20) || "Member role must be less than 30 characters"
-    ],
+    teamId: null,
     teamName: null,
+    teamsGoal: null,
     userName: null,
     userRoles: null,
-    teamMembers: []
+    teamMembers: [],
+    teamLogoImage: null
   }),
   created() {
     this.isSignIn =
@@ -113,40 +149,18 @@ export default {
         const router = this.$router;
         console.log(this.teamMembers);
 
-        const members = {
-          teamLeader: [],
-          architect: [],
-          mechanicalEngineer: [],
-          swEngineer: [],
-          player: [],
-          marketing: []
-        };
-        this.teamMembers.forEach(m => {
-          m.roles.forEach(r => {
-            switch (r) {
-              case "Team Leader":
-                members.teamLeader.push(m.name);
-                break;
-              case "Architect":
-                members.architect.push(m.name);
-                break;
-              case "Mechanical Engineer":
-                members.mechanicalEngineer.push(m.name);
-                break;
-              case "SW Engineer":
-                members.swEngineer.push(m.name);
-                break;
-              case "Player":
-                members.player.push(m.name);
-                break;
-              default:
-                members.marketing.push(m.name);
-                break;
-            }
-          });
+        // Upload team logo
+        const teamLogoPath = getTeamLogoPath(
+          this.teamName,
+          this.teamLogoImage.name
+        );
+        const storageRef = firebase.storage().ref();
+        const ref = storageRef.child(teamLogoPath);
+        ref.put(this.teamLogoImage).then(function(snapshot) {
+          console.log("Uploaded a blob or file");
         });
 
-        const teamId = `team_${new Date().getTime()}`;
+        const teamId = `team_${this.teamId}`;
         // Save into the Fiebase Firestore
         firebase
           .firestore()
@@ -155,7 +169,8 @@ export default {
           .set({
             id: teamId,
             teamName: this.teamName,
-            members: members
+            teamLogoPath: teamLogoPath,
+            members: this.teamMembers
           })
           .then(function() {
             router.push("/teams");
@@ -165,9 +180,27 @@ export default {
             // todo: Show error popup
           });
       }
+    },
+    selectTeamId() {
+      console.log(this.teamId);
+      if (this.teamId == "OP") {
+        this.roles = this.opRoles;
+      } else if (this.teamId == "JN") {
+        this.roles = this.jnRoles;
+      } else {
+        this.roles = this.devRoles;
+      }
+    },
+    selectTeamLogo(e) {
+      this.teamLogoImage = e.target.files[0];
     }
   }
 };
+
+function getTeamLogoPath(teamName, originName) {
+  const ext = originName.split(".").splice(-1)[0];
+  return `teams/logo/${teamName}.${ext}`;
+}
 </script>
 
 <style>

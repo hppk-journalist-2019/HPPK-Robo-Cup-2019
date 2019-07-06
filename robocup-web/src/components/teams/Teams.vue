@@ -41,7 +41,7 @@ export default {
         this.teams.push({
           id: team.id,
           teamName: team.teamName,
-          teamLeader: team.members.teamLeader[0],
+          teamLeader: team.members.filter(m => m.roles.filter(r => r == "Team Leader"))[0].name,
           logo: getTeamLogo(team)
         });
       });
