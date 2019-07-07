@@ -1,11 +1,9 @@
 <template>
   <v-container ref="container" fluid grid-list-xl style="padding: 0">
-    <v-layout row wrap style="margin: 0">
+    <v-layout ref="teamLayout" row wrap style="margin: 0">
       <v-flex v-for="(team, index) in teams" :key="team.teamName" xs3 style="padding: 1px">
-        <v-card hover light ripple height="150px" tile :img="team.logo">
-          <!-- <v-img :src="team.logo" aspect-ratio="4.75"></v-img> -->
-
-          <v-card-title style="background-color: #FFFFFFF4;position: absolute;bottom: 0;width: 100%;">
+        <v-card hover ripple :height="cardHeightStyle" tile :img="team.logo">
+          <v-card-title class="cardTitleStyle">
             <v-list-tile-avatar>
               <img :src="team.logo" />
             </v-list-tile-avatar>
@@ -20,8 +18,8 @@
       </v-flex>
 
       <v-flex xs3 style="padding: 1px">
-        <v-card hover light ripple height="150px">
-          <v-card-title>
+        <v-card hover ripple :height="cardHeightStyle" tile :img="opTeam.logo">
+          <v-card-title class="cardTitleStyle">
             <v-list-tile-avatar>
               <img :src="opTeam.logo" />
             </v-list-tile-avatar>
@@ -35,14 +33,14 @@
         </v-card>
       </v-flex>
 
-      <v-flex xs6>
+      <v-flex xs6 pa-3>
         <h1>HPPK 2019</h1>
         <h2>Robocup</h2>
       </v-flex>
 
       <v-flex xs3 style="padding: 1px">
-        <v-card hover light ripple height="150px">
-          <v-card-title>
+        <v-card hover ripple :height="cardHeightStyle" tile :img="jnTeam.logo">
+          <v-card-title class="cardTitleStyle">
             <v-list-tile-avatar>
               <img :src="jnTeam.logo" />
             </v-list-tile-avatar>
@@ -64,21 +62,30 @@
 </template>
 
 <script>
+const BASE_FIREBASE_STORAGE_URL =
+  "https://firebasestorage.googleapis.com/v0/b/hppk-robocup-2019.appspot.com/o/";
+
 export default {
   data: () => ({
     isSignIn: false,
     teams: [],
     opTeam: {},
     jnTeam: {},
-    ref: firebase.firestore().collection("teams")
+    ref: firebase.firestore().collection("teams"),
+    cardHeightStyle: "259px"
   }),
   created() {
     this.isSignIn =
       localStorage.getItem("firebaseui::rememberedAccounts") != null;
 
+    const ref = this.$refs;
+    let height = this.cardHeightStyle;
+    this.cardHeightStyle = "128px";
+
     this.ref.where("type", "==", "DEV").onSnapshot(querySnapshot => {
-      this.teams = [];
       querySnapshot.forEach(doc => {
+        this.cardHeightStyle = ref.container.clientHeight / 5 + "px";
+
         const team = doc.data();
         this.teams.push({
           id: team.id,
@@ -138,15 +145,25 @@ export default {
 };
 
 function getTeamLogo(team) {
-  if (!team.logo) {
+  if (team.teamLogoPath == "icon_hp.png") {
     return "icon_hp.png";
   } else {
-    return team.logo;
+    return `${BASE_FIREBASE_STORAGE_URL}${team.teamLogoPath.replace(
+      /['/']/gi,
+      "%2F"
+    )}?alt=media`;
   }
 }
 </script>
 
 <style>
+.cardTitleStyle {
+  background-color: #fffffff4;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
 #btnAddTeams {
   position: fixed;
   bottom: 0px;
