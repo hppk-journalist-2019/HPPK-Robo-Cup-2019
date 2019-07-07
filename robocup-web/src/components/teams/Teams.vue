@@ -1,6 +1,6 @@
 <template>
   <v-container ref="container" fluid grid-list-xl style="padding: 0">
-    <v-layout ref="teamLayout" row wrap style="margin: 0">
+    <v-layout row wrap style="margin: 0">
       <v-flex v-for="(team, index) in teams" :key="team.teamName" xs3 style="padding: 1px">
         <v-card hover ripple :height="cardHeightStyle" tile :img="team.logo" @click="showTeam(team)">
           <v-card-title class="cardTitleStyle">
