@@ -20,7 +20,7 @@
         <input id="teamLogo" type="file" accept="image" @change="selectTeamLogo" ref="file" />
 
         <h1>Team's Goal (포부, 한마디)</h1>
-        <v-text-field v-model="teamsGoal" :rules="baseRules" label="Team's Goal" required></v-text-field>
+        <v-text-field v-model="teamsGoal" label="Team's Goal"></v-text-field>
       </v-form>
 
       <v-form ref="form2" v-model="valid2" class="mt-5">
@@ -82,15 +82,15 @@ export default {
     valid2: true,
     isSignIn: false,
     teamIds: [
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
+      "01",
+      "02",
+      "03",
+      "04",
+      "05",
+      "06",
+      "07",
+      "08",
+      "09",
       "10",
       "11",
       "12",
@@ -109,7 +109,7 @@ export default {
       "Player",
       "Marketing"
     ],
-    opRoles: ["Setting", "Manage", "Rule Maker"],
+    opRoles: ["Team Leader", "Setting", "Manage", "Rule Maker"],
     jnRoles: ["Team Leader", "취재", "웹 개발"],
     roles: [],
     baseRules: [
@@ -147,18 +147,18 @@ export default {
     save() {
       if (this.$refs.form.validate()) {
         const router = this.$router;
-        console.log(this.teamMembers);
+        console.log("member: " + JSON.stringify(this.teamMembers));
 
         // Upload team logo
-        const teamLogoPath = getTeamLogoPath(
-          this.teamName,
-          this.teamLogoImage.name
-        );
-        const storageRef = firebase.storage().ref();
-        const ref = storageRef.child(teamLogoPath);
-        ref.put(this.teamLogoImage).then(function(snapshot) {
-          console.log("Uploaded a blob or file");
-        });
+        const teamLogoPath = getTeamLogoPath(this.teamName, this.teamLogoImage);
+
+        if (teamLogoPath !== "icon_hp.png") {
+          const storageRef = firebase.storage().ref();
+          const ref = storageRef.child(teamLogoPath);
+          ref.put(this.teamLogoImage).then(function(snapshot) {
+            console.log("Uploaded a blob or file");
+          });
+        }
 
         const teamId = `team_${this.teamId}`;
         // Save into the Fiebase Firestore
@@ -197,8 +197,12 @@ export default {
   }
 };
 
-function getTeamLogoPath(teamName, originName) {
-  const ext = originName.split(".").splice(-1)[0];
+function getTeamLogoPath(teamName, originFile) {
+  if (originFile === undefined || originFile === null) {
+    return "icon_hp.png";
+  }
+
+  const ext = originFile.name.split(".").splice(-1)[0];
   return `teams/logo/${teamName}.${ext}`;
 }
 </script>
