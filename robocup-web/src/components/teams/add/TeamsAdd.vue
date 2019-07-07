@@ -64,8 +64,8 @@
           </v-layout>
         </v-list-tile-content>
 
-        <v-btn fab dark small color="cyan" @click="deleteMember(member, index)">
-          <v-icon dark>delete</v-icon>
+        <v-btn fab outline dark small color="cyan" @click="deleteMember(member, index)">
+          <v-icon dark>remove</v-icon>
         </v-btn>
       </v-list-tile>
     </template>
@@ -161,6 +161,7 @@ export default {
         }
 
         const teamId = `team_${this.teamId}`;
+        const type = getTeamType(this.teamId);
         // Save into the Fiebase Firestore
         firebase
           .firestore()
@@ -170,7 +171,8 @@ export default {
             id: teamId,
             teamName: this.teamName,
             teamLogoPath: teamLogoPath,
-            members: this.teamMembers
+            members: this.teamMembers,
+            type: type
           })
           .then(function() {
             router.push("/teams");
@@ -196,6 +198,17 @@ export default {
     }
   }
 };
+
+function getTeamType(teamId) {
+  switch (teamId) {
+    case "OP":
+      return "OP";
+    case "JN":
+      return "JN";
+    default:
+      return "DEV";
+  }
+}
 
 function getTeamLogoPath(teamName, originFile) {
   if (originFile === undefined || originFile === null) {
