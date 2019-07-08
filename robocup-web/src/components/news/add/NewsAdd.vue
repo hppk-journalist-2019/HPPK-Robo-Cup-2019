@@ -105,19 +105,12 @@
           <button class="menubar__button" @click="commands.redo">
             <v-icon color="green">redo</v-icon>
           </button>
-          <button class="menubar__button" @click="tmpMethod">
-            <v-icon color="black">redo</v-icon>
-          </button>
         </div>
       </editor-menu-bar>
     </div>
     <div class="container" style="overflow:scroll;height:600px">
       <div class="content-body" style="height:600px;border:1px solid">
-        <editor-content
-          style="height:500px"
-          class="editor__content"
-          :editor="editor"
-        />
+        <editor-content style="height:500px" class="editor__content" :editor="editor" />
       </div>
     </div>
     <!-- Simple Editor -->
@@ -221,11 +214,6 @@ export default {
     this.editor.destroy();
   },
   methods: {
-    tmpMethod() {
-      this.editor.content = `<h1>dsfsaf</h1>`;
-      this.editor.setContent();
-
-    },
     openModal(command) {
       //open image uploading pop-up
       this.$refs.ytmodal.showModal(command);
@@ -236,8 +224,8 @@ export default {
         data.command(data.data);
       }
     },
-    save() {
-      if(this.isUploading){
+    async save() {
+      if (this.isUploading) {
         return;
       }
       this.isUploading = true;
@@ -250,12 +238,33 @@ export default {
       const id = new Date().getTime();
       const router = this.$router;
       var articleHTML = this.editor.getHTML();
-      console.log(articleHTML);
+
+      //change base64 image data to Firebase Storage's URL
+      var imgSrc = articleHTML.split('"');
+      var imageIndex = 1;
+      console.log("Start");
+      articleHTML = "";
+      for (var i = 0; i < imgSrc.length; i++) {
+        if (imgSrc[i].endsWith("<img src=")) {
+          var tmpImgFile = createImageFile(imgSrc[i + 1]);          
+          const tmpImageFilePath = "images/"+ id + "_" + imageIndex + "." + imgSrc[i + 1].split(";")[0].split("/")[1];
+          
+          // Upload on the Firebase Storage using synchronous mode
+          const storageRef = firebase.storage().ref();
+          const ref = storageRef.child(tmpImageFilePath);
+          await ref.put(tmpImgFile); //'await' keyword change to synchronous mode
+          var fullPath = await ref.getDownloadURL();
+          imgSrc[i + 1] = '"' + fullPath + '"';         
+          imageIndex++;
+        }
+        articleHTML = articleHTML + imgSrc[i];
+      }      
+
       var title = getTitle(articleHTML);
       var contents = getCotents(articleHTML);
 
-      //Upload thumbnail file      
-      const fileName = id + "_thumb.jpg";      
+      //Upload thumbnail file
+      const fileName = id + "_thumb.jpg";
       const imageFilePath = `images/${fileName}`;
 
       // Upload on the Firebase Storage
@@ -276,8 +285,7 @@ export default {
           writerId: userInfo.email,
           writerName: userInfo.displayName,
           thumbnailUrl: imageFilePath,
-          writerPhotoUrl:userInfo.photoUrl,
-
+          writerPhotoUrl: userInfo.photoUrl
         })
         .then(function() {
           router.push("/news");
@@ -288,8 +296,8 @@ export default {
         });
 
       // Save article contents
-      
-        db.collection("articles-contents")
+
+      db.collection("articles-contents")
         .doc(id.toString())
         .set({
           id: id,
@@ -334,18 +342,26 @@ export default {
     }
   }
 };
-function uploadImage(image, id) {
-  const fileName = generateImageFileName(id + "_thumb");
-  console.log(fileName);
-  const imageFilePath = `images/${fileName}`;
+function createImageFile(imageSrc, id, index) {
+  var _URL = window.URL || window.webkitURL;
+  var img = document.createElement("img");
 
-  // Upload on the Firebase Storage
-  const storageRef = firebase.storage().ref();
-  const ref = storageRef.child(imageFilePath);
-  ref.put(image).then(function(snapshot) {
-    console.log("Uploaded a blob or file");
+  var block = imageSrc.split(";");
+  var contentType = block[0].split(":")[1];
+  var realData = block[1].split(",")[1];
+  var bstr = atob(realData);
+  var n = bstr.length;
+  var u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  
+  var imageFile = new File([u8arr], "younFile", {
+    type: contentType,
+    lastModified: Date.now()
   });
-  return imageFilePath;
+
+  return imageFile;
 }
 function getTitle(articleHTML) {
   return articleHTML.split("</h1>")[0].slice(4);
