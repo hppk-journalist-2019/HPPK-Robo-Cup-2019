@@ -22,7 +22,7 @@
         <input id="teamLogo" type="file" accept="image" @change="selectTeamLogo" ref="file" />
 
         <h1>Team's Goal (포부, 한마디)</h1>
-        <v-text-field v-model="teamsGoal" label="Team's Goal"></v-text-field>
+        <v-text-field v-model="teamsGoal" :rules="baseRules" label="Team's Goal" required></v-text-field>
       </v-form>
 
       <v-form ref="form2" v-model="valid2" class="mt-5">
