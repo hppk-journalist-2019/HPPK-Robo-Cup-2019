@@ -107,12 +107,12 @@ export default {
       "Player",
       "Marketing"
     ],
-    opRoles: ["Team Leader", "Setting", "Manage", "Rule Maker"],
-    jnRoles: ["Team Leader", "취재", "웹 개발"],
+    opRoles: ["Team Leader", "Referee", "Operator", "Setter"],
+    jnRoles: ["Team Leader", "Journalist", "Platform Developer"],
     roles: [],
     baseRules: [
       v => !!v || "required",
-      v => (v && v.length <= 30) || "Team name must be less than 30 characters"
+      (v && v.length <= 50) || "Text must be less than 50 characters"
     ],
     teamId: null,
     teamName: null,
