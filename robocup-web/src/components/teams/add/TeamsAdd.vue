@@ -171,6 +171,7 @@ export default {
             id: teamId,
             teamName: this.teamName,
             teamLogoPath: teamLogoPath,
+            teamsGoal: this.teamsGoal,
             members: this.teamMembers,
             type: type
           })
