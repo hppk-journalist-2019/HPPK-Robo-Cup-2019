@@ -113,13 +113,12 @@ export default {
         "Player",
         "Marketing"
       ],
-      opRoles: ["Team Leader", "Setting", "Manage", "Rule Maker"],
-      jnRoles: ["Team Leader", "취재", "웹 개발"],
+      opRoles: ["Team Leader", "Referee", "Operator", "Setter"],
+      jnRoles: ["Team Leader", "Journalist", "Platform Developer"],
       roles: [],
       baseRules: [
         v => !!v || "required",
-        v =>
-          (v && v.length <= 30) || "Team name must be less than 30 characters"
+        v => (v && v.length <= 50) || "Text must be less than 50 characters"
       ],
       teamId: null,
       teamName: null,
@@ -143,11 +142,24 @@ export default {
       localStorage.getItem("firebaseui::rememberedAccounts") != null;
 
     let self = this;
+    const opRoles = this.opRoles;
+    const jnRoles = this.jnRoles;
+    const devRoles = this.devRoles;
     this.ref
       .get()
-      .then(function(doc) {
+      .then(doc => {
         if (doc.exists) {
           const team = doc.data();
+
+          console.log("teamId: " + team.id);
+          if (team.id == "team_OP") {
+            this.roles = opRoles;
+          } else if (team.id == "team_JN") {
+            this.roles = jnRoles;
+          } else {
+            this.roles = devRoles;
+          }
+
           console.log("team: " + team);
           self.teamId = getTeamIdText(team.id);
           self.teamName = team.teamName;
@@ -185,11 +197,14 @@ export default {
         console.log("member: " + JSON.stringify(this.teamMembers));
 
         // Upload team logo
-        const teamLogoPath = this.logoPath
+        const teamLogoPath = this.logoPath;
 
         if (this.isLogoChanged) {
           if (!teamLogoPath.includes("icon_hp.png")) {
-            const ref = firebase.storage().ref().child(teamLogoPath);
+            const ref = firebase
+              .storage()
+              .ref()
+              .child(teamLogoPath);
             ref.put(this.teamLogoImage).then(function(snapshot) {
               console.log("Uploaded a blob or file");
             });
