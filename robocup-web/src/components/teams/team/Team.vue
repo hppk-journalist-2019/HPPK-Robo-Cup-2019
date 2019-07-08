@@ -1,32 +1,103 @@
 <template>
-  <v-container fluid pa-0 style="background-color: #3A6031;">
+  <v-container fluid pa-0 >
     <v-layout fill-height>
-      <!-- <v-flex v-for="(team, index) in teams" :key="team.teamName" xs3 style="padding: 1px"> -->
+      <!-- Left side -->
       <v-flex offset-xs2 xs4>
-        <h1>{{teamName}}</h1>
-        <v-avatar size="72px" color="grey lighten-4">
-          <img :src="logo" />
-        </v-avatar>
+        <v-layout row wrap>
+          <v-flex xs2 pa-3>
+            <v-avatar size="72px" color="grey lighten-4">
+              <img :src="logo" />
+            </v-avatar>
+          </v-flex>
+          <v-flex xs10 pa-4>
+            <h1 class="display-2">{{teamName}}</h1>
+          </v-flex>
 
-        <p>Leader</p>
-        <h2>{{ teamLeader }}</h2>
+          <v-flex xs12 mt3>
+            <h1>{{teamsGoal}}</h1>
+          </v-flex>
 
-        <p>Architect</p>
-        <h2>{{ architect }}</h2>
+          <v-flex xs6 mt-3>
+            <v-card style="margin: 4px">
+              <v-card-title>
+                <div>
+                  Team Leader
+                  <h2>{{ teamLeader }}</h2>
+                </div>
+              </v-card-title>
+            </v-card>
+          </v-flex>
+          <v-flex xs6 mt-3>
+            <v-card style="margin: 4px">
+              <v-card-title>
+                <div>
+                  Architect
+                  <h2>{{ architect }}</h2>
+                </div>
+              </v-card-title>
+            </v-card>
+          </v-flex>
 
-        <p>Player</p>
-        <h2>{{ players }}</h2>
+          <v-flex xs12 ma-3>
+            <h1>Members</h1>
+          </v-flex>
 
-        <p>Sw Engineer</p>
-        <h2>{{ swEngineers }}</h2>
+          <!-- Player -->
+          <v-flex xs6>
+            <v-card style="margin: 4px">
+              <v-card-title>
+                <v-list-tile-avatar size="36">
+                  <img :src="require('@/assets/icon_role_player.png')" alt="avatar" />
+                </v-list-tile-avatar>
+                <h3>Player</h3>
+                <h2>{{ players }}</h2>
+              </v-card-title>
+            </v-card>
+          </v-flex>
 
-        <p>Mechanical Engineer</p>
-        <h2>{{ mechanicalEngineers }}</h2>
+          <!-- SW Engineer -->
+          <v-flex xs6>
+            <v-card style="margin: 4px">
+              <v-card-title>
+                <v-list-tile-avatar size="36">
+                  <img :src="require('@/assets/icon_role_software_eng.png')" alt="avatar" />
+                </v-list-tile-avatar>
+                <h3>SW Engineer</h3>
+                <h2>{{ swEngineers }}</h2>
+              </v-card-title>
+            </v-card>
+          </v-flex>
 
-        <p>Marketer</p>
-        <h2>{{ marketers }}</h2>
+          <!-- Mechanical Engineer -->
+          <v-flex xs6 mt-3>
+            <v-card style="margin: 4px">
+              <v-card-title>
+                <v-list-tile-avatar size="36">
+                  <img :src="require('@/assets/icon_role_mechanical_eng.png')" alt="avatar" />
+                </v-list-tile-avatar>
+                <h3>Mechanical Engineer</h3>
+                <h2>{{ mechanicalEngineers }}</h2>
+              </v-card-title>
+            </v-card>
+          </v-flex>
+
+          <!-- Marketer -->
+          <v-flex xs6 mt-3>
+            <v-card style="margin: 4px">
+              <v-card-title>
+                <v-list-tile-avatar size="36">
+                  <img :src="require('@/assets/icon_role_marketer.png')" alt="avatar" />
+                </v-list-tile-avatar>
+                <h3>Marketer</h3>
+                <h2>{{ marketers }}</h2>
+              </v-card-title>
+            </v-card>
+          </v-flex>
+        </v-layout>
       </v-flex>
-      <v-flex xs6 style="position:relative; color:white" pa-5>
+
+      <!-- Right side -->
+      <v-flex offset-xs1 xs5 style="position:relative; color:white;background-color: #3A6031;" pa-5>
         <v-flex
           style="border:solid white 2px; height:50%; border-bottom-width:1px; padding:0; position:relative"
         >
@@ -38,7 +109,7 @@
               class="text-xs-center"
               v-for="member in players"
               :key="member.name"
-              style="position:relative; top:24px"
+              style="position:relative; top:4px"
             >
               <v-layout column>
                 <v-flex>
@@ -52,7 +123,7 @@
           </v-layout>
 
           <!-- 2. SW Engineers -->
-          <v-layout justify-space-around style="position:absolute; bottom:72px; width:100%">
+          <v-layout justify-space-around style="position:absolute; bottom:56px; width:100%">
             <v-flex class="text-xs-center" v-for="member in swEngineers" :key="member.name">
               <v-layout column>
                 <v-flex>
@@ -81,7 +152,7 @@
               class="text-xs-center"
               v-for="member in mechanicalEngineers"
               :key="member.name"
-              style="position:relative; top:50px;"
+              style="position:relative; top:56px;"
             >
               <v-layout column>
                 <v-flex>
@@ -100,7 +171,7 @@
               class="text-xs-center"
               v-for="member in marketers"
               :key="member.name"
-              style="position:relative; top:122px"
+              style="position:relative; top:72px"
             >
               <v-layout column>
                 <v-flex>
@@ -134,6 +205,7 @@ export default {
       isSignIn: false,
       teamName: null,
       logo: null,
+      teamsGoal: null,
       teamLeader: null,
       architect: null,
       mechanicalEngineers: null,
@@ -158,10 +230,10 @@ export default {
       .then(function(doc) {
         if (doc.exists) {
           const team = doc.data();
-          console.log("Document data:", team);
 
           self.teamName = team.teamName;
           self.logo = getTeamLogo(team);
+          self.teamsGoal = team.teamsGoal
           self.teamLeader = team.members
             .filter(m => m.roles.includes("Team Leader"))
             .map(m => m.name);
@@ -180,20 +252,6 @@ export default {
           self.marketers = team.members
             .filter(m => m.roles.includes("Marketing"))
             .map(m => m.name);
-
-          // self.writer = team.writerName;
-          // self.contents = team.contents;
-
-          // team.attachments
-          //   .filter(a => a.path.length > 0 && a.type == "img")
-          //   .map(a => {
-          //     return {
-          //       src: `${BASE_FIREBASE_STORAGE_URL}${a.path.replace("/", "%2F")}?alt=media`
-          //     };
-          //   })
-          //   .forEach(item => {
-          //     self.items.push(item);
-          //   });
         } else {
           console.error("No such document!");
         }
@@ -215,3 +273,12 @@ function getTeamLogo(team) {
   }
 }
 </script>
+
+<style>
+.cardTitleStyle {
+  background-color: #fffffff4;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+</style>
