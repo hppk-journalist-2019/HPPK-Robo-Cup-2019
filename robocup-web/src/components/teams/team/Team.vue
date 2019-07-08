@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid pa-0 >
+  <v-container fluid pa-0>
     <v-layout fill-height>
       <!-- Left side -->
       <v-flex offset-xs2 xs4>
@@ -191,6 +191,9 @@
           ></v-flex>
         </v-flex>
       </v-flex>
+      <v-btn id="btnEditTeam" v-show="isSignIn" fab dark large color="cyan" @click="editTeam()">
+        <v-icon dark>edit</v-icon>
+      </v-btn>
     </v-layout>
   </v-container>
 </template>
@@ -224,7 +227,6 @@ export default {
       localStorage.getItem("firebaseui::rememberedAccounts") != null;
 
     let self = this;
-
     this.ref
       .get()
       .then(function(doc) {
@@ -233,7 +235,7 @@ export default {
 
           self.teamName = team.teamName;
           self.logo = getTeamLogo(team);
-          self.teamsGoal = team.teamsGoal
+          self.teamsGoal = team.teamsGoal;
           self.teamLeader = team.members
             .filter(m => m.roles.includes("Team Leader"))
             .map(m => m.name);
@@ -259,6 +261,11 @@ export default {
       .catch(function(error) {
         console.error("Error getting document:", error);
       });
+  },
+  methods: {
+    editTeam() {
+      this.$router.push({ name: "edit team", params: { teamId: this.$route.params.teamId } });
+    }
   }
 };
 
@@ -280,5 +287,12 @@ function getTeamLogo(team) {
   position: absolute;
   bottom: 0;
   width: 100%;
+}
+
+#btnEditTeam {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  margin: 56px;
 }
 </style>
