@@ -1,44 +1,45 @@
 <template>
-  <div>
-    <v-list>
-      <template v-for="(article, index) in articles">
-        <v-flex :key="article.title" sm6 offset-sm3 mt-3>
-          <v-card hover="true">
-            <v-img
-              height="196px"
-              :src="article.thumbnailUrl"
-              aspect-ratio="2.75"
+  <v-container fluid pa-0 style="background:white">
+    <v-layout row fill-height>
+      <v-flex>
+        <v-list>
+          <v-flex v-for="(article, index) in articles" :key="article.title" sm6 offset-sm3 mt-3>
+            <v-card
+              hover="true"
+              :img="article.thumbnailUrl"
+              height="351px"
+              style="position: relative"
               @click="showArticle(article)"
-            ></v-img>
-            <v-card-title @click="showArticle(article)">
-              <div>
-                <span class="grey--text">{{ article.createdAt }}</span>
-                <br />
-                <h1>{{article.title}}</h1>
-              </div>
-            </v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-list-tile-avatar>
-                <img :src="article.writerPhotoUrl" />
-              </v-list-tile-avatar>
-              {{ article.writer }}
-              <v-btn
-                v-show="isSignIn"
-                flat
-                color="cyan"
-                @click="deleteArticle(article, index)"
-              >delete</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </template>
-    </v-list>
-
-    <v-btn id="btnAddNews" v-show="isSignIn" fab dark large color="cyan" href="/news/add">
-      <v-icon dark>add</v-icon>
-    </v-btn>
-  </div>
+            >
+              <v-card-title class="newsCardTitleStyle" @click="showArticle(article)">
+                <div>
+                  <span class="grey--text">{{ article.createdAt }}</span>
+                  <br />
+                  <h1>{{article.title}}</h1>
+                </div>
+              </v-card-title>
+              <v-card-actions class="newsCardActionStyle">
+                <v-spacer></v-spacer>
+                <v-list-tile-avatar>
+                  <img :src="article.writerPhotoUrl" />
+                </v-list-tile-avatar>
+                {{ article.writer }}
+                <v-btn
+                  v-show="isSignIn"
+                  flat
+                  color="cyan"
+                  @click="deleteArticle(article, index)"
+                >delete</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-list>
+      </v-flex>
+      <v-btn id="btnAddNews" v-show="isSignIn" fab dark large color="cyan" href="/news/add">
+        <v-icon dark>add</v-icon>
+      </v-btn>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -151,5 +152,23 @@ function getThumbnailUrl(article) {
   bottom: 0px;
   right: 0px;
   margin: 56px;
+}
+
+.newsCardTitleStyle {
+  padding-top: 8px;
+  padding-bottom: 0;
+  background-color: #ffffffdd;
+  position: absolute;
+  bottom: 48px;
+  width: 100%;
+}
+
+.newsCardActionStyle {
+  padding-top: 0;
+  padding-bottom: 8px;
+  background-color: #ffffffdd;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 </style>
