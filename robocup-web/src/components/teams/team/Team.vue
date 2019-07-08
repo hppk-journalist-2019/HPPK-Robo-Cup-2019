@@ -13,8 +13,8 @@
             <h1 class="display-2">{{teamName}}</h1>
           </v-flex>
 
-          <v-flex xs12 mt3>
-            <h1>{{teamsGoal}}</h1>
+          <v-flex text-xs-center xs12 ma-3>
+            <span class="title"><i>"{{teamsGoal}}"</i></span>
           </v-flex>
 
           <v-flex xs6 mt-3>

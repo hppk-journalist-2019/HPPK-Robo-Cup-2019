@@ -124,6 +124,8 @@ export default {
       teamId: null,
       teamName: null,
       logo: null,
+      logoPath: null,
+      isLogoChanged: false,
       teamsGoal: null,
       userName: null,
       userRoles: null,
@@ -150,26 +152,9 @@ export default {
           self.teamId = getTeamIdText(team.id);
           self.teamName = team.teamName;
           self.logo = getTeamLogo(team);
+          self.logoPath = team.teamLogoPath;
           self.teamsGoal = team.teamsGoal;
           self.teamMembers = team.members;
-          // self.teamLeader = team.members
-          //   .filter(m => m.roles.includes("Team Leader"))
-          //   .map(m => m.name);
-          // self.architect = team.members
-          //   .filter(m => m.roles.includes("Architect"))
-          //   .map(m => m.name);
-          // self.mechanicalEngineers = team.members
-          //   .filter(m => m.roles.includes("Mechanical Engineer"))
-          //   .map(m => m.name);
-          // self.swEngineers = team.members
-          //   .filter(m => m.roles.includes("SW Engineer"))
-          //   .map(m => m.name);
-          // self.players = team.members
-          //   .filter(m => m.roles.includes("Player"))
-          //   .map(m => m.name);
-          // self.marketers = team.members
-          //   .filter(m => m.roles.includes("Marketing"))
-          //   .map(m => m.name);
         } else {
           console.error("No such document!");
         }
@@ -200,14 +185,15 @@ export default {
         console.log("member: " + JSON.stringify(this.teamMembers));
 
         // Upload team logo
-        const teamLogoPath = getTeamLogoPath(this.teamName, this.teamLogoImage);
+        const teamLogoPath = this.logoPath
 
-        if (teamLogoPath !== "icon_hp.png") {
-          const storageRef = firebase.storage().ref();
-          const ref = storageRef.child(teamLogoPath);
-          ref.put(this.teamLogoImage).then(function(snapshot) {
-            console.log("Uploaded a blob or file");
-          });
+        if (this.isLogoChanged) {
+          if (!teamLogoPath.includes("icon_hp.png")) {
+            const ref = firebase.storage().ref().child(teamLogoPath);
+            ref.put(this.teamLogoImage).then(function(snapshot) {
+              console.log("Uploaded a blob or file");
+            });
+          }
         }
 
         const teamId = `team_${this.teamId}`;
@@ -226,7 +212,7 @@ export default {
             type: type
           })
           .then(function() {
-            router.push("/teams");
+            router.push({ name: "team", params: { teamId: teamId } });
           })
           .catch(function(error) {
             console.error("Error writing document: ", error);
@@ -245,7 +231,9 @@ export default {
       }
     },
     selectTeamLogo(e) {
+      this.isLogoChanged = true;
       this.teamLogoImage = e.target.files[0];
+      this.logoPath = `teams/logo/${e.target.files[0].name}`;
     }
   }
 };
