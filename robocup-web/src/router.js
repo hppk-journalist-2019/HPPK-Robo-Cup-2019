@@ -4,6 +4,7 @@ import Home from './components/home/Home.vue'
 import News from './components/news/News.vue'
 import Article from './components/news/article/Article.vue'
 import NewsAdd from './components/news/add/NewsAdd.vue'
+import NewsEdit from './components/news/edit/NewsEdit.vue'
 import Teams from './components/teams/Teams.vue'
 import TeamsAdd from './components/teams/add/TeamsAdd.vue'
 import TeamEdit from './components/teams/edit/TeamEdit.vue'
@@ -44,6 +45,12 @@ export default new Router({
       path: '/news/add',
       name: 'add news',
       component: NewsAdd,
+      beforeEnter: onlySignInUser
+    },
+    {
+      path: '/news/:newsId/edit',
+      name: 'edit news',
+      component: NewsEdit,
       beforeEnter: onlySignInUser
     },
     {

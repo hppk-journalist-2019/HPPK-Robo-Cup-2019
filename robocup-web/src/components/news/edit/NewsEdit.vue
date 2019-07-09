@@ -104,16 +104,19 @@
           &nbsp;
           <button class="menubar__button" @click="commands.redo">
             <v-icon color="green">redo</v-icon>
-          </button>
-          <button class="menubar__button" @click="tmpMethod">
-            <v-icon color="green">redo</v-icon>
-          </button>
+          </button>          
         </div>
       </editor-menu-bar>
     </div>
     <div class="container" style="overflow:scroll;height:600px">
       <div class="content-body" style="height:600px;border:1px solid">
-        <editor-content id="article" style="height:500px" class="editor__content" :editor="editor" />
+        <editor-content
+          id="editorContent"
+          style="height:500px"
+          class="editor__content"
+          :editor="editor"
+          ref="editor_low"
+        />
       </div>
     </div>
     <!-- Simple Editor -->
@@ -142,8 +145,8 @@ import { Editor, EditorContent, EditorMenuBar } from "tiptap";
 
 //Title & Contents
 import { Placeholder } from "tiptap-extensions";
-import Contents from "./Contents";
-import Title from "./Title";
+import Contents from "./Contents-edit";
+import Title from "./Title-edit";
 //Button
 import {
   Image,
@@ -162,8 +165,10 @@ import {
   Blockquote,
   Link
 } from "tiptap-extensions";
-import Modal from "./ImageUploadModal";
-
+import Modal from "./ImageUploadModal-edit";
+const BASE_FIREBASE_STORAGE_URL =
+  "https://firebasestorage.googleapis.com/v0/b/hppk-robocup-2019.appspot.com/o/";
+var thumbnailFilePath = "";
 export default {
   components: {
     EditorContent,
@@ -174,7 +179,11 @@ export default {
     return {
       title: "Test Title", // todo: Temp value, should be removed
       contents: "Test Article", // todo: Temp value, should be removed
-      imageFilePath: "",
+      newsID: this.$route.params.newsId.toString(), //this.$route.params.newsId.toString(),
+      ref: firebase
+        .firestore()
+        .collection("articles")
+        .doc(this.$route.params.newsId.toString()),
       thumbnailFile: null,
       isUploading: false,
       editor: new Editor({
@@ -213,13 +222,54 @@ export default {
       })
     };
   },
+  beforeCreate() {},
+  mounted() {
+    var totalDoc;
+
+    var newsID = this.newsID;
+    var editor = this.editor;
+
+    this.ref
+      .get()
+      .then(function(doc) {
+        if (doc.exists) {
+          const article = doc.data();
+          totalDoc = "<h1>" + article.title + "</h1>";
+          if(article.thumbnailUrl != null && article.thumbnailUrl != ""){
+            var thumbnailView = document.getElementById("thumbnail");
+            thumbnailView.src = BASE_FIREBASE_STORAGE_URL + article.thumbnailUrl.replace("/", "%2F") + "?alt=media";          
+            thumbnailFilePath = article.thumbnailUrl;
+          }
+          firebase
+            .firestore()
+            .collection("articles-contents")
+            .doc(newsID)
+            .get()
+            .then(function(doc) {
+              if (doc.exists) {
+                const articleContents = doc.data();
+                totalDoc = totalDoc + articleContents.contents;
+                totalDoc = `<div contenteditable="true" tabindex="0" class="ProseMirror">${totalDoc}</div>`;
+                editor.setContent(totalDoc);
+              } else {
+                console.error("No such Contents!");
+              }
+            })
+            .catch(function(error) {
+              console.error("Error getting Contents:", error);
+            });
+        } else {
+          console.error("No such Title!");
+        }
+      })
+      .catch(function(error) {
+        console.error("Error getting Title:", error);
+      });
+  },
   beforeDestroy() {
     this.editor.destroy();
   },
-  methods: {
-    tmpMethod(){
-      console.log(this.editor.state.doc.content);
-    },
+  methods: {    
     openModal(command) {
       //open image uploading pop-up
       this.$refs.ytmodal.showModal(command);
@@ -241,7 +291,7 @@ export default {
         localStorage.getItem("firebaseui::rememberedAccounts")
       )[0];
 
-      const id = new Date().getTime();
+      const id = this.newsID;
       const router = this.$router;
       var articleHTML = this.editor.getHTML();
 
@@ -251,43 +301,69 @@ export default {
       console.log("Start");
       articleHTML = "";
       for (var i = 0; i < imgSrc.length; i++) {
-        if (imgSrc[i].endsWith("<img src=")) {
-          var tmpImgFile = createImageFile(imgSrc[i + 1]);          
-          const tmpImageFilePath = "images/"+ id + "_" + imageIndex + "." + imgSrc[i + 1].split(";")[0].split("/")[1];
-          
-          // Upload on the Firebase Storage using synchronous mode
+        if (
+          imgSrc[i].endsWith("<img src=") &&
+          imgSrc[i + 1].startsWith("data:image/")
+        ) {
+          var tmpImgFile = createImageFile(imgSrc[i + 1]);
+          var tmpImageFilePath = "";
+          while (true) {
+            tmpImageFilePath =
+              "images/" +
+              id +
+              "_" +
+              imageIndex +
+              "." +
+              imgSrc[i + 1].split(";")[0].split("/")[1];
+            const storageRef = firebase.storage().ref();
+            const ref = storageRef.child(tmpImageFilePath);
+            var isFileExist = await ref.getDownloadURL().then(
+              function(url) {
+                return true;
+              },
+              function(error) {
+                return false;
+              }
+            );
+            if (isFileExist == false) break;
+            imageIndex++;
+          }
+          // Upload on the Firebase Storage using synchronous mode          
           const storageRef = firebase.storage().ref();
           const ref = storageRef.child(tmpImageFilePath);
           await ref.put(tmpImgFile); //'await' keyword change to synchronous mode
           var fullPath = await ref.getDownloadURL();
-          imgSrc[i + 1] = '"' + fullPath + '"';         
+          imgSrc[i + 1] = '"' + fullPath + '"';
           imageIndex++;
         }
         articleHTML = articleHTML + imgSrc[i];
-      }      
+      }
 
       var title = getTitle(articleHTML);
       var contents = getCotents(articleHTML);
 
       //Upload thumbnail file
-      const fileName = id + "_thumb.jpg";
-      const imageFilePath = `images/${fileName}`;
+      var imageFilePath = thumbnailFilePath;
+      if (this.thumbnailFile != null) {
+        const fileName = id + "_thumb.jpg";
+        imageFilePath = `images/${fileName}`;
 
-      // Upload on the Firebase Storage
-      const storageRef = firebase.storage().ref();
-      const ref = storageRef.child(imageFilePath);
-      ref.put(this.thumbnailFile).then(function(snapshot) {
-        console.log("Uploaded a blob or file");
-      });
+        // Upload on the Firebase Storage
+        const storageRef = firebase.storage().ref();
+        const ref = storageRef.child(imageFilePath);
+        ref.put(this.thumbnailFile).then(function(snapshot) {
+          console.log("Uploaded a blob or file");
+        });
+      }
 
       // Save article information into the Fiebase Firestore
       db.collection("articles")
         .doc(id.toString())
         .set({
-          id: id,
+          id: parseInt(id),
           title: title,
-          createdAt: id,
-          lastEditedAt: id,
+          createdAt: parseInt(id),
+          lastEditedAt: new Date().getTime(),
           writerId: userInfo.email,
           writerName: userInfo.displayName,
           thumbnailUrl: imageFilePath,
@@ -361,7 +437,7 @@ function createImageFile(imageSrc, id, index) {
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  
+
   var imageFile = new File([u8arr], "younFile", {
     type: contentType,
     lastModified: Date.now()

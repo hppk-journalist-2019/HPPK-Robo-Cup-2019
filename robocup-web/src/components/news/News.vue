@@ -116,7 +116,7 @@ export default {
       this.$router.push({ name: "article", params: { newsId: article.id } });
     },
     editArticle(article, index) {
-      this.$router.push({ name: "edit article", params: { newsId: article.id } });
+      this.$router.push({ name: "edit news", params: { newsId: article.id } });
     },
     deleteArticle(article, index) {
       this.ref
