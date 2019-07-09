@@ -1,36 +1,56 @@
 <template>
   <v-app>
     <v-toolbar>
-      <v-toolbar-title class="headline text-uppercase">
+      <v-toolbar-title class="headline text-uppercase hidden-sm-and-down">
         <v-btn flat href="/" large>
           <span>HPPK 2019 Robocup</span>
         </v-btn>
       </v-toolbar-title>
 
-      <v-btn flat href="/news">
-        <span class="mr-2">News</span>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn flat href="/news">
+          <span class="mr-2">News</span>
+        </v-btn>
+
+        <v-btn flat href="/teams">
+          <span class="mr-2">Teams</span>
+        </v-btn>
+
+        <v-btn flat href="/matches">
+          <span class="mr-2">Matches</span>
+        </v-btn>
+
+        <v-btn flat href="/rule">
+          <span class="mr-2">Rule</span>
+        </v-btn>
+      </v-toolbar-items>
+
+      <v-btn icon class="hidden-md-and-up" href="/" hover ripple>
+        <v-icon>home</v-icon>
       </v-btn>
 
-      <v-btn flat href="/teams">
-        <span class="mr-2">Teams</span>
-      </v-btn>
-
-      <v-btn flat href="/matches">
-        <span class="mr-2">Matches</span>
-      </v-btn>
-
-      <v-btn flat href="/rule">
-        <span class="mr-2">Rule</span>
-      </v-btn>
+      <v-menu class="hidden-md-and-up">
+        <v-toolbar-side-icon slot="activator"></v-toolbar-side-icon>
+        <v-list>
+          <v-list-tile href="/" hover ripple>Home</v-list-tile>
+          <v-list-tile href="/news" hover ripple>News</v-list-tile>
+          <v-list-tile href="/teams" hover ripple>Teams</v-list-tile>
+          <v-list-tile href="/matches" hover ripple>Matches</v-list-tile>
+          <v-list-tile href="/rule" hover ripple>Rule</v-list-tile>
+        </v-list>
+      </v-menu>
 
       <v-spacer></v-spacer>
       <v-avatar v-show="isSignIn" :size="32" color="grey lighten-4" style="margin-right: 16px">
         <img v-bind:src="userIcon" alt="avatar" />
       </v-avatar>
-      <span v-show="isSignIn" class="mr-2">{{ userName }}</span>
+      <span v-show="isSignIn" class="mr-2 hidden-sm-and-down">{{ userName }}</span>
 
-      <v-btn v-show="isSignIn" flat>
+      <v-btn v-show="isSignIn" flat class="hidden-sm-and-down">
         <span class="mr-2" @click="signOut()">Sign Out</span>
+      </v-btn>
+      <v-btn v-show="isSignIn" flat class="hidden-md-and-up" @click="signOut()">
+        <v-icon>exit_to_app</v-icon>
       </v-btn>
     </v-toolbar>
 
