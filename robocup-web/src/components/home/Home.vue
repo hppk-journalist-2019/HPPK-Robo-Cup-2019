@@ -11,9 +11,9 @@
       style="background-image: url('bg_home.jpg');"
     >
       <div class="home-wrapper light-cotton">
-        <h1 class="display-3 font-weight-bold">Welcome to</h1>
-        <h1 class="display-4 font-weight-bold mt-5">HPPK 2019 Robocup</h1>
-        <h1 class="title" align="center" style="margin-top:150px">2019. 7. 19 (Fri)</h1>
+        <h1 class="display-2 font-weight-bold" style="margin-top:150px">Welcome to</h1>
+        <h1 class="display-3 font-weight-bold mt-5">HPPK 2019 Robocup</h1>
+        <h1 class="title" align="center" style="margin-top:76px">2019. 7. 19 (Fri)</h1>
         <h2 class="title mt-3" align="center">12:00 ~ 16:00</h2>
         <h1 class="title mt-3" align="center">Hotel IBIS AMBASSADOR SUWON (이비스 앰배서더 수원)</h1>
       </div>
@@ -29,7 +29,7 @@
     <!-- 2. Lunch 행사 일정 및 장소 -->
     <v-flex class="home-bg" style="background-image: url('hotel.jpg');">
       <div class="home-wrapper light-cotton">
-        <h1 class="display-4 font-weight-bold" align="center">Lunch</h1>
+        <h1 class="display-3 font-weight-bold" align="center" style="margin-top:150px">Lunch</h1>
         <h1 class="display-1 ma-5" align="center">12:00 - 13:30 / 3F</h1>
         <h1
           class="title"
@@ -46,7 +46,7 @@
     <!-- 4. Robocup 행사 일정 및 장소 -->
     <v-flex class="home-bg" style="background-image: url('robocup.jpg');">
       <div class="home-wrapper dark-cotton">
-        <h1 class="display-4 font-weight-bold" align="center" style="margin-top:150px">Robocup</h1>
+        <h1 class="display-3 font-weight-bold" align="center" style="margin-top:150px">Robocup</h1>
         <h1 class="display-1 ma-5" align="center">14:00 - 16:00</h1>
         <h1 class="display-1 ma-5" align="center">6F Hall Rion</h1>
         <h1
@@ -60,7 +60,7 @@
     <!-- 5. 이동 방법 -->
     <v-flex class="home-bg" style="background-image: url('transportation.jpg');">
       <div class="home-wrapper light-cotton">
-        <h1 class="display-4 font-weight-bold" align="center" style="margin-top:150px">How to go</h1>
+        <h1 class="display-3 font-weight-bold" align="center" style="margin-top:150px">How to go</h1>
         <h1 class="display-1 mt-5" align="center">Own car or Hotel Bus</h1>
         <h1 class="display-1 ma-3" align="center">11:40 / at East gate</h1>
         <h1
