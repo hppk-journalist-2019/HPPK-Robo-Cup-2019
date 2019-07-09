@@ -1,5 +1,5 @@
 <template>
-  <v-container ref="container" fluid grid-list-xl style="padding: 0">
+  <v-container ref="container" grid-list-xl style="padding: 0">
     <v-layout row wrap style="margin: 0">
       <v-flex v-for="(team, index) in teams" :key="team.teamName" xs3 style="padding: 2px">
         <v-card
