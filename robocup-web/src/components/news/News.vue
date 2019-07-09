@@ -1,13 +1,13 @@
 <template>
   <v-container fluid pa-0 style="background:white">
     <v-layout row fill-height>
-      <v-flex>
+      <v-flex xs10 offset-xs1 sm8 offset-sm2 md6 offset-md3>
         <v-list>
-          <v-flex v-for="(article, index) in articles" :key="article.title" sm6 offset-sm3 mt-3>
+          <v-flex v-for="(article, index) in articles" :key="article.title" mt-3>
             <v-card
-              hover="true"
+              hover
               :img="article.thumbnailUrl"
-              height="351px"
+              :height="cardHeight"
               style="position: relative"
               @click="showArticle(article)"
             >
@@ -29,13 +29,36 @@
                   flat
                   color="cyan"
                   @click="editArticle(article, index)"
+                  class="hidden-sm-and-down"
                 >edit</v-btn>
                 <v-btn
                   v-show="isSignIn"
                   flat
                   color="cyan"
                   @click="deleteArticle(article, index)"
+                  class="hidden-sm-and-down"
                 >delete</v-btn>
+
+                <v-btn
+                  v-show="isSignIn"
+                  icon
+                  dark
+                  color="cyan"
+                  @click="editArticle(article, index)"
+                  class="hidden-md-and-up"
+                >
+                  <v-icon>edit</v-icon>
+                </v-btn>
+                <v-btn
+                  v-show="isSignIn"
+                  icon
+                  dark
+                  color="cyan"
+                  @click="deleteArticle(article, index)"
+                  class="hidden-md-and-up"
+                >
+                  <v-icon>delete</v-icon>
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -128,6 +151,17 @@ export default {
         .catch(function(error) {
           console.error("Error removing article: ", error);
         });
+    }
+  },
+  computed: {
+    cardHeight () {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs': return '300px'
+        case 'sm': return '350px'
+        case 'md': return '350px'
+        case 'lg': return '450px'
+        case 'xl': return '600px'
+      }
     }
   }
 };
