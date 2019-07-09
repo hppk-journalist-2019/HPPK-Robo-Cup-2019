@@ -1,127 +1,115 @@
 <template>
-  <div :style="{ 'background-image': 'url(' + team.logo + ')'}">
-    <div :style="{ 'background-color': '#FFFFFFA0'}">
-      <v-container fluid pa-0>
-        <v-layout fill-height>
-          <OpTeam v-show="showOpTeam" id="opTeamContainer" :opTeam="team"></OpTeam>
-          <JnTeam v-show="showJnTeam" id="jnTeamContainer" :jnTeam="team"></JnTeam>
-          <DevTeam v-show="showDevTeam" id="devTeamContainer" :devTeam="team"></DevTeam>
+  <v-container
+    fluid
+    pa-0
+    fill-height
+    :style="{ 'background-image': 'url(' + team.logo + ')'}"
+  >
+    <v-layout fill-height :style="{ 'background-color': '#FFFFFFA0'}">
+      <OpTeam v-show="showOpTeam" id="opTeamContainer" :opTeam="team"></OpTeam>
+      <JnTeam v-show="showJnTeam" id="jnTeamContainer" :jnTeam="team"></JnTeam>
+      <DevTeam v-show="showDevTeam" id="devTeamContainer" :devTeam="team"></DevTeam>
 
-          <!-- Right side -->
+      <!-- Right side -->
+      <v-flex offset-xs1 xs5 style="position:relative; color:white;background-color: #3A6031;" pa-5>
+        <v-flex
+          style="border:solid white 2px; height:50%; border-bottom-width:1px; padding:0; position:relative"
+        >
+          <v-flex offset-xs5 xs2 style="border:solid white 2px; border-top-width:0px; height:20%;"></v-flex>
+
+          <!-- 1. Players -->
+          <v-layout justify-space-around>
+            <v-flex
+              class="text-xs-center"
+              v-for="member in team.players"
+              :key="member.name"
+              style="position:relative; top:4px"
+            >
+              <v-layout column>
+                <v-flex>
+                  <v-avatar size="56px">
+                    <img :src="require('@/assets/icon_role_player.png')" alt="avatar" />
+                  </v-avatar>
+                </v-flex>
+                {{member}}
+              </v-layout>
+            </v-flex>
+          </v-layout>
+
+          <!-- 2. SW Engineers -->
+          <v-layout justify-space-around style="position:absolute; bottom:56px; width:100%">
+            <v-flex class="text-xs-center" v-for="member in team.swEngineers" :key="member.name">
+              <v-layout column>
+                <v-flex>
+                  <v-avatar size="56px">
+                    <img :src="require('@/assets/icon_role_software_eng.png')" alt="avatar" />
+                  </v-avatar>
+                </v-flex>
+                {{member}}
+              </v-layout>
+            </v-flex>
+          </v-layout>
+
+          <!-- Center Circle -->
           <v-flex
-            offset-xs1
-            xs5
-            style="position:relative; color:white;background-color: #3A6031;"
-            pa-5
-          >
+            offset-xs6
+            style="border:solid white 2px; border-radius:50%; position:absolute; bottom:-50px; left:-50px;height:100px; width: 100px; "
+          ></v-flex>
+        </v-flex>
+
+        <v-flex
+          style="border:solid white 2px; height:50%; border-top-width:1px; padding:0; position:relative"
+        >
+          <!-- 3. Mechanical Engineers -->
+          <v-layout justify-space-around>
             <v-flex
-              style="border:solid white 2px; height:50%; border-bottom-width:1px; padding:0; position:relative"
+              class="text-xs-center"
+              v-for="member in team.mechanicalEngineers"
+              :key="member.name"
+              style="position:relative; top:56px;"
             >
-              <v-flex
-                offset-xs5
-                xs2
-                style="border:solid white 2px; border-top-width:0px; height:20%;"
-              ></v-flex>
-
-              <!-- 1. Players -->
-              <v-layout justify-space-around>
-                <v-flex
-                  class="text-xs-center"
-                  v-for="member in team.players"
-                  :key="member.name"
-                  style="position:relative; top:4px"
-                >
-                  <v-layout column>
-                    <v-flex>
-                      <v-avatar size="56px">
-                        <img :src="require('@/assets/icon_role_player.png')" alt="avatar" />
-                      </v-avatar>
-                    </v-flex>
-                    {{member}}
-                  </v-layout>
+              <v-layout column>
+                <v-flex>
+                  <v-avatar size="56px" align-self-center>
+                    <img :src="require('@/assets/icon_role_mechanical_eng.png')" alt="avatar" />
+                  </v-avatar>
                 </v-flex>
+                {{member}}
               </v-layout>
-
-              <!-- 2. SW Engineers -->
-              <v-layout justify-space-around style="position:absolute; bottom:56px; width:100%">
-                <v-flex
-                  class="text-xs-center"
-                  v-for="member in team.swEngineers"
-                  :key="member.name"
-                >
-                  <v-layout column>
-                    <v-flex>
-                      <v-avatar size="56px">
-                        <img :src="require('@/assets/icon_role_software_eng.png')" alt="avatar" />
-                      </v-avatar>
-                    </v-flex>
-                    {{member}}
-                  </v-layout>
-                </v-flex>
-              </v-layout>
-
-              <!-- Center Circle -->
-              <v-flex
-                offset-xs6
-                style="border:solid white 2px; border-radius:50%; position:absolute; bottom:-50px; left:-50px;height:100px; width: 100px; "
-              ></v-flex>
             </v-flex>
+          </v-layout>
 
+          <!-- 4. Marketers -->
+          <v-layout justify-space-around>
             <v-flex
-              style="border:solid white 2px; height:50%; border-top-width:1px; padding:0; position:relative"
+              class="text-xs-center"
+              v-for="member in team.marketers"
+              :key="member.name"
+              style="position:relative; top:72px"
             >
-              <!-- 3. Mechanical Engineers -->
-              <v-layout justify-space-around>
-                <v-flex
-                  class="text-xs-center"
-                  v-for="member in team.mechanicalEngineers"
-                  :key="member.name"
-                  style="position:relative; top:56px;"
-                >
-                  <v-layout column>
-                    <v-flex>
-                      <v-avatar size="56px" align-self-center>
-                        <img :src="require('@/assets/icon_role_mechanical_eng.png')" alt="avatar" />
-                      </v-avatar>
-                    </v-flex>
-                    {{member}}
-                  </v-layout>
+              <v-layout column>
+                <v-flex>
+                  <v-avatar size="56px">
+                    <img :src="require('@/assets/icon_role_marketer.png')" alt="avatar" />
+                  </v-avatar>
                 </v-flex>
+                {{member}}
               </v-layout>
-
-              <!-- 4. Marketers -->
-              <v-layout justify-space-around>
-                <v-flex
-                  class="text-xs-center"
-                  v-for="member in team.marketers"
-                  :key="member.name"
-                  style="position:relative; top:72px"
-                >
-                  <v-layout column>
-                    <v-flex>
-                      <v-avatar size="56px">
-                        <img :src="require('@/assets/icon_role_marketer.png')" alt="avatar" />
-                      </v-avatar>
-                    </v-flex>
-                    {{member}}
-                  </v-layout>
-                </v-flex>
-              </v-layout>
-
-              <v-flex
-                offset-xs5
-                xs2
-                style="border:solid white 2px; border-bottom-width:0px; position:absolute; bottom:0; height:20%; width: 20%; "
-              ></v-flex>
             </v-flex>
-          </v-flex>
-          <v-btn id="btnEditTeam" v-show="isSignIn" fab dark large color="cyan" @click="editTeam()">
-            <v-icon dark>edit</v-icon>
-          </v-btn>
-        </v-layout>
-      </v-container>
-    </div>
-  </div>
+          </v-layout>
+
+          <v-flex
+            offset-xs5
+            xs2
+            style="border:solid white 2px; border-bottom-width:0px; position:absolute; bottom:0; height:20%; width: 20%; "
+          ></v-flex>
+        </v-flex>
+      </v-flex>
+      <v-btn id="btnEditTeam" v-show="isSignIn" fab dark large color="cyan" @click="editTeam()">
+        <v-icon dark>edit</v-icon>
+      </v-btn>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
