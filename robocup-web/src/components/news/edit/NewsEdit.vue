@@ -4,7 +4,7 @@
     <div class="header" style="height:40px">
       <editor-menu-bar
         :editor="editor"
-        v-slot="{ commands, isActive}"
+        v-slot="{ commands, isActive, getMarkAttrs }"
         style="height:35px;border-bottom:1px solid;padding-top:5px;"
       >
         <div class="menubar">
@@ -104,12 +104,30 @@
           &nbsp;
           <button class="menubar__button" @click="commands.redo">
             <v-icon color="green">redo</v-icon>
+          </button>
+          &nbsp;          
+          <input
+            v-if="linkMenuIsActive"
+            type="text"
+            v-model="linkUrl"
+            placeholder="https://"
+            ref="linkInput"
+            @keydown.esc="hideLinkMenu"
+            @keyup.enter="setLinkUrl(commands.link, linkUrl)"
+          />
+          <button
+            v-else
+            class="menubar__button"
+            @click="showLinkMenu(getMarkAttrs('link'))"
+            :class="{ 'is-active': isActive.link() }"
+          >
+            <v-icon color="black">link</v-icon>
           </button>          
         </div>
       </editor-menu-bar>
     </div>
     <div class="container" style="overflow:scroll;height:600px">
-      <div class="content-body" style="height:600px;border:1px solid">
+      <div class="content-body" style="height:600px;">
         <editor-content
           id="editorContent"
           style="height:500px"
@@ -186,6 +204,8 @@ export default {
         .doc(this.$route.params.newsId.toString()),
       thumbnailFile: null,
       isUploading: false,
+      linkUrl: null,
+      linkMenuIsActive: false,
       editor: new Editor({
         autoFocus: true,
         extensions: [
@@ -269,7 +289,23 @@ export default {
   beforeDestroy() {
     this.editor.destroy();
   },
-  methods: {    
+  methods: {
+    showLinkMenu(attrs) {      
+      this.linkUrl = attrs.href;
+      this.linkMenuIsActive = true;
+      this.$nextTick(() => {
+        this.$refs.linkInput.focus();
+      });
+    },
+    hideLinkMenu() {
+      this.linkUrl = null;
+      this.linkMenuIsActive = false;
+    },
+    setLinkUrl(command, url) {      
+      command({ href: url });
+      this.hideLinkMenu();
+      this.editor.focus();
+    },    
     openModal(command) {
       //open image uploading pop-up
       this.$refs.ytmodal.showModal(command);

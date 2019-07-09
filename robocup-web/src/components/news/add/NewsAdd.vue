@@ -4,7 +4,7 @@
     <div class="header" style="height:40px">
       <editor-menu-bar
         :editor="editor"
-        v-slot="{ commands, isActive}"
+        v-slot="{ commands, isActive, getMarkAttrs}"
         style="height:35px;border-bottom:1px solid;padding-top:5px;"
       >
         <div class="menubar">
@@ -105,14 +105,29 @@
           <button class="menubar__button" @click="commands.redo">
             <v-icon color="green">redo</v-icon>
           </button>
-          <button class="menubar__button" @click="tmpMethod">
-            <v-icon color="green">redo</v-icon>
+          &nbsp;          
+          <input
+            v-if="linkMenuIsActive"
+            type="text"
+            v-model="linkUrl"
+            placeholder="https://"
+            ref="linkInput"
+            @keydown.esc="hideLinkMenu"
+            @keyup.enter="setLinkUrl(commands.link, linkUrl)"
+          />
+          <button
+            v-else
+            class="menubar__button"
+            @click="showLinkMenu(getMarkAttrs('link'))"
+            :class="{ 'is-active': isActive.link() }"
+          >
+            <v-icon color="black">link</v-icon>
           </button>
         </div>
       </editor-menu-bar>
     </div>
     <div class="container" style="overflow:scroll;height:600px">
-      <div class="content-body" style="height:600px;border:1px solid">
+      <div class="content-body" style="height:600px;">
         <editor-content id="article" style="height:500px" class="editor__content" :editor="editor" />
       </div>
     </div>
@@ -138,7 +153,7 @@
 
 <script>
 //Basic Editor
-import { Editor, EditorContent, EditorMenuBar } from "tiptap";
+import { Editor, EditorContent, EditorMenuBar, EditorMenuBubble } from "tiptap";
 
 //Title & Contents
 import { Placeholder } from "tiptap-extensions";
@@ -160,6 +175,8 @@ import {
   Underline,
   History,
   Blockquote,
+  TodoItem,
+  TodoList,
   Link
 } from "tiptap-extensions";
 import Modal from "./ImageUploadModal";
@@ -168,6 +185,7 @@ export default {
   components: {
     EditorContent,
     EditorMenuBar,
+    EditorMenuBubble,
     Modal
   },
   data() {
@@ -177,6 +195,9 @@ export default {
       imageFilePath: "",
       thumbnailFile: null,
       isUploading: false,
+      linkUrl: null,
+      linkMenuIsActive: false,
+      keepInBounds: true,
       editor: new Editor({
         autoFocus: true,
         extensions: [
@@ -195,6 +216,8 @@ export default {
           new Underline(),
           new History(),
           new Blockquote(),
+          new TodoItem(),
+          new TodoList(),
           new Link(),
 
           //Title & Body
@@ -216,9 +239,24 @@ export default {
   beforeDestroy() {
     this.editor.destroy();
   },
-  methods: {
-    tmpMethod(){
-      console.log(this.editor.state.doc.content);
+  methods: {    
+    showLinkMenu(attrs) {      
+      this.linkUrl = attrs.href;
+      this.linkMenuIsActive = true;
+      this.$nextTick(() => {
+        this.$refs.linkInput.focus();
+      });
+    },
+
+    hideLinkMenu() {
+      this.linkUrl = null;
+      this.linkMenuIsActive = false;
+    },
+
+    setLinkUrl(command, url) {      
+      command({ href: url });
+      this.hideLinkMenu();
+      this.editor.focus();
     },
     openModal(command) {
       //open image uploading pop-up
@@ -252,19 +290,25 @@ export default {
       articleHTML = "";
       for (var i = 0; i < imgSrc.length; i++) {
         if (imgSrc[i].endsWith("<img src=")) {
-          var tmpImgFile = createImageFile(imgSrc[i + 1]);          
-          const tmpImageFilePath = "images/"+ id + "_" + imageIndex + "." + imgSrc[i + 1].split(";")[0].split("/")[1];
-          
+          var tmpImgFile = createImageFile(imgSrc[i + 1]);
+          const tmpImageFilePath =
+            "images/" +
+            id +
+            "_" +
+            imageIndex +
+            "." +
+            imgSrc[i + 1].split(";")[0].split("/")[1];
+
           // Upload on the Firebase Storage using synchronous mode
           const storageRef = firebase.storage().ref();
           const ref = storageRef.child(tmpImageFilePath);
           await ref.put(tmpImgFile); //'await' keyword change to synchronous mode
           var fullPath = await ref.getDownloadURL();
-          imgSrc[i + 1] = '"' + fullPath + '"';         
+          imgSrc[i + 1] = '"' + fullPath + '"';
           imageIndex++;
         }
         articleHTML = articleHTML + imgSrc[i];
-      }      
+      }
 
       var title = getTitle(articleHTML);
       var contents = getCotents(articleHTML);
@@ -361,7 +405,7 @@ function createImageFile(imageSrc, id, index) {
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  
+
   var imageFile = new File([u8arr], "younFile", {
     type: contentType,
     lastModified: Date.now()
