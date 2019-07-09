@@ -11,7 +11,7 @@
               style="position: relative"
               @click="showArticle(article)"
             >
-              <v-card-title class="newsCardTitleStyle" @click="showArticle(article)">
+              <v-card-title class="newsCardTitleStyle">
                 <div>
                   <span class="grey--text">{{ article.createdAt }}</span>
                   <br />
@@ -24,6 +24,12 @@
                   <img :src="article.writerPhotoUrl" />
                 </v-list-tile-avatar>
                 {{ article.writer }}
+                <v-btn
+                  v-show="isSignIn"
+                  flat
+                  color="cyan"
+                  @click="editArticle(article, index)"
+                >edit</v-btn>
                 <v-btn
                   v-show="isSignIn"
                   flat
@@ -108,6 +114,9 @@ export default {
   methods: {
     showArticle(article) {
       this.$router.push({ name: "article", params: { newsId: article.id } });
+    },
+    editArticle(article, index) {
+      this.$router.push({ name: "edit article", params: { newsId: article.id } });
     },
     deleteArticle(article, index) {
       this.ref
