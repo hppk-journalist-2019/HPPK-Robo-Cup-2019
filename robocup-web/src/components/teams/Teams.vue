@@ -1,7 +1,7 @@
 <template>
   <v-container ref="container" fluid grid-list-xl style="padding: 0">
     <v-layout row wrap style="margin: 0">
-      <v-flex v-for="(team, index) in teams" :key="team.teamName" xs3 style="padding: 1px">
+      <v-flex v-for="(team, index) in teams" :key="team.teamName" xs3 style="padding: 2px">
         <v-card
           hover
           ripple
@@ -47,9 +47,9 @@
         </v-card>
       </v-flex>
 
-      <v-flex xs6 pa-3>
-        <h1>HPPK 2019</h1>
-        <h2>Robocup</h2>
+      <v-flex xs6 pa-4>
+        <v-img :src="require('@/assets/trophy.png')" max-height="56" contain></v-img>
+        <h3 class="text-xs-center">HPPK 2019 Robocup</h3>
       </v-flex>
 
       <v-flex xs3 style="padding: 1px">
@@ -93,7 +93,7 @@ export default {
     opTeam: {},
     jnTeam: {},
     ref: firebase.firestore().collection("teams"),
-    cardHeightStyle: "259px"
+    cardHeightStyle: "256px"
   }),
   created() {
     this.isSignIn =
@@ -105,7 +105,7 @@ export default {
 
     this.ref.where("type", "==", "DEV").onSnapshot(querySnapshot => {
       querySnapshot.forEach(doc => {
-        this.cardHeightStyle = ref.container.clientHeight / 5 + "px";
+        this.cardHeightStyle = ref.container.clientHeight / 5 - 4+ "px";
 
         const team = doc.data();
         this.teams.push({
@@ -184,7 +184,7 @@ function getTeamLogo(team) {
 }
 
 .cardTitleStyle {
-  background-color: #fffffff4;
+  background-color: #FFFFFFE4;
   position: absolute;
   bottom: 0;
   width: 100%;

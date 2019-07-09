@@ -232,13 +232,6 @@ function getTeamLogo(team) {
 </script>
 
 <style>
-.cardTitleStyle {
-  background-color: #fffffff4;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
-
 #btnEditTeam {
   position: fixed;
   bottom: 0px;
