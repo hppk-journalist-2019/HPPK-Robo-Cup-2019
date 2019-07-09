@@ -1,5 +1,5 @@
 <template>
-  <v-flex offset-xs2 xs4>
+  <v-flex xs12 offset-sm1 sm10 offset-md1 md4 offset-lg2 lg4 mb-5>
     <v-layout row wrap>
       <v-flex xs2 pa-3>
         <v-avatar size="72px" color="grey lighten-4">

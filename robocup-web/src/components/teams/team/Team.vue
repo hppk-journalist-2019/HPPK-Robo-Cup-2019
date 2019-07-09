@@ -1,17 +1,30 @@
 <template>
   <v-container
+    ref="tContainer"
     fluid
     pa-0
     fill-height
     :style="{ 'background-image': 'url(' + team.logo + ')'}"
   >
-    <v-layout fill-height :style="{ 'background-color': '#FFFFFFA0'}">
+    <v-layout row wrap fill-height :style="{ 'background-color': '#FFFFFFA0'}">
       <OpTeam v-show="showOpTeam" id="opTeamContainer" :opTeam="team"></OpTeam>
       <JnTeam v-show="showJnTeam" id="jnTeamContainer" :jnTeam="team"></JnTeam>
       <DevTeam v-show="showDevTeam" id="devTeamContainer" :devTeam="team"></DevTeam>
 
       <!-- Right side -->
-      <v-flex offset-xs1 xs5 style="position:relative; color:white;background-color: #3A6031;" pa-5>
+      <v-flex
+        xs12
+        offset-md1
+        md6
+        offset-lg1
+        lg5
+        :style="{
+        'position': 'relative',
+        'color':'white',
+        'background-color':'#3A6031',
+        'height':rightSideHeight}"
+        pa-5
+      >
         <v-flex
           style="border:solid white 2px; height:50%; border-bottom-width:1px; padding:0; position:relative"
         >
@@ -133,7 +146,6 @@ export default {
         .firestore()
         .collection("teams")
         .doc(this.$route.params.teamId),
-      heightStyle: "800px",
       showOpTeam: false,
       showJnTeam: false,
       showDevTeam: true,
@@ -226,6 +238,16 @@ export default {
         name: "edit team",
         params: { teamId: this.$route.params.teamId }
       });
+    }
+  },
+  computed: {
+    rightSideHeight() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "700px";
+        case "sm":
+          return "800px";
+      }
     }
   }
 };
