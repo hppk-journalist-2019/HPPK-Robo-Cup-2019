@@ -1,94 +1,9 @@
 <template>
   <v-container fluid pa-0>
     <v-layout fill-height>
-      <!-- Left side -->
-      <v-flex offset-xs2 xs4>
-        <v-layout row wrap>
-          <v-flex xs2 pa-3>
-            <v-avatar size="72px" color="grey lighten-4">
-              <img :src="logo" />
-            </v-avatar>
-          </v-flex>
-          <v-flex xs10 pa-4>
-            <h1 class="display-2">{{teamName}}</h1>
-          </v-flex>
-
-          <v-flex text-xs-center xs12 ma-3>
-            <span class="title">
-              <i>"{{teamsGoal}}"</i>
-            </span>
-          </v-flex>
-
-          <v-flex xs6 mt-3>
-            <v-card style="margin: 4px">
-              <v-card-title><h3>Team Leader</h3></v-card-title>
-              <v-card-text><h2>{{ teamLeader.toString() }}</h2></v-card-text>
-            </v-card>
-          </v-flex>
-          <v-flex xs6 mt-3>
-            <v-card style="margin: 4px">
-              <v-card-title><h3>Architect</h3></v-card-title>
-              <v-card-text><h2>{{ architect.toString() }}</h2></v-card-text>
-            </v-card>
-          </v-flex>
-
-          <v-flex xs12 ma-3>
-            <h1>Members</h1>
-          </v-flex>
-
-          <!-- Player -->
-          <v-flex xs6>
-            <v-card style="margin: 4px">
-              <v-card-title>
-                <v-list-tile-avatar size="36">
-                  <img :src="require('@/assets/icon_role_player.png')" alt="avatar" />
-                </v-list-tile-avatar>
-                <h3>Player</h3>
-              </v-card-title>
-              <v-card-text><h2>{{ players.toString() }}</h2></v-card-text>
-            </v-card>
-          </v-flex>
-
-          <!-- SW Engineer -->
-          <v-flex xs6>
-            <v-card style="margin: 4px">
-              <v-card-title>
-                <v-list-tile-avatar size="36">
-                  <img :src="require('@/assets/icon_role_software_eng.png')" alt="avatar" />
-                </v-list-tile-avatar>
-                <h3>SW Engineer</h3>
-              </v-card-title>
-              <v-card-text><h2>{{ swEngineers.toString() }}</h2></v-card-text>
-            </v-card>
-          </v-flex>
-
-          <!-- Mechanical Engineer -->
-          <v-flex xs6 mt-3>
-            <v-card style="margin: 4px">
-              <v-card-title>
-                <v-list-tile-avatar size="36">
-                  <img :src="require('@/assets/icon_role_mechanical_eng.png')" alt="avatar" />
-                </v-list-tile-avatar>
-                <h3>Mechanical Engineer</h3>
-              </v-card-title>
-              <v-card-text><h2>{{ mechanicalEngineers.toString() }}</h2></v-card-text>
-            </v-card>
-          </v-flex>
-
-          <!-- Marketer -->
-          <v-flex xs6 mt-3>
-            <v-card style="margin: 4px">
-              <v-card-title>
-                <v-list-tile-avatar size="36">
-                  <img :src="require('@/assets/icon_role_software_eng.png')" alt="avatar" />
-                </v-list-tile-avatar>
-                <h3>Marketer</h3>
-              </v-card-title>
-              <v-card-text><h2>{{ marketers.toString() }}</h2></v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
-      </v-flex>
+      <OpTeam v-show="showOpTeam" id="opTeamContainer" :opTeam="team"></OpTeam>
+      <JnTeam v-show="showJnTeam" id="jnTeamContainer" :jnTeam="team"></JnTeam>
+      <DevTeam v-show="showDevTeam" id="devTeamContainer" :devTeam="team"></DevTeam>
 
       <!-- Right side -->
       <v-flex offset-xs1 xs5 style="position:relative; color:white;background-color: #3A6031;" pa-5>
@@ -101,7 +16,7 @@
           <v-layout justify-space-around>
             <v-flex
               class="text-xs-center"
-              v-for="member in players"
+              v-for="member in team.players"
               :key="member.name"
               style="position:relative; top:4px"
             >
@@ -118,7 +33,7 @@
 
           <!-- 2. SW Engineers -->
           <v-layout justify-space-around style="position:absolute; bottom:56px; width:100%">
-            <v-flex class="text-xs-center" v-for="member in swEngineers" :key="member.name">
+            <v-flex class="text-xs-center" v-for="member in team.swEngineers" :key="member.name">
               <v-layout column>
                 <v-flex>
                   <v-avatar size="56px">
@@ -144,7 +59,7 @@
           <v-layout justify-space-around>
             <v-flex
               class="text-xs-center"
-              v-for="member in mechanicalEngineers"
+              v-for="member in team.mechanicalEngineers"
               :key="member.name"
               style="position:relative; top:56px;"
             >
@@ -163,7 +78,7 @@
           <v-layout justify-space-around>
             <v-flex
               class="text-xs-center"
-              v-for="member in marketers"
+              v-for="member in team.marketers"
               :key="member.name"
               style="position:relative; top:72px"
             >
@@ -196,24 +111,39 @@
 const BASE_FIREBASE_STORAGE_URL =
   "https://firebasestorage.googleapis.com/v0/b/hppk-robocup-2019.appspot.com/o/";
 
+import DevTeam from "./DevTeam";
+import OpTeam from "./OpTeam";
+import JnTeam from "./JnTeam";
+
 export default {
+  components: {
+    DevTeam,
+    OpTeam,
+    JnTeam
+  },
   data() {
     return {
       isSignIn: false,
-      teamName: null,
-      logo: null,
-      teamsGoal: null,
-      teamLeader: null,
-      architect: null,
-      mechanicalEngineers: null,
-      swEngineers: null,
-      players: null,
-      marketers: null,
       ref: firebase
         .firestore()
         .collection("teams")
         .doc(this.$route.params.teamId),
-      heightStyle: "800px"
+      heightStyle: "800px",
+      showOpTeam: false,
+      showJnTeam: false,
+      showDevTeam: false,
+      team: {
+        id: "team_OP",
+        name: "",
+        logo: "",
+        goal: "",
+        leader: "",
+        architect: "",
+        mechanicalEngineers: "",
+        swEngineers: "",
+        players: "",
+        marketers: ""
+      }
     };
   },
   created() {
@@ -226,27 +156,50 @@ export default {
       .then(function(doc) {
         if (doc.exists) {
           const team = doc.data();
+          if (team.id == "team_OP") {
+            self.showOpTeam = true;
+          } else if (team.id == "team_JN") {
+            self.showJnTeam = true;
+          } else {
+            self.showDevTeam = true;
+          }
 
-          self.teamName = team.teamName;
-          self.logo = getTeamLogo(team);
-          self.teamsGoal = team.teamsGoal;
-          self.teamLeader = team.members
+          self.team.name = team.teamName;
+          self.team.logo = getTeamLogo(team);
+          self.team.goal = team.teamsGoal;
+          self.team.leader = team.members
             .filter(m => m.roles.includes("Team Leader"))
             .map(m => m.name);
-          self.architect = team.members
+          self.team.architect = team.members
             .filter(m => m.roles.includes("Architect"))
             .map(m => m.name);
-          self.mechanicalEngineers = team.members
+          self.team.mechanicalEngineers = team.members
             .filter(m => m.roles.includes("Mechanical Engineer"))
             .map(m => m.name);
-          self.swEngineers = team.members
+          self.team.swEngineers = team.members
             .filter(m => m.roles.includes("SW Engineer"))
             .map(m => m.name);
-          self.players = team.members
+          self.team.players = team.members
             .filter(m => m.roles.includes("Player"))
             .map(m => m.name);
-          self.marketers = team.members
+          self.team.marketers = team.members
             .filter(m => m.roles.includes("Marketing"))
+            .map(m => m.name);
+
+          self.team.journalist = team.members
+            .filter(m => m.roles.includes("Journalist"))
+            .map(m => m.name);
+          self.team.platformDeveloper = team.members
+            .filter(m => m.roles.includes("Platform Developer"))
+            .map(m => m.name);
+          self.team.referee = team.members
+            .filter(m => m.roles.includes("Referee"))
+            .map(m => m.name);
+          self.team.setter = team.members
+            .filter(m => m.roles.includes("Setter"))
+            .map(m => m.name);
+          self.team.operator = team.members
+            .filter(m => m.roles.includes("Operator"))
             .map(m => m.name);
         } else {
           console.error("No such document!");
