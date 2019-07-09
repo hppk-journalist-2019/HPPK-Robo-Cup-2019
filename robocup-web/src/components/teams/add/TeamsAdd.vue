@@ -75,53 +75,55 @@
 
 <script>
 export default {
-  data: () => ({
-    valid: true,
-    valid2: true,
-    isSignIn: false,
-    teamIds: [
-      "01",
-      "02",
-      "03",
-      "04",
-      "05",
-      "06",
-      "07",
-      "08",
-      "09",
-      "10",
-      "11",
-      "12",
-      "13",
-      "14",
-      "15",
-      "16",
-      "OP",
-      "JN"
-    ],
-    devRoles: [
-      "Team Leader",
-      "Architect",
-      "Mechanical Engineer",
-      "SW Engineer",
-      "Player",
-      "Marketing"
-    ],
-    opRoles: ["Team Leader", "Referee", "Operator", "Setter"],
-    jnRoles: ["Team Leader", "Journalist", "Platform Developer"],
-    roles: [],
-    baseRules: [
-      v => !!v || "required",
-      (v && v.length <= 50) || "Text must be less than 50 characters"
-    ],
-    teamId: null,
-    teamName: null,
-    teamsGoal: null,
-    userName: null,
-    userRoles: null,
-    teamMembers: [],
-    teamLogoImage: null
-  }),
+  data() {
+    return {
+      valid: true,
+      valid2: true,
+      isSignIn: false,
+      teamIds: [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "OP",
+        "JN"
+      ],
+      devRoles: [
+        "Team Leader",
+        "Architect",
+        "Mechanical Engineer",
+        "SW Engineer",
+        "Player",
+        "Marketing"
+      ],
+      opRoles: ["Team Leader", "Referee", "Operator", "Setter"],
+      jnRoles: ["Team Leader", "Journalist", "Platform Developer"],
+      roles: [],
+      baseRules: [
+        v => !!v || "required",
+        v => (v && v.length <= 50) || "Text must be less than 50 characters"
+      ],
+      teamId: null,
+      teamName: null,
+      teamsGoal: null,
+      userName: null,
+      userRoles: null,
+      teamMembers: [],
+      teamLogoImage: null
+    };
+  },
   created() {
     this.isSignIn =
       localStorage.getItem("firebaseui::rememberedAccounts") != null;

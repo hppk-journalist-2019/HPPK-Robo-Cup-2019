@@ -14,27 +14,21 @@
           </v-flex>
 
           <v-flex text-xs-center xs12 ma-3>
-            <span class="title"><i>"{{teamsGoal}}"</i></span>
+            <span class="title">
+              <i>"{{teamsGoal}}"</i>
+            </span>
           </v-flex>
 
           <v-flex xs6 mt-3>
             <v-card style="margin: 4px">
-              <v-card-title>
-                <div>
-                  Team Leader
-                  <h2>{{ teamLeader }}</h2>
-                </div>
-              </v-card-title>
+              <v-card-title><h3>Team Leader</h3></v-card-title>
+              <v-card-text><h2>{{ teamLeader.toString() }}</h2></v-card-text>
             </v-card>
           </v-flex>
           <v-flex xs6 mt-3>
             <v-card style="margin: 4px">
-              <v-card-title>
-                <div>
-                  Architect
-                  <h2>{{ architect }}</h2>
-                </div>
-              </v-card-title>
+              <v-card-title><h3>Architect</h3></v-card-title>
+              <v-card-text><h2>{{ architect.toString() }}</h2></v-card-text>
             </v-card>
           </v-flex>
 
@@ -50,8 +44,8 @@
                   <img :src="require('@/assets/icon_role_player.png')" alt="avatar" />
                 </v-list-tile-avatar>
                 <h3>Player</h3>
-                <h2>{{ players }}</h2>
               </v-card-title>
+              <v-card-text><h2>{{ players.toString() }}</h2></v-card-text>
             </v-card>
           </v-flex>
 
@@ -63,8 +57,8 @@
                   <img :src="require('@/assets/icon_role_software_eng.png')" alt="avatar" />
                 </v-list-tile-avatar>
                 <h3>SW Engineer</h3>
-                <h2>{{ swEngineers }}</h2>
               </v-card-title>
+              <v-card-text><h2>{{ swEngineers.toString() }}</h2></v-card-text>
             </v-card>
           </v-flex>
 
@@ -76,8 +70,8 @@
                   <img :src="require('@/assets/icon_role_mechanical_eng.png')" alt="avatar" />
                 </v-list-tile-avatar>
                 <h3>Mechanical Engineer</h3>
-                <h2>{{ mechanicalEngineers }}</h2>
               </v-card-title>
+              <v-card-text><h2>{{ mechanicalEngineers.toString() }}</h2></v-card-text>
             </v-card>
           </v-flex>
 
@@ -86,11 +80,11 @@
             <v-card style="margin: 4px">
               <v-card-title>
                 <v-list-tile-avatar size="36">
-                  <img :src="require('@/assets/icon_role_marketer.png')" alt="avatar" />
+                  <img :src="require('@/assets/icon_role_software_eng.png')" alt="avatar" />
                 </v-list-tile-avatar>
                 <h3>Marketer</h3>
-                <h2>{{ marketers }}</h2>
               </v-card-title>
+              <v-card-text><h2>{{ marketers.toString() }}</h2></v-card-text>
             </v-card>
           </v-flex>
         </v-layout>
@@ -264,7 +258,10 @@ export default {
   },
   methods: {
     editTeam() {
-      this.$router.push({ name: "edit team", params: { teamId: this.$route.params.teamId } });
+      this.$router.push({
+        name: "edit team",
+        params: { teamId: this.$route.params.teamId }
+      });
     }
   }
 };
