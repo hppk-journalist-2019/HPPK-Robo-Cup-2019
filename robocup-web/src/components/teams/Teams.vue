@@ -1,8 +1,9 @@
 <template>
-  <v-container ref="container" grid-list-xl style="padding: 0">
-    <v-layout row wrap style="margin: 0">
-      <v-flex v-for="(team, index) in teams" :key="team.teamName" xs3 style="padding: 2px">
+  <v-container ref="container" grid-list-xl pa-0>
+    <v-layout row wrap ma-0>
+      <v-flex v-for="(team, index) in teams" :key="team.teamName" xs3 pa-1>
         <v-card
+          class="hidden-sm-and-down"
           hover
           ripple
           :height="cardHeightStyle"
@@ -14,6 +15,25 @@
             <v-list-tile-avatar>
               <img :src="team.logo" />
             </v-list-tile-avatar>
+            <div>
+              <h3>{{team.teamName}}</h3>
+              <div>{{ team.teamLeader }}</div>
+            </div>
+            <v-spacer />
+            <v-btn v-show="isSignIn" flat color="cyan" @click="deleteTeam(team, index)">Delete</v-btn>
+          </v-card-title>
+        </v-card>
+
+        <v-card
+          class="hidden-md-and-up"
+          hover
+          ripple
+          :height="cardHeightStyle"
+          tile
+          :img="team.logo"
+          @click="showTeam(team)"
+        >
+          <v-card-title class="cardTitleStyle" fill-height>
             <div>
               <h3>{{team.teamName}}</h3>
               <div>{{ team.teamLeader }}</div>
@@ -105,7 +125,7 @@ export default {
 
     this.ref.where("type", "==", "DEV").onSnapshot(querySnapshot => {
       querySnapshot.forEach(doc => {
-        this.cardHeightStyle = ref.container.clientHeight / 5 - 4+ "px";
+        this.cardHeightStyle = ref.container.clientHeight / 5 - 4 + "px";
 
         const team = doc.data();
         this.teams.push({
@@ -178,13 +198,8 @@ function getTeamLogo(team) {
 </script>
 
 <style>
-@media only screen and (max-width: 600px) {
-  body {
-  }
-}
-
 .cardTitleStyle {
-  background-color: #FFFFFFE4;
+  background-color: #ffffffe4;
   position: absolute;
   bottom: 0;
   width: 100%;
