@@ -71,7 +71,6 @@ const BASE_FIREBASE_STORAGE_URL =
 export default {
   data: () => ({
     isSignIn: false,
-    ref: firebase.firestore().collection("teams"),
     teams: [],
     stadiums: ["Garage Room"],
     matchDate: new Date().toISOString().substr(0, 10),
@@ -86,19 +85,23 @@ export default {
     this.isSignIn =
       localStorage.getItem("firebaseui::rememberedAccounts") != null;
 
-    this.ref.where("type", "==", "DEV").onSnapshot(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        const team = doc.data();
-        this.teams.push({
-          id: team.id,
-          teamName: team.teamName,
-          teamLeader: team.members.filter(m =>
-            m.roles.filter(r => r == "Team Leader")
-          )[0].name,
-          logo: getTeamLogo(team)
+    firebase
+      .firestore()
+      .collection("teams")
+      .where("type", "==", "DEV")
+      .onSnapshot(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          const team = doc.data();
+          this.teams.push({
+            id: team.id,
+            teamName: team.teamName,
+            teamLeader: team.members.filter(m =>
+              m.roles.filter(r => r == "Team Leader")
+            )[0].name,
+            logo: getTeamLogo(team)
+          });
         });
       });
-    });
   },
   methods: {
     save() {
@@ -108,31 +111,31 @@ export default {
       const teamA = this.teams.find(t => t.teamName == this.teamAName);
       const teamB = this.teams.find(t => t.teamName == this.teamBName);
 
-        firebase
-          .firestore()
-          .collection("friendlyMatches")
-          .doc(matchId)
-          .set({
-            id: matchId,
-            dateTime: Date.parse(`${this.matchDate} ${this.matchTime}`),
-            teamAId: teamA.id,
-            teamAName: teamA.teamName,
-            teamALogo: teamA.logo,
-            teamAScore: 0,
-            teamBId: teamB.id,
-            teamBName: teamB.teamName,
-            teamBLogo: teamB.logo,
-            teamBScore: 0,
-            state: "SCHEDULED",
-            stadium: this.stadium
-          })
-          .then(function() {
-            router.push("/friendlyMatches");
-          })
-          .catch(function(error) {
-            console.error("Error writing document: ", error);
-            // todo: Show error popup
-          });
+      firebase
+        .firestore()
+        .collection("friendlyMatches")
+        .doc(matchId)
+        .set({
+          id: matchId,
+          dateTime: Date.parse(`${this.matchDate} ${this.matchTime}`),
+          teamAId: teamA.id,
+          teamAName: teamA.teamName,
+          teamALogo: teamA.logo,
+          teamAScore: 0,
+          teamBId: teamB.id,
+          teamBName: teamB.teamName,
+          teamBLogo: teamB.logo,
+          teamBScore: 0,
+          state: "SCHEDULED",
+          stadium: this.stadium
+        })
+        .then(function() {
+          router.push("/friendlyMatches");
+        })
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
+          // todo: Show error popup
+        });
     }
   }
 };
