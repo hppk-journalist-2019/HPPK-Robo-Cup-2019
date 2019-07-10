@@ -1,6 +1,7 @@
 <template>
   <div class="editor">
     <Modal ref="ytmodal" @onConfirm="addCommand" />
+    <VideoModal ref="videoModal" @onConfirm="addVideo" />
     <div class="header" style="height:40px">
       <editor-menu-bar
         :editor="editor"
@@ -104,7 +105,7 @@
           &nbsp;
           <button class="menubar__button" @click="commands.redo">
             <v-icon color="green">redo</v-icon>
-          </button>
+          </button>          
           &nbsp;          
           <input
             v-if="linkMenuIsActive"
@@ -122,7 +123,11 @@
             :class="{ 'is-active': isActive.link() }"
           >
             <v-icon color="black">link</v-icon>
-          </button>          
+          </button>
+          &nbsp;          
+          <button  class="menubar__button" @click="openVideoModal(commands.iframe)">
+            <v-icon color="red">subscriptions</v-icon>
+          </button>   
         </div>
       </editor-menu-bar>
     </div>
@@ -184,6 +189,9 @@ import {
   Link
 } from "tiptap-extensions";
 import Modal from "./ImageUploadModal-edit";
+import IFrameVideo from "./IFrameVideo-edit";
+import VideoModal from "./VideoUploadModal-edit";
+
 const BASE_FIREBASE_STORAGE_URL =
   "https://firebasestorage.googleapis.com/v0/b/hppk-robocup-2019.appspot.com/o/";
 var thumbnailFilePath = "";
@@ -191,7 +199,8 @@ export default {
   components: {
     EditorContent,
     EditorMenuBar,
-    Modal
+    Modal,
+    VideoModal
   },
   data() {
     return {
@@ -237,7 +246,8 @@ export default {
               }
               return "Contents";
             }
-          })
+          }),
+          new IFrameVideo()
         ]
       })
     };
@@ -269,7 +279,7 @@ export default {
               if (doc.exists) {
                 const articleContents = doc.data();
                 totalDoc = totalDoc + articleContents.contents;
-                totalDoc = `<div contenteditable="true" tabindex="0" class="ProseMirror">${totalDoc}</div>`;
+                totalDoc = `<div contenteditable="true" tabindex="0" class="ProseMirror">${totalDoc}</div>`;                
                 editor.setContent(totalDoc);
               } else {
                 console.error("No such Contents!");
@@ -289,7 +299,7 @@ export default {
   beforeDestroy() {
     this.editor.destroy();
   },
-  methods: {
+  methods: {    
     showLinkMenu(attrs) {      
       this.linkUrl = attrs.href;
       this.linkMenuIsActive = true;
@@ -306,6 +316,16 @@ export default {
       this.hideLinkMenu();
       this.editor.focus();
     },    
+    openVideoModal(command) {
+      //open image uploading pop-up
+      this.$refs.videoModal.showModal(command);
+    },
+    addVideo(data) {
+      //add selected image
+      if (data.command !== null) {
+        data.command(data.data);
+      }
+    },
     openModal(command) {
       //open image uploading pop-up
       this.$refs.ytmodal.showModal(command);

@@ -1,6 +1,7 @@
 <template>
   <div class="editor">
     <Modal ref="ytmodal" @onConfirm="addCommand" />
+    <VideoModal ref="videoModal" @onConfirm="addVideo" />
     <div class="header" style="height:40px">
       <editor-menu-bar
         :editor="editor"
@@ -104,8 +105,8 @@
           &nbsp;
           <button class="menubar__button" @click="commands.redo">
             <v-icon color="green">redo</v-icon>
-          </button>
-          &nbsp;          
+          </button>          
+          &nbsp;
           <input
             v-if="linkMenuIsActive"
             type="text"
@@ -122,6 +123,10 @@
             :class="{ 'is-active': isActive.link() }"
           >
             <v-icon color="black">link</v-icon>
+          </button>
+          &nbsp;          
+          <button  class="menubar__button" @click="openVideoModal(commands.iframe)">
+            <v-icon color="red">subscriptions</v-icon>
           </button>
         </div>
       </editor-menu-bar>
@@ -180,13 +185,16 @@ import {
   Link
 } from "tiptap-extensions";
 import Modal from "./ImageUploadModal";
+import IFrameVideo from "./IFrameVideo";
+import VideoModal from "./VideoUploadModal";
 
 export default {
   components: {
     EditorContent,
     EditorMenuBar,
     EditorMenuBubble,
-    Modal
+    Modal,
+    VideoModal
   },
   data() {
     return {
@@ -196,8 +204,7 @@ export default {
       thumbnailFile: null,
       isUploading: false,
       linkUrl: null,
-      linkMenuIsActive: false,
-      keepInBounds: true,
+      linkMenuIsActive: false,            
       editor: new Editor({
         autoFocus: true,
         extensions: [
@@ -231,7 +238,8 @@ export default {
               }
               return "Contents";
             }
-          })
+          }),
+          new IFrameVideo()
         ]
       })
     };
@@ -239,7 +247,7 @@ export default {
   beforeDestroy() {
     this.editor.destroy();
   },
-  methods: {    
+  methods: {     
     showLinkMenu(attrs) {      
       this.linkUrl = attrs.href;
       this.linkMenuIsActive = true;
@@ -247,16 +255,24 @@ export default {
         this.$refs.linkInput.focus();
       });
     },
-
     hideLinkMenu() {
       this.linkUrl = null;
       this.linkMenuIsActive = false;
     },
-
     setLinkUrl(command, url) {      
       command({ href: url });
       this.hideLinkMenu();
       this.editor.focus();
+    },    
+    openVideoModal(command) {
+      //open image uploading pop-up
+      this.$refs.videoModal.showModal(command);
+    },
+    addVideo(data) {
+      //add selected image
+      if (data.command !== null) {
+        data.command(data.data);
+      }
     },
     openModal(command) {
       //open image uploading pop-up
