@@ -64,7 +64,7 @@
           </v-flex>
         </v-list>
       </v-flex>
-      <v-btn id="btnAddNews" v-show="isSignIn" fab dark large color="cyan" href="/news/add">
+      <v-btn id="fabAdd" v-show="isSignIn" fab dark large color="cyan" href="/news/add">
         <v-icon dark>add</v-icon>
       </v-btn>
     </v-layout>
@@ -190,7 +190,7 @@ function getThumbnailUrl(article) {
   font-style: italic;
 }
 
-#btnAddNews {
+#fabAdd {
   position: fixed;
   bottom: 0px;
   right: 0px;

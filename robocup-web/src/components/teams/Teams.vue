@@ -95,7 +95,7 @@
         </v-card>
       </v-flex>
 
-      <v-btn id="btnAddTeams" v-show="isSignIn" fab dark large color="cyan" href="/teams/add">
+      <v-btn id="fabAdd" v-show="isSignIn" fab dark large color="cyan" href="/teams/add">
         <v-icon dark>add</v-icon>
       </v-btn>
     </v-layout>
@@ -205,10 +205,4 @@ function getTeamLogo(team) {
   width: 100%;
 }
 
-#btnAddTeams {
-  position: fixed;
-  bottom: 0px;
-  right: 0px;
-  margin: 56px;
-}
 </style>
