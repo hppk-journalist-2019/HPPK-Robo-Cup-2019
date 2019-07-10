@@ -16,8 +16,8 @@
           <span class="mr-2">Teams</span>
         </v-btn>
 
-        <v-btn flat href="/matches">
-          <span class="mr-2">Matches</span>
+        <v-btn flat href="/friendlyMatches">
+          <span class="mr-2">Friendly Matches</span>
         </v-btn>
 
         <v-btn flat href="/rule">
@@ -35,7 +35,7 @@
           <v-list-tile href="/" hover ripple>Home</v-list-tile>
           <v-list-tile href="/news" hover ripple>News</v-list-tile>
           <v-list-tile href="/teams" hover ripple>Teams</v-list-tile>
-          <v-list-tile href="/matches" hover ripple>Matches</v-list-tile>
+          <v-list-tile href="/friendlyMatches" hover ripple>Friendly Matches</v-list-tile>
           <v-list-tile href="/rule" hover ripple>Rule</v-list-tile>
         </v-list>
       </v-menu>
