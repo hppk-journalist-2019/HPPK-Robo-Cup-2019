@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid pa-5>
+  <v-container fluid pa-0>
     <v-layout row wrap>
       <v-flex offset-md1 md10>
         <v-list>
@@ -27,7 +27,15 @@
             </v-list-tile-avatar>
 
             <v-list-tile>
+              <v-list-tile-title v-text="m.teamAScore"></v-list-tile-title>
+            </v-list-tile>
+
+            <v-list-tile>
               <v-list-tile-title>VS.</v-list-tile-title>
+            </v-list-tile>
+
+            <v-list-tile>
+              <v-list-tile-title v-text="m.teamBScore"></v-list-tile-title>
             </v-list-tile>
 
             <v-list-tile-avatar>
@@ -57,25 +65,6 @@ export default {
   data: () => ({
     isSignIn: false,
     matches: [],
-    items: [
-      {
-        icon: true,
-        title: "Jason Oner",
-        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg"
-      },
-      {
-        title: "Travis Howard",
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg"
-      },
-      {
-        title: "Ali Connors",
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg"
-      },
-      {
-        title: "Cindy Baker",
-        avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg"
-      }
-    ]
   }),
   created() {
     this.isSignIn =
@@ -106,14 +95,12 @@ export default {
   },
   methods: {
     parseDate(dateTime) {
-      console.log(dateTime + " -> " + new Date(dateTime));
       const d = new Date(dateTime);
       return `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`;
     },
     parseTime(dateTime) {
-      console.log(dateTime + " -> " + new Date(dateTime));
       const d = new Date(dateTime);
-      return `${d.getHours()}:${d.getMinutes()}`;
+      return `${d.getHours()}:${("0" + d.getMinutes()).slice(-2)}`;
     }
   }
 };

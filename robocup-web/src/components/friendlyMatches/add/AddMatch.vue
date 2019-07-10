@@ -39,8 +39,12 @@
     </v-layout>
 
     <v-layout row wrap pt-5>
-      <v-flex offset-md2 md8>
+      <v-flex offset-md2 md4 lg4 xl4 pr-3>
         <v-select v-model="stadium" :items="stadiums" label="Stadium" outline></v-select>
+      </v-flex>
+
+      <v-flex md4 lg4 xl4 pl-3>
+        <v-select v-model="type" :items="types" label="Type" outline></v-select>
       </v-flex>
     </v-layout>
 
@@ -72,12 +76,14 @@ export default {
   data: () => ({
     isSignIn: false,
     teams: [],
-    stadiums: ["Garage Room"],
-    matchDate: new Date().toISOString().substr(0, 10),
+    stadiums: ["Prt Bd. 1F C9-10"],
+    stadium: "Prt Bd. 1F C9-10",
+    types: ["Friendly Match"],
+    type: "Friendly Match",
+    matchDate: new Date("2019-07-15").toISOString().substr(0, 10),
     matchDateMenu: false,
-    matchTime: null,
+    matchTime: "13:00",
     matchTimeMenu: false,
-    stadium: "",
     teamAName: "",
     teamBName: ""
   }),
@@ -118,16 +124,23 @@ export default {
         .set({
           id: matchId,
           dateTime: Date.parse(`${this.matchDate} ${this.matchTime}`),
-          teamAId: teamA.id,
-          teamAName: teamA.teamName,
-          teamALogo: teamA.logo,
+          teamAId: "",
+          teamAName: "",
+          teamALogo: "",
+        //   teamAId: teamA.id,
+        //   teamAName: teamA.teamName,
+        //   teamALogo: teamA.logo,
           teamAScore: 0,
-          teamBId: teamB.id,
-          teamBName: teamB.teamName,
-          teamBLogo: teamB.logo,
+          teamBId: "",
+          teamBName: "",
+          teamBLogo: "",
+        //   teamBId: teamB.id,
+        //   teamBName: teamB.teamName,
+        //   teamBLogo: teamB.logo,
           teamBScore: 0,
           state: "SCHEDULED",
-          stadium: this.stadium
+          stadium: this.stadium,
+          type: this.type
         })
         .then(function() {
           router.push("/friendlyMatches");
