@@ -10,9 +10,9 @@ import TeamsAdd from './components/teams/add/TeamsAdd.vue'
 import TeamEdit from './components/teams/edit/TeamEdit.vue'
 import Team from './components/teams/team/Team.vue'
 import Rule from './components/rule/Rule.vue'
-import FriendlyMatches from './components/friendlyMatches/FriendlyMatches.vue'
-import AddFriendlyMatch from './components/friendlyMatches/add/AddMatch.vue'
 import Matches from './components/matches/Matches.vue'
+import AddMatch from './components/matches/add/AddMatch.vue'
+import Match from './components/matches/Match.vue'
 import Login from './components/login/Login.vue'
 import NotFound from './components/NotFound.vue'
 
@@ -89,21 +89,21 @@ export default new Router({
       component: Rule
     },
     {
-      path: '/friendlyMatches',
-      name: 'friendly matches',
-      component: FriendlyMatches
+      path: '/matches',
+      name: 'matches',
+      component: Matches
     },
     {
-      path: '/friendlyMatches/add',
-      name: 'add friendly match',
-      component: AddFriendlyMatch,
+      path: '/matches/add',
+      name: 'add match',
+      component: AddMatch,
       beforeEnter: onlySignInUser
     },
-    // {
-    //   path: '/matches',
-    //   name: 'matches',
-    //   component: Matches
-    // },
+    {
+      path: '/matches/:matchId',
+      name: 'match',
+      component: Match
+    },
     {
       path: '/login',
       name: 'login',

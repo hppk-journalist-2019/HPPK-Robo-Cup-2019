@@ -76,13 +76,13 @@ export default {
   data: () => ({
     isSignIn: false,
     teams: [],
-    stadiums: ["Prt Bd. 1F C9-10"],
-    stadium: "Prt Bd. 1F C9-10",
-    types: ["Friendly Match"],
-    type: "Friendly Match",
-    matchDate: new Date("2019-07-15").toISOString().substr(0, 10),
+    stadiums: ["St-1", "St-2", "Prt Bd. 1F C9-10"],
+    stadium: "St-1",
+    types: ["Friendly Match (친선)", "Preliminary Round (예선)", "Quarter-Finals (8강)", "Semifinals (준결승)", "Final (결승)"],
+    type: "Preliminary Round (예선)",
+    matchDate: new Date("2019-07-19").toISOString().substr(0, 10),
     matchDateMenu: false,
-    matchTime: "13:00",
+    matchTime: "14:00",
     matchTimeMenu: false,
     teamAName: "",
     teamBName: ""
@@ -119,31 +119,25 @@ export default {
 
       firebase
         .firestore()
-        .collection("friendlyMatches")
+        .collection("matches")
         .doc(matchId)
         .set({
           id: matchId,
           dateTime: Date.parse(`${this.matchDate} ${this.matchTime}`),
-          teamAId: "",
-          teamAName: "",
-          teamALogo: "",
-        //   teamAId: teamA.id,
-        //   teamAName: teamA.teamName,
-        //   teamALogo: teamA.logo,
+          teamAId: teamA.id,
+          teamAName: teamA.teamName,
+          teamALogo: teamA.logo,
           teamAScore: 0,
-          teamBId: "",
-          teamBName: "",
-          teamBLogo: "",
-        //   teamBId: teamB.id,
-        //   teamBName: teamB.teamName,
-        //   teamBLogo: teamB.logo,
+          teamBId: teamB.id,
+          teamBName: teamB.teamName,
+          teamBLogo: teamB.logo,
           teamBScore: 0,
           state: "SCHEDULED",
           stadium: this.stadium,
           type: this.type
         })
         .then(function() {
-          router.push("/friendlyMatches");
+          router.push("/matches");
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
