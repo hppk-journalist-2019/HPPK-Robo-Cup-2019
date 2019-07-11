@@ -100,7 +100,7 @@ export default new Router({
       path: '/gallery/:imgSrc/fullSizeImageViewer',
       name: 'fullSizeImageViewer',
       component: FullSizeImageViewer
-    },
+    },   
     {
       path: '/matches',
       name: 'matches',
