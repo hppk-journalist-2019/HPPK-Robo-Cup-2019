@@ -16,8 +16,8 @@
           <span class="mr-2">Teams</span>
         </v-btn>
 
-        <v-btn flat href="/friendlyMatches">
-          <span class="mr-2">Friendly Matches</span>
+        <v-btn flat href="/matches">
+          <span class="mr-2">Matches</span>
         </v-btn>
 
         <v-btn flat href="/rule">
