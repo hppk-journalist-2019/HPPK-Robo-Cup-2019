@@ -12,8 +12,6 @@ import Team from './components/teams/team/Team.vue'
 import Rule from './components/rule/Rule.vue'
 import Gallery from './components/gallery/Gallery.vue'
 import FullSizeImageViewer from './components/gallery/FullSizeImageViewer.vue'
-import FriendlyMatches from './components/friendlyMatches/FriendlyMatches.vue'
-import AddFriendlyMatch from './components/friendlyMatches/add/AddMatch.vue'
 import Matches from './components/matches/Matches.vue'
 import AddMatch from './components/matches/add/AddMatch.vue'
 import EditMatch from './components/matches/edit/EditMatch.vue'
@@ -102,12 +100,7 @@ export default new Router({
       path: '/gallery/:imgSrc/fullSizeImageViewer',
       name: 'fullSizeImageViewer',
       component: FullSizeImageViewer
-    },
-    {
-      path: '/friendlyMatches',
-      name: 'friendly matches',
-      component: FriendlyMatches
-    },
+    },   
     {
       path: '/matches',
       name: 'matches',
