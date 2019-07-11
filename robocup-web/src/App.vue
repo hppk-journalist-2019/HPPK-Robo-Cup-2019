@@ -23,6 +23,9 @@
         <v-btn flat href="/rule">
           <span class="mr-2">Rule</span>
         </v-btn>
+        <v-btn flat href="/gallery">
+          <span class="mr-2">Gallery</span>
+        </v-btn>
       </v-toolbar-items>
 
       <v-btn icon class="hidden-md-and-up" href="/" hover ripple>
@@ -37,6 +40,7 @@
           <v-list-tile href="/teams" hover ripple>Teams</v-list-tile>
           <v-list-tile href="/friendlyMatches" hover ripple>Friendly Matches</v-list-tile>
           <v-list-tile href="/rule" hover ripple>Rule</v-list-tile>
+          <v-list-tile href="/gallery" hover ripple>Gallery</v-list-tile>
         </v-list>
       </v-menu>
 

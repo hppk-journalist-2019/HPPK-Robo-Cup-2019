@@ -13,6 +13,7 @@
     "tiptap": "^1.23.0",
     "tiptap-extensions": "^1.24.0",
     "vue": "^2.6.10",
+    "vue-infinite-loading": "^2.4.4",
     "vue-router": "^3.0.3",
     "vue2-google-maps": "^0.10.6",
     "vuetify": "^1.5.5",

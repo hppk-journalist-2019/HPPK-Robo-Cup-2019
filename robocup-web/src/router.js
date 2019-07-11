@@ -10,6 +10,8 @@ import TeamsAdd from './components/teams/add/TeamsAdd.vue'
 import TeamEdit from './components/teams/edit/TeamEdit.vue'
 import Team from './components/teams/team/Team.vue'
 import Rule from './components/rule/Rule.vue'
+import Gallery from './components/gallery/Gallery.vue'
+import FullSizeImageViewer from './components/gallery/FullSizeImageViewer.vue'
 import FriendlyMatches from './components/friendlyMatches/FriendlyMatches.vue'
 import AddFriendlyMatch from './components/friendlyMatches/add/AddMatch.vue'
 import Matches from './components/matches/Matches.vue'
@@ -87,6 +89,16 @@ export default new Router({
       path: '/rule',
       name: 'rule',
       component: Rule
+    },
+    {
+      path: '/gallery',
+      name: 'gallery',
+      component: Gallery
+    },
+    {
+      path: '/gallery/:imgSrc/fullSizeImageViewer',
+      name: 'fullSizeImageViewer',
+      component: FullSizeImageViewer
     },
     {
       path: '/friendlyMatches',
