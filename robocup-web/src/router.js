@@ -12,6 +12,7 @@ import Team from './components/teams/team/Team.vue'
 import Rule from './components/rule/Rule.vue'
 import Matches from './components/matches/Matches.vue'
 import AddMatch from './components/matches/add/AddMatch.vue'
+import EditMatch from './components/matches/edit/EditMatch.vue'
 import Match from './components/matches/Match.vue'
 import Login from './components/login/Login.vue'
 import NotFound from './components/NotFound.vue'
@@ -97,6 +98,12 @@ export default new Router({
       path: '/matches/add',
       name: 'add match',
       component: AddMatch,
+      beforeEnter: onlySignInUser
+    },
+    {
+      path: '/matches/:matchId/edit',
+      name: 'edit match',
+      component: EditMatch,
       beforeEnter: onlySignInUser
     },
     {

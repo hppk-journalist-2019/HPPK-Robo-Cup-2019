@@ -1,32 +1,35 @@
 <template>
-  <v-container>
-    <v-layout row wrap>
-      <v-flex offset-md2 md4 lg4 xl4 pr-3>
-        <h1 class="display-1">{{matchDate}} {{matchTime}}</h1>
+  <v-container pa-5>
+    <v-layout pa-2>
+      <v-flex>
+        <h1 class="body-1">{{matchDate}} {{matchTime}} | {{stadium}}</h1>
       </v-flex>
     </v-layout>
 
-    <v-layout row wrap pt-3>
-      <v-flex offset-md2 md4 lg4 xl4 pr-3>
-        <v-select v-model="stadium" :items="stadiums" label="Stadium" outline readonly></v-select>
-      </v-flex>
-
-      <v-flex md4 lg4 xl4 pl-3>
-        <v-select v-model="type" :items="types" label="Type" outline readonly></v-select>
+    <v-layout pa-2>
+      <v-flex>
+        <h1 class="title">{{type}}</h1>
       </v-flex>
     </v-layout>
 
-    <v-layout row wrap pt-5>
-      <v-flex offset-md2 md3 lg3 xl3>
-        <v-select v-model="teamAName" :items="teams.map(t => t.teamName)" label="Team A" outline></v-select>
+    <v-layout row align-center pt-5 mt-5>
+      <v-flex>
+        <v-avatar :size="128">
+          <img :src="getLogo(teamALogo)" />
+        </v-avatar>
+        <span class="title" style="margin-left: 32px">{{teamAName}}</span>
       </v-flex>
 
-      <v-flex md2 text-md-center pa-2>
-        <h1>VS.</h1>
+      <v-flex text-md-center>
+        <h1 class="display-4 font-weight-bold">{{teamAScore}} : {{teamBScore}}</h1>
       </v-flex>
 
-      <v-flex md3 lg3 xl3>
-        <v-select v-model="teamBName" :items="teams.map(t => t.teamName)" label="Team B" outline></v-select>
+      <v-spacer></v-spacer>
+      <v-flex shrink>
+        <span class="title" style="margin-right: 32px">{{teamBName}}</span>
+        <v-avatar :size="128">
+          <img :src="getLogo(teamBLogo)" />
+        </v-avatar>
       </v-flex>
     </v-layout>
 
@@ -37,9 +40,6 @@
 </template>
 
 <script>
-const BASE_FIREBASE_STORAGE_URL =
-  "https://firebasestorage.googleapis.com/v0/b/hppk-robocup-2019.appspot.com/o/";
-
 export default {
   data: () => ({
     isSignIn: false,
@@ -52,7 +52,11 @@ export default {
     matchDate: "",
     matchTime: "",
     teamAName: "",
-    teamBName: ""
+    teamAScore: 0,
+    teamALogo: "icon_help.png",
+    teamBName: "",
+    teamBScore: 0,
+    teamBLogo: "icon_help.png"
   }),
   created() {
     this.isSignIn =
@@ -62,35 +66,44 @@ export default {
     firebase
       .firestore()
       .collection("matches")
-      .where("id", "==", matchId)
+      .where("id", "==", this.matchId)
       .onSnapshot(querySnapshot => {
         querySnapshot.forEach(doc => {
           const match = doc.data();
 
           const d = new Date(match.dateTime);
-          this.matchDate = `${d.getFullYear()}. ${d.getMonth() + 1}. ${d.getDate()}.`
-          this.matchTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(-2)}`
-          console.log(JSON.stringify(match));
+          this.matchDate = `${d.getFullYear()}. ${d.getMonth() +
+            1}. ${d.getDate()}.`;
+          this.matchTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(
+            -2
+          )}`;
+          this.stadium = match.stadium;
+          this.type = match.type;
+          this.teamAName = match.teamAName;
+          this.teamAScore = match.teamAScore;
+          this.teamALogo = match.teamALogo;
+          this.teamBName = match.teamBName;
+          this.teamBScore = match.teamBScore;
+          this.teamBLogo = match.teamBLogo;
         });
       });
   },
   methods: {
     onEditClicked() {
-      this.$router.push({ name: "add match", params: { matchId: this.matchId } });
+      this.$router.push({
+        name: "edit match",
+        params: { matchId: this.matchId }
+      });
+    },
+    getLogo(logo) {
+      if (logo === undefined || logo === null || logo.length == 0 || logo == "icon_hp.png") {
+        return "https://firebasestorage.googleapis.com/v0/b/hppk-robocup-2019.appspot.com/o/teams%2Flogo%2Flogo.png?alt=media";
+      } else {
+        return logo;
+      }
     }
   }
 };
-
-function getTeamLogo(team) {
-  if (team.teamLogoPath == "icon_hp.png") {
-    return "icon_hp.png";
-  } else {
-    return `${BASE_FIREBASE_STORAGE_URL}${team.teamLogoPath.replace(
-      /['/']/gi,
-      "%2F"
-    )}?alt=media`;
-  }
-}
 </script>
 
 <style>

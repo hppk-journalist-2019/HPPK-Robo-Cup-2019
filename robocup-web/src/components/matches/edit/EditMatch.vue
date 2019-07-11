@@ -38,13 +38,17 @@
       </v-flex>
     </v-layout>
 
-    <v-layout row wrap pt-5>
-      <v-flex offset-md2 md4 lg4 xl4 pr-3>
+    <v-layout row wrap pt-5 justify-between>
+      <v-flex offset-md2 md1 lg1 xl1>
         <v-select v-model="stadium" :items="stadiums" label="Stadium" outline></v-select>
       </v-flex>
 
-      <v-flex md4 lg4 xl4 pl-3>
+      <v-flex offset-md1 md3 lg3 xl3>
         <v-select v-model="type" :items="types" label="Type" outline></v-select>
+      </v-flex>
+
+      <v-flex offset-md1 md2 lg2 xl2>
+        <v-select v-model="state" :items="states" label="State" outline></v-select>
       </v-flex>
     </v-layout>
 
@@ -62,6 +66,16 @@
       </v-flex>
     </v-layout>
 
+    <v-layout row wrap pt-5>
+      <v-flex offset-md2 md3 lg3 xl3>
+        <v-select v-model="teamAScore" :items="scores" label="Score" outline></v-select>
+      </v-flex>
+
+      <v-flex offset-md2 md3 lg3 xl3>
+        <v-select v-model="teamBScore" :items="scores" label="Score" outline></v-select>
+      </v-flex>
+    </v-layout>
+
     <v-btn id="fabAdd" v-show="isSignIn" fab dark large color="cyan" @click="save">
       <v-icon dark>check</v-icon>
     </v-btn>
@@ -75,21 +89,35 @@ const BASE_FIREBASE_STORAGE_URL =
 export default {
   data: () => ({
     isSignIn: false,
+    matchId: "",
     teams: [],
     stadiums: ["St-1", "St-2", "Prt Bd. 1F C9-10"],
     stadium: "St-1",
-    types: ["Friendly Match (친선)", "Preliminary Round (예선)", "Quarter-Finals (8강)", "Semifinals (준결승)", "Final (결승)"],
-    type: "Quarter-Finals (8강)",
+    types: [
+      "Friendly Match (친선)",
+      "Preliminary Round (예선)",
+      "Quarter-Finals (8강)",
+      "Semifinals (준결승)",
+      "Final (결승)"
+    ],
+    type: "Preliminary Round (예선)",
+    states: ["SCHEDULED", "PLAYING", "DONE"],
+    state: "SCHEDULED",
+    scores: Array.from(Array(20), (x, index) => index),
     matchDate: new Date("2019-07-19").toISOString().substr(0, 10),
     matchDateMenu: false,
     matchTime: "14:00",
     matchTimeMenu: false,
     teamAName: "",
-    teamBName: ""
+    teamBName: "",
+    teamAScore: "",
+    teamBScore: ""
   }),
   created() {
     this.isSignIn =
       localStorage.getItem("firebaseui::rememberedAccounts") != null;
+
+    this.matchId = this.$route.params.matchId;
 
     firebase
       .firestore()
@@ -108,11 +136,35 @@ export default {
           });
         });
       });
+
+    firebase
+      .firestore()
+      .collection("matches")
+      .where("id", "==", this.matchId)
+      .onSnapshot(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          const match = doc.data();
+
+          const d = new Date(match.dateTime);
+          this.matchDate = `${d.getFullYear()}-${d.getMonth() +
+            1}-${d.getDate()}`;
+          this.matchTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(
+            -2
+          )}`;
+          this.stadium = match.stadium;
+          this.type = match.type;
+          this.teamAName = match.teamAName;
+          this.teamAScore = match.teamAScore;
+          this.teamALogo = match.teamALogo;
+          this.teamBName = match.teamBName;
+          this.teamBScore = match.teamBScore;
+          this.teamBLogo = match.teamBLogo;
+        });
+      });
   },
   methods: {
     save() {
       const router = this.$router;
-      const matchId = `fm-${new Date().getTime()}`;
       const dateTime = Date.parse(`${this.matchDate} ${this.matchTime}`);
       const teamA = this.teams.find(t => t.teamName == this.teamAName);
       const teamB = this.teams.find(t => t.teamName == this.teamBName);
@@ -120,19 +172,19 @@ export default {
       firebase
         .firestore()
         .collection("matches")
-        .doc(matchId)
+        .doc(this.matchId)
         .set({
-          id: matchId,
+          id: this.matchId,
           dateTime: Date.parse(`${this.matchDate} ${this.matchTime}`),
           teamAId: teamA.id,
           teamAName: teamA.teamName,
           teamALogo: teamA.logo,
-          teamAScore: 0,
+          teamAScore: this.teamAScore,
           teamBId: teamB.id,
           teamBName: teamB.teamName,
           teamBLogo: teamB.logo,
-          teamBScore: 0,
-          state: "SCHEDULED",
+          teamBScore: this.teamBScore,
+          state: this.state,
           stadium: this.stadium,
           type: this.type
         })
