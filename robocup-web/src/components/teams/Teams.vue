@@ -20,7 +20,7 @@
               <div>{{ team.teamLeader }}</div>
             </div>
             <v-spacer />
-            <v-btn v-show="isSignIn" flat color="cyan" @click="deleteTeam(team, index)">Delete</v-btn>
+            <!-- <v-btn v-show="isSignIn" flat color="cyan" @click="deleteTeam(team, index)">Delete</v-btn> -->
           </v-card-title>
         </v-card>
 
@@ -39,7 +39,7 @@
               <div>{{ team.teamLeader }}</div>
             </div>
             <v-spacer />
-            <v-btn v-show="isSignIn" flat color="cyan" @click="deleteTeam(team, index)">Delete</v-btn>
+            <!-- <v-btn v-show="isSignIn" flat color="cyan" @click="deleteTeam(team, index)">Delete</v-btn> -->
           </v-card-title>
         </v-card>
       </v-flex>
@@ -62,7 +62,7 @@
               <div>{{ opTeam.teamLeader }}</div>
             </div>
             <v-spacer />
-            <v-btn v-show="isSignIn" flat color="cyan" @click="deleteTeam(opTeam, index)">Delete</v-btn>
+            <!-- <v-btn v-show="isSignIn" flat color="cyan" @click="deleteTeam(opTeam, index)">Delete</v-btn> -->
           </v-card-title>
         </v-card>
       </v-flex>
@@ -90,7 +90,7 @@
               <div>{{ jnTeam.teamLeader }}</div>
             </div>
             <v-spacer />
-            <v-btn v-show="isSignIn" flat color="cyan" @click="deleteTeam(jnTeam, index)">Delete</v-btn>
+            <!-- <v-btn v-show="isSignIn" flat color="cyan" @click="deleteTeam(jnTeam, index)">Delete</v-btn> -->
           </v-card-title>
         </v-card>
       </v-flex>
