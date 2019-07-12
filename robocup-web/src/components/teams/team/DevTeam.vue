@@ -91,7 +91,7 @@
         <v-card style="margin: 4px">
           <v-card-title>
             <v-list-tile-avatar size="36">
-              <img :src="require('@/assets/icon_role_software_eng.png')" alt="avatar" />
+              <img :src="require('@/assets/icon_role_marketer.png')" alt="avatar" />
             </v-list-tile-avatar>
             <h3>Marketer</h3>
           </v-card-title>
