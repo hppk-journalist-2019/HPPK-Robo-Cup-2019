@@ -33,8 +33,33 @@
       </v-flex>
     </v-layout>
 
+    <v-layout v-show="isSignIn" row align-center mt-3>
+      <v-flex>
+        <v-btn fab dark color="green" @click="incTeamAScore(teamAScore)">
+          <v-icon dark>add</v-icon>
+        </v-btn>
+        <v-btn fab dark color="red" @click="decTeamAScore(teamAScore)">
+          <v-icon dark>remove</v-icon>
+        </v-btn>
+      </v-flex>
+
+      <v-spacer></v-spacer>
+      <v-flex shrink>
+        <v-btn fab dark color="green" @click="incTeamBScore(teamBScore)">
+          <v-icon dark>add</v-icon>
+        </v-btn>
+        <v-btn fab dark color="red" @click="decTeamBScore(teamBScore)">
+          <v-icon dark>remove</v-icon>
+        </v-btn>
+      </v-flex>
+    </v-layout>
+
     <v-btn id="fabAdd" v-show="isSignIn" fab dark large color="cyan" @click="onEditClicked">
       <v-icon dark>edit</v-icon>
+    </v-btn>
+
+    <v-btn id="fabDelete" v-show="isSignIn" fab dark large color="cyan" @click="onDeleteClicked">
+      <v-icon dark>delete</v-icon>
     </v-btn>
   </v-container>
 </template>
@@ -95,15 +120,62 @@ export default {
         params: { matchId: this.matchId }
       });
     },
+    onDeleteClicked() {
+      const router = this.$router;
+      firebase
+        .firestore()
+        .collection("matches")
+        .doc(this.matchId)
+        .delete()
+        .then(function() {
+          router.push({ name: "matches" });
+        })
+        .catch(function(error) {
+          console.error("Error removing document: ", error);
+        });
+    },
     getLogo(logo) {
-      if (logo === undefined || logo === null || logo.length == 0 || logo == "icon_hp.png") {
+      if (
+        logo === undefined ||
+        logo === null ||
+        logo.length == 0 ||
+        logo == "icon_hp.png"
+      ) {
         return "https://firebasestorage.googleapis.com/v0/b/hppk-robocup-2019.appspot.com/o/teams%2Flogo%2Flogo.png?alt=media";
       } else {
         return logo;
       }
+    },
+    incTeamAScore(teamAScore) {
+      const score = { teamAScore: ++teamAScore };
+      updateScore(score, this.matchId);
+    },
+    decTeamAScore(teamAScore) {
+      const score = { teamAScore: --teamAScore };
+      updateScore(score, this.matchId);
+    },
+    incTeamBScore(teamBScore) {
+      const score = { teamBScore: ++teamBScore };
+      updateScore(score, this.matchId);
+    },
+    decTeamBScore(teamBScore) {
+      const score = { teamBScore: --teamBScore };
+      updateScore(score, this.matchId);
     }
   }
 };
+
+function updateScore(score, matchId) {
+  firebase
+    .firestore()
+    .collection("matches")
+    .doc(matchId)
+    .update(score)
+    .then(function() {})
+    .catch(function(error) {
+      console.error("Error writing document: ", error);
+    });
+}
 </script>
 
 <style>

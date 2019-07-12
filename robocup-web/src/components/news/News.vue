@@ -154,13 +154,18 @@ export default {
     }
   },
   computed: {
-    cardHeight () {
+    cardHeight() {
       switch (this.$vuetify.breakpoint.name) {
-        case 'xs': return '300px'
-        case 'sm': return '350px'
-        case 'md': return '350px'
-        case 'lg': return '450px'
-        case 'xl': return '600px'
+        case "xs":
+          return "300px";
+        case "sm":
+          return "350px";
+        case "md":
+          return "350px";
+        case "lg":
+          return "450px";
+        case "xl":
+          return "600px";
       }
     }
   }
@@ -195,6 +200,14 @@ function getThumbnailUrl(article) {
   bottom: 0px;
   right: 0px;
   margin: 56px;
+}
+
+#fabDelete {
+  position: fixed;
+  bottom: 0px;
+  right: 0px;
+  margin-right: 168px;
+  margin-bottom: 56px;
 }
 
 .newsCardTitleStyle {
