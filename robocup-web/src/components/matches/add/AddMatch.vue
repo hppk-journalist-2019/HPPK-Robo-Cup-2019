@@ -79,7 +79,7 @@ export default {
     stadiums: ["St-1", "St-2", "Prt Bd. 1F C9-10"],
     stadium: "St-1",
     types: ["Friendly Match (친선)", "Preliminary Round (예선)", "Quarter-Finals (8강)", "Semifinals (준결승)", "Final (결승)"],
-    type: "Quarter-Finals (8강)",
+    type: "Preliminary Round (예선)",
     matchDate: new Date("2019-07-19").toISOString().substr(0, 10),
     matchDateMenu: false,
     matchTime: "14:00",
@@ -112,7 +112,7 @@ export default {
   methods: {
     save() {
       const router = this.$router;
-      const matchId = `fm-${new Date().getTime()}`;
+      const matchId = `m${new Date(`${this.matchDate} ${this.matchTime}`).getTime()}${this.stadium}`;
       const dateTime = Date.parse(`${this.matchDate} ${this.matchTime}`);
       const teamA = this.teams.find(t => t.teamName == this.teamAName);
       const teamB = this.teams.find(t => t.teamName == this.teamBName);
@@ -124,13 +124,19 @@ export default {
         .set({
           id: matchId,
           dateTime: Date.parse(`${this.matchDate} ${this.matchTime}`),
-          teamAId: teamA.id,
-          teamAName: teamA.teamName,
-          teamALogo: teamA.logo,
+          teamAId: "",
+          teamAName: "",
+          teamALogo: "",
+          // teamAId: teamA.id,
+          // teamAName: teamA.teamName,
+          // teamALogo: teamA.logo,
           teamAScore: 0,
-          teamBId: teamB.id,
-          teamBName: teamB.teamName,
-          teamBLogo: teamB.logo,
+          teamBId: "",
+          teamBName: "",
+          teamBLogo: "",
+          // teamBId: teamB.id,
+          // teamBName: teamB.teamName,
+          // teamBLogo: teamB.logo,
           teamBScore: 0,
           state: "SCHEDULED",
           stadium: this.stadium,
