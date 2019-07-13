@@ -54,6 +54,61 @@
       </v-flex>
     </v-layout>
 
+    <v-form ref="eventForm" v-model="valid" v-show="isSignIn">
+      <v-layout row mt-5>
+        <v-flex offset-md2 md2>
+          <v-select
+            ref="selectEventType"
+            v-model="eventType"
+            :items="eventTypes"
+            label="Type"
+            color="cyan"
+            outline
+          ></v-select>
+        </v-flex>
+
+        <v-flex ml-3 md5>
+          <v-text-field
+            ref="tfEvent"
+            v-model="eventText"
+            label="Event"
+            required
+            :rules="baseRules"
+          />
+        </v-flex>
+
+        <v-flex ml-3 md1>
+          <v-btn fab dark color="cyan" small outline @click="saveEvent">
+            <v-icon dark>add</v-icon>
+          </v-btn>
+        </v-flex>
+      </v-layout>
+    </v-form>
+
+    <v-layout row mt-5>
+      <v-flex offset-md2>
+        <v-timeline align-top dense v-for="event in events" :key="event.time" xs3 pa-1>
+          <v-timeline-item color="teal lighten-3" small>
+            <v-layout wrap pt-3>
+              <v-flex xs3>
+                <strong>{{event.time}}</strong>
+              </v-flex>
+              <v-flex>
+                <strong>{{event.text}}</strong>
+                <div class="caption mb-2">{{event.type}}</div>
+                <v-avatar v-show="event.type == 'GOAL'">
+                  <v-img :src="require('@/assets/icon_goal.png')"></v-img>
+                </v-avatar>
+                <v-avatar v-show="event.type == 'FOUL'">
+                  <v-img :src="require('@/assets/icon_red_card.png')"></v-img>
+                </v-avatar>
+              </v-flex>
+            </v-layout>
+          </v-timeline-item>
+        </v-timeline>
+      </v-flex>
+    </v-layout>
+
     <v-btn id="fabAdd" v-show="isSignIn" fab dark large color="cyan" @click="onEditClicked">
       <v-icon dark>edit</v-icon>
     </v-btn>
@@ -65,6 +120,10 @@
 </template>
 
 <script>
+const EVENT_TYPE_GENERAL = "GENERAL";
+const EVENT_TYPE_GOAL = "GOAL";
+const EVENT_TYPE_FOUL = "FOUL";
+
 export default {
   data: () => ({
     isSignIn: false,
@@ -81,7 +140,16 @@ export default {
     teamALogo: "icon_help.png",
     teamBName: "",
     teamBScore: 0,
-    teamBLogo: "icon_help.png"
+    teamBLogo: "icon_help.png",
+    baseRules: [
+      v => !!v || "required",
+      v => (v && v.length <= 50) || "Text must be less than 50 characters"
+    ],
+    events: [],
+    eventTypes: [EVENT_TYPE_GENERAL, EVENT_TYPE_GOAL, EVENT_TYPE_FOUL],
+    eventType: EVENT_TYPE_GENERAL,
+    eventText: "",
+    valid: true
   }),
   created() {
     this.isSignIn =
@@ -91,25 +159,41 @@ export default {
     firebase
       .firestore()
       .collection("matches")
-      .where("id", "==", this.matchId)
-      .onSnapshot(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          const match = doc.data();
+      .doc(this.matchId)
+      .get()
+      .then(doc => {
+        const match = doc.data();
 
-          const d = new Date(match.dateTime);
-          this.matchDate = `${d.getFullYear()}. ${d.getMonth() +
-            1}. ${d.getDate()}.`;
-          this.matchTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(
-            -2
-          )}`;
-          this.stadium = match.stadium;
-          this.type = match.type;
-          this.teamAName = match.teamAName;
-          this.teamAScore = match.teamAScore;
-          this.teamALogo = match.teamALogo;
-          this.teamBName = match.teamBName;
-          this.teamBScore = match.teamBScore;
-          this.teamBLogo = match.teamBLogo;
+        const d = new Date(match.dateTime);
+        this.matchDate = `${d.getFullYear()}. ${d.getMonth() +
+          1}. ${d.getDate()}.`;
+        this.matchTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(-2)}`;
+        this.stadium = match.stadium;
+        this.type = match.type;
+        this.teamAName = match.teamAName;
+        this.teamAScore = match.teamAScore;
+        this.teamALogo = match.teamALogo;
+        this.teamBName = match.teamBName;
+        this.teamBScore = match.teamBScore;
+        this.teamBLogo = match.teamBLogo;
+      });
+
+    let events = this.events;
+    firebase
+      .firestore()
+      .collection("matches")
+      .doc(this.matchId)
+      .collection("events")
+      .onSnapshot(snapshot => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === "removed") {
+            // deleteMessage(change.doc.id);
+          } else {
+            const event = change.doc.data();
+            events.push(event);
+            this.eventType = EVENT_TYPE_GENERAL;
+            this.eventText = "";
+          }
         });
       });
   },
@@ -161,7 +245,30 @@ export default {
     decTeamBScore(teamBScore) {
       const score = { teamBScore: --teamBScore };
       updateScore(score, this.matchId);
-    }
+    },
+    saveEvent() {
+      if (this.$refs.eventForm.validate()) {
+        const d = new Date();
+        const eventTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(-2)}`;
+        const event = {
+          time: eventTime,
+          text: this.eventText,
+          type: this.eventType
+        };
+
+        firebase
+          .firestore()
+          .collection("matches")
+          .doc(this.matchId)
+          .collection("events")
+          .doc(eventTime)
+          .set(event)
+          .then(function() {})
+          .catch(function(error) {
+            console.error("Error writing document: ", error);
+          });
+      }
+    },
   }
 };
 
