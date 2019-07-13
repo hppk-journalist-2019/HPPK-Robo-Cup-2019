@@ -103,6 +103,17 @@
                   <v-img :src="require('@/assets/icon_red_card.png')"></v-img>
                 </v-avatar>
               </v-flex>
+              <v-btn
+                v-show="isSignIn"
+                fab
+                dark
+                small
+                outline
+                color="cyan"
+                @click="deleteEvent(event)"
+              >
+                <v-icon dark>remove</v-icon>
+              </v-btn>
             </v-layout>
           </v-timeline-item>
         </v-timeline>
@@ -187,7 +198,11 @@ export default {
       .onSnapshot(snapshot => {
         snapshot.docChanges().forEach(change => {
           if (change.type === "removed") {
-            // deleteMessage(change.doc.id);
+            const event = change.doc.data();
+            const idx = events.findIndex(function(e) {
+              return e.time === event.time;
+            });
+            if (idx > -1) events.splice(idx, 1)
           } else {
             const event = change.doc.data();
             events.push(event);
@@ -249,7 +264,7 @@ export default {
     saveEvent() {
       if (this.$refs.eventForm.validate()) {
         const d = new Date();
-        const eventTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(-2)}`;
+        const eventTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(-2)}:${("0" + d.getSeconds()).slice(-2)}`;
         const event = {
           time: eventTime,
           text: this.eventText,
@@ -269,6 +284,21 @@ export default {
           });
       }
     },
+    deleteEvent(event) {
+      firebase
+        .firestore()
+        .collection("matches")
+        .doc(this.matchId)
+        .collection("events")
+        .doc(event.time)
+        .delete()
+        .then(function() {
+          console.log("Document successfully deleted!");
+        })
+        .catch(function(error) {
+          console.error("Error removing document: ", error);
+        });
+    }
   }
 };
 
