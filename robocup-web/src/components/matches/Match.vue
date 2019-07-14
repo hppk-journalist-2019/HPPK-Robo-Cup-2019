@@ -35,20 +35,20 @@
 
     <v-layout v-show="isSignIn" row align-center mt-3>
       <v-flex>
-        <v-btn fab dark color="green" @click="incTeamAScore(teamAScore)">
+        <v-btn fab dark color="green" @click="incTeamAScore">
           <v-icon dark>add</v-icon>
         </v-btn>
-        <v-btn fab dark color="red" @click="decTeamAScore(teamAScore)">
+        <v-btn fab dark color="red" @click="decTeamAScore">
           <v-icon dark>remove</v-icon>
         </v-btn>
       </v-flex>
 
       <v-spacer></v-spacer>
       <v-flex shrink>
-        <v-btn fab dark color="green" @click="incTeamBScore(teamBScore)">
+        <v-btn fab dark color="green" @click="incTeamBScore">
           <v-icon dark>add</v-icon>
         </v-btn>
-        <v-btn fab dark color="red" @click="decTeamBScore(teamBScore)">
+        <v-btn fab dark color="red" @click="decTeamBScore">
           <v-icon dark>remove</v-icon>
         </v-btn>
       </v-flex>
@@ -245,20 +245,24 @@ export default {
         return logo;
       }
     },
-    incTeamAScore(teamAScore) {
-      const score = { teamAScore: ++teamAScore };
+    incTeamAScore() {
+      this.teamAScore++;
+      const score = { teamAScore: this.teamAScore };
       updateScore(score, this.matchId);
     },
-    decTeamAScore(teamAScore) {
-      const score = { teamAScore: --teamAScore };
+    decTeamAScore() {
+      this.teamAScore--;
+      const score = { teamAScore: this.teamAScore };
       updateScore(score, this.matchId);
     },
-    incTeamBScore(teamBScore) {
-      const score = { teamBScore: ++teamBScore };
+    incTeamBScore() {
+      this.teamBScore++;
+      const score = { teamBScore: this.teamBScore };
       updateScore(score, this.matchId);
     },
-    decTeamBScore(teamBScore) {
-      const score = { teamBScore: --teamBScore };
+    decTeamBScore() {
+      this.teamBScore--;
+      const score = { teamBScore: this.teamBScore };
       updateScore(score, this.matchId);
     },
     saveEvent() {
