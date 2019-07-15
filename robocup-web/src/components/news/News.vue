@@ -206,7 +206,7 @@ function getThumbnailUrl(article) {
   position: fixed;
   bottom: 0px;
   right: 0px;
-  margin-right: 168px;
+  margin-right: 128px;
   margin-bottom: 56px;
 }
 
