@@ -1,6 +1,10 @@
 <template>
   <v-container fluid pa-3>
     <v-layout row wrap pt-3>
+      <MainMatchTable></MainMatchTable>
+    </v-layout>
+
+    <v-layout row wrap pt-5>
       <v-flex offset-md2>
         <h1>Friendly Match (친선)</h1>
       </v-flex>
@@ -49,10 +53,12 @@
 
 <script>
 import MatchTable from "./MatchTable";
+import MainMatchTable from "./MainMatchTable";
 
 export default {
   components: {
-    MatchTable
+    MatchTable,
+    MainMatchTable
   },
   data: () => ({
     isSignIn: false,
