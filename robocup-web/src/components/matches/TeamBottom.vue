@@ -1,21 +1,29 @@
 <template>
   <v-container fluid pa-0 ma-0>
-    <v-layout row wrap align-center text-xs-center text-sm-center text-md-center justify-space-around>
-      <v-flex class="hidden-md-and-down" sm12 md12>{{team.name}}</v-flex>
-      <v-flex class="hidden-lg-and-up" xs12 sm12 md12>{{team.id}}</v-flex>
-      <v-flex sm12 md12>
+    <v-flex v-bind:class="{'m16-bottom-a': isTeamA, 'm16-bottom-b': !isTeamA}"></v-flex>
+    <v-layout
+      row
+      wrap
+      align-center
+      text-xs-center
+      text-sm-center
+      text-md-center
+      justify-space-around
+    >
+      <v-flex xs12 sm12 md12>
         <v-avatar :size="teamLogoSize">
-          <img :src="getLogo(team.logo)" />
+          <img :src="logo(team.logo)" />
         </v-avatar>
       </v-flex>
+      <v-flex class="hidden-md-and-down" xs12 sm12 md12>{{team.name}}</v-flex>
+      <v-flex class="hidden-lg-and-up" xs12 sm12 md12>{{team.id}}</v-flex>
     </v-layout>
-    <v-flex class="m16-b"></v-flex>
   </v-container>
 </template>
 
 <script>
 export default {
-  props: ["team"],
+  props: ["isTeamA", "team", "getLogo"],
   computed: {
     teamLogoSize() {
       switch (this.$vuetify.breakpoint.name) {
@@ -33,12 +41,8 @@ export default {
     }
   },
   methods: {
-    getLogo(logo) {
-      if (logo === undefined || logo === null || logo.length == 0) {
-        return "icon_help.png";
-      } else {
-        return logo;
-      }
+    logo(logo) {
+      return this.getLogo(logo);
     }
   }
 };
