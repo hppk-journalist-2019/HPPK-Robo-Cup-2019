@@ -175,8 +175,7 @@ export default {
       .firestore()
       .collection("matches")
       .doc(this.matchId)
-      .get()
-      .then(doc => {
+      .onSnapshot(doc => {
         const match = doc.data();
 
         const d = new Date(match.dateTime);
