@@ -1,12 +1,12 @@
 <template>
-  <v-container pa-5>
-    <v-layout pa-2>
+  <v-container pt-5 pa-3>
+    <v-layout>
       <v-flex>
         <h1 class="body-1">{{matchDate}} {{matchTime}} | {{stadium}}</h1>
       </v-flex>
     </v-layout>
 
-    <v-layout pa-2>
+    <v-layout>
       <v-flex>
         <h1 class="title">{{type}}</h1>
       </v-flex>
@@ -14,20 +14,24 @@
 
     <v-layout row align-center pt-5 mt-5>
       <v-flex>
-        <v-avatar :size="128">
+        <v-avatar :size="teamLogoSize">
           <img :src="getLogo(teamALogo)" />
         </v-avatar>
-        <span class="title" style="margin-left: 32px">{{teamAName}}</span>
+        <span :style="teamNameStyle">{{teamAName}}</span>
       </v-flex>
-
-      <v-flex text-md-center>
-        <h1 class="display-4 font-weight-bold">{{teamAScore}} : {{teamBScore}}</h1>
+      <v-spacer></v-spacer>
+      <v-flex text-sm-center>
+        <h1
+          class="font-weight-bold"
+          :style="{
+        'font-size':scoreSize}"
+        >{{teamAScore}} : {{teamBScore}}</h1>
       </v-flex>
 
       <v-spacer></v-spacer>
-      <v-flex shrink>
-        <span class="title" style="margin-right: 32px">{{teamBName}}</span>
-        <v-avatar :size="128">
+      <v-flex text-sm-right>
+        <span :style="teamNameStyle">{{teamBName}}</span>
+        <v-avatar :size="teamLogoSize">
           <img :src="getLogo(teamBLogo)" />
         </v-avatar>
       </v-flex>
@@ -35,28 +39,28 @@
 
     <v-layout v-show="isSignIn" row align-center mt-3>
       <v-flex>
-        <v-btn fab dark color="green" @click="incTeamAScore">
-          <v-icon dark>add</v-icon>
+        <v-btn fab dark small outline color="green" @click="incTeamAScore">
+          <v-icon dark>keyboard_arrow_up</v-icon>
         </v-btn>
-        <v-btn fab dark color="red" @click="decTeamAScore">
-          <v-icon dark>remove</v-icon>
+        <v-btn fab dark small outline color="red" @click="decTeamAScore">
+          <v-icon dark>keyboard_arrow_down</v-icon>
         </v-btn>
       </v-flex>
 
       <v-spacer></v-spacer>
       <v-flex shrink>
-        <v-btn fab dark color="green" @click="incTeamBScore">
-          <v-icon dark>add</v-icon>
+        <v-btn fab dark small outline color="green" @click="incTeamBScore">
+          <v-icon dark>keyboard_arrow_up</v-icon>
         </v-btn>
-        <v-btn fab dark color="red" @click="decTeamBScore">
-          <v-icon dark>remove</v-icon>
+        <v-btn fab dark small outline color="red" @click="decTeamBScore">
+          <v-icon dark>keyboard_arrow_down</v-icon>
         </v-btn>
       </v-flex>
     </v-layout>
 
     <v-form ref="eventForm" v-model="valid" v-show="isSignIn">
-      <v-layout row mt-5>
-        <v-flex offset-md2 md2>
+      <v-layout row wrap mt-5>
+        <v-flex offset-md2 sm2 md2 lg3 xl3>
           <v-select
             ref="selectEventType"
             v-model="eventType"
@@ -67,7 +71,7 @@
           ></v-select>
         </v-flex>
 
-        <v-flex ml-3 md5>
+        <v-flex ml-3>
           <v-text-field
             ref="tfEvent"
             v-model="eventText"
@@ -77,7 +81,7 @@
           />
         </v-flex>
 
-        <v-flex ml-3 md1>
+        <v-flex ml-3>
           <v-btn fab dark color="cyan" small outline @click="saveEvent">
             <v-icon dark>add</v-icon>
           </v-btn>
@@ -91,9 +95,9 @@
           <v-timeline-item color="teal lighten-3" small>
             <v-layout wrap pt-3>
               <v-flex xs3>
-                <strong>{{event.time}}</strong>
+                <span style="color: gray">{{event.time}}"</span>
               </v-flex>
-              <v-flex>
+              <v-flex ml-2>
                 <strong>{{event.text}}</strong>
                 <div class="caption mb-2">{{event.type}}</div>
                 <v-avatar v-show="event.type == 'GOAL'">
@@ -120,11 +124,11 @@
       </v-flex>
     </v-layout>
 
-    <v-btn id="fabAdd" v-show="isSignIn" fab dark large color="cyan" @click="onEditClicked">
+    <v-btn id="fabAdd" v-show="isSignIn" fab dark small color="cyan" @click="onEditClicked">
       <v-icon dark>edit</v-icon>
     </v-btn>
 
-    <v-btn id="fabDelete" v-show="isSignIn" fab dark large color="cyan" @click="onDeleteClicked">
+    <v-btn id="fabDelete" v-show="isSignIn" fab dark small color="cyan" @click="onDeleteClicked">
       <v-icon dark>delete</v-icon>
     </v-btn>
   </v-container>
@@ -202,7 +206,7 @@ export default {
             const idx = events.findIndex(function(e) {
               return e.time === event.time;
             });
-            if (idx > -1) events.splice(idx, 1)
+            if (idx > -1) events.splice(idx, 1);
           } else {
             const event = change.doc.data();
             events.push(event);
@@ -211,6 +215,50 @@ export default {
           }
         });
       });
+  },
+  computed: {
+    teamLogoSize() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "36";
+        case "sm":
+          return "52";
+        case "md":
+          return "128";
+        case "lg":
+          return "128";
+        case "xl":
+          return "128";
+      }
+    },
+    scoreSize() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "16px";
+        case "sm":
+          return "20px";
+        case "md":
+          return "56px";
+        case "lg":
+          return "128px";
+        case "xl":
+          return "128px";
+      }
+    },
+    teamNameStyle() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return { margin: "4px", fontSize: "12px" };
+        case "sm":
+          return { margin: "16px", fontSize: "16px" };
+        case "md":
+          return { margin: "20px", fontSize: "20px" };
+        case "lg":
+          return { margin: "32px", fontSize: "20px" };
+        case "xl":
+          return { margin: "32px", fontSize: "20px" };
+      }
+    }
   },
   methods: {
     onEditClicked() {
@@ -268,7 +316,9 @@ export default {
     saveEvent() {
       if (this.$refs.eventForm.validate()) {
         const d = new Date();
-        const eventTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(-2)}:${("0" + d.getSeconds()).slice(-2)}`;
+        const eventTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(
+          -2
+        )}:${("0" + d.getSeconds()).slice(-2)}`;
         const event = {
           time: eventTime,
           text: this.eventText,
