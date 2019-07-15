@@ -1,109 +1,109 @@
 <template>
   <v-container fluid pa-0 ma-0>
     <v-layout row>
-      <v-flex md2>
+      <v-flex offset-md2 md1>
         <TeamTopA :team="getTeamA(matches1[0])"></TeamTopA>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamTopB :team="getTeamB(matches1[0])"></TeamTopB>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamTopA :team="getTeamA(matches1[1])"></TeamTopA>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamTopB :team="getTeamB(matches1[1])"></TeamTopB>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamTopA :team="getTeamA(matches1[2])"></TeamTopA>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamTopB :team="getTeamB(matches1[2])"></TeamTopB>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamTopA :team="getTeamA(matches1[3])"></TeamTopA>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamTopB :team="getTeamB(matches1[3])"></TeamTopB>
       </v-flex>
     </v-layout>
 
     <v-layout row>
-      <v-flex md3>
+      <v-flex offset-md2 md2>
         <TeamTopA :team="getTeamA(matches2[0])"></TeamTopA>
       </v-flex>
-      <v-flex md3>
+      <v-flex md2>
         <TeamTopB :team="getTeamB(matches2[0])"></TeamTopB>
       </v-flex>
-      <v-flex md3>
+      <v-flex md2>
         <TeamTopA :team="getTeamA(matches2[1])"></TeamTopA>
       </v-flex>
-      <v-flex md3>
+      <v-flex md2>
         <TeamTopB :team="getTeamB(matches2[1])"></TeamTopB>
       </v-flex>
     </v-layout>
 
     <v-layout row>
-      <v-flex md6>
+      <v-flex offset-md2 md4>
         <TeamTopA :team="getTeamA(matches3[0])"></TeamTopA>
       </v-flex>
-      <v-flex md6>
+      <v-flex md4>
         <TeamTopB :team="getTeamB(matches3[0])"></TeamTopB>
       </v-flex>
     </v-layout>
 
-    <v-layout md12 text-md-center ma-4>
+    <v-layout xs12 text-xs-center ma-4>
       <v-flex>
-        <img :src="require('@/assets/trophy.png')" width=56px/>
+        <img :src="require('@/assets/trophy.png')" width="56px" />
       </v-flex>
     </v-layout>
 
     <v-layout row>
-      <v-flex md6>
+      <v-flex offset-md2 md4>
         <TeamBottomA :team="getTeamA(matches3[1])"></TeamBottomA>
       </v-flex>
-      <v-flex md6>
+      <v-flex md4>
         <TeamBottomB :team="getTeamB(matches3[1])"></TeamBottomB>
       </v-flex>
     </v-layout>
 
     <v-layout row>
-      <v-flex md3>
+      <v-flex offset-md2 md2>
         <TeamBottomA :team="getTeamA(matches2[2])"></TeamBottomA>
       </v-flex>
-      <v-flex md3>
+      <v-flex md2>
         <TeamBottomB :team="getTeamB(matches2[2])"></TeamBottomB>
       </v-flex>
-      <v-flex md3>
+      <v-flex md2>
         <TeamBottomA :team="getTeamA(matches2[3])"></TeamBottomA>
       </v-flex>
-      <v-flex md3>
+      <v-flex md2>
         <TeamBottomB :team="getTeamB(matches2[3])"></TeamBottomB>
       </v-flex>
     </v-layout>
 
     <v-layout row>
-      <v-flex md2>
+      <v-flex offset-md2 md1>
         <TeamBottomA :team="getTeamA(matches1[4])"></TeamBottomA>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamBottomB :team="getTeamB(matches1[4])"></TeamBottomB>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamBottomA :team="getTeamA(matches1[5])"></TeamBottomA>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamBottomB :team="getTeamB(matches1[5])"></TeamBottomB>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamBottomA :team="getTeamA(matches1[6])"></TeamBottomA>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamBottomB :team="getTeamB(matches1[6])"></TeamBottomB>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamBottomA :team="getTeamA(matches1[7])"></TeamBottomA>
       </v-flex>
-      <v-flex md2>
+      <v-flex md1>
         <TeamBottomB :team="getTeamB(matches1[7])"></TeamBottomB>
       </v-flex>
     </v-layout>
@@ -191,12 +191,14 @@ export default {
     },
     getTeamA(match) {
       return {
+        id: match.teamAId.slice(5),
         name: match.teamAName,
         logo: match.teamALogo
       };
     },
     getTeamB(match) {
       return {
+        id: match.teamBId.slice(5),
         name: match.teamBName,
         logo: match.teamBLogo
       };
