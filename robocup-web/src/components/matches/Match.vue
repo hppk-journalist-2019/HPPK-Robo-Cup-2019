@@ -1,9 +1,17 @@
 <template>
-  <v-container pt-5 pa-3>
+  <v-container pa-3>
     <v-layout>
-      <v-flex>
+      <v-flex pt-5>
         <h1 class="body-1">{{matchDate}} {{matchTime}} | {{stadium}}</h1>
       </v-flex>
+      <v-spacer></v-spacer>
+      <v-btn v-show="isSignIn" dark small color="cyan" @click="onEditClicked">
+        <v-icon dark>edit</v-icon>
+      </v-btn>
+
+      <v-btn v-show="isSignIn" dark small color="cyan" @click="onDeleteClicked">
+        <v-icon dark>delete</v-icon>
+      </v-btn>
     </v-layout>
 
     <v-layout>
@@ -123,14 +131,6 @@
         </v-timeline>
       </v-flex>
     </v-layout>
-
-    <v-btn id="fabAdd" v-show="isSignIn" fab dark small color="cyan" @click="onEditClicked">
-      <v-icon dark>edit</v-icon>
-    </v-btn>
-
-    <v-btn id="fabDelete" v-show="isSignIn" fab dark small color="cyan" @click="onDeleteClicked">
-      <v-icon dark>delete</v-icon>
-    </v-btn>
   </v-container>
 </template>
 
@@ -141,6 +141,12 @@ const EVENT_TYPE_FOUL = "FOUL";
 
 export default {
   data: () => ({
+    items: [
+      { title: "Click Me" },
+      { title: "Click Me" },
+      { title: "Click Me" },
+      { title: "Click Me 2" }
+    ],
     isSignIn: false,
     matchId: "",
     teams: [],
