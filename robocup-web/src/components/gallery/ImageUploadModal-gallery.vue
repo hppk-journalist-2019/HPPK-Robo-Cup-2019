@@ -71,6 +71,7 @@ export default {
       this.show = false;
       this.imageSrc = "";
       this.tab = 1;
+      this.isUploading = false;
     }
   }
 };
