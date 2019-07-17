@@ -30,7 +30,7 @@
     <v-flex class="home-bg" style="background-image: url('hotel.jpg');">
       <div class="home-wrapper light-cotton">
         <h1 class="display-3 font-weight-bold" align="center" style="margin-top:150px">Lunch</h1>
-        <h1 class="display-1 ma-5" align="center">12:00 - 13:30 / 3F</h1>
+        <h1 class="display-1 ma-5" align="center">12:00 - 13:30 / 2F</h1>
         <h1
           class="title"
           align="center"
