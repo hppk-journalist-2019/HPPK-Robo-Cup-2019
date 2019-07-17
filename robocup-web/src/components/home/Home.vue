@@ -62,12 +62,13 @@
       <div class="home-wrapper light-cotton">
         <h1 class="display-3 font-weight-bold" align="center" style="margin-top:150px">How to go</h1>
         <h1 class="display-1 mt-5" align="center">Own car or Hotel Bus</h1>
-        <h1 class="display-1 ma-3" align="center">11:40 / at East gate</h1>
+        <h1 class="display-1 ma-3" align="center">1st Bus - 11:30 / at East gate</h1>
+        <h1 class="display-1 ma-3" align="center">2nd Bus - 12:00 / at East gate</h1>
         <h1
           class="title mt-5"
           align="center"
           style="margin-top:150px"
-        >1 Bus(25person capacity) / 3 Small Bus</h1>
+        >1 Bus(11:30/12:00, 25person capacity) / 3 Small Bus</h1>
         <h1
           class="title ma-3"
           align="center"
