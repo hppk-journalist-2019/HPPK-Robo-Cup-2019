@@ -1,12 +1,7 @@
 <template>
   <v-container pa-3>
     <v-layout>
-      <v-flex pt-5>
-        <h1 class="body-1">{{matchDate}} {{matchTime}} | {{stadium}}</h1>
-      </v-flex>
-      <v-spacer></v-spacer>
-
-      <VideoLinkDialog v-on:addVideo="addVideo"></VideoLinkDialog>
+      <VideoLinkDialog v-show="isSignIn" v-on:addVideo="addVideo" :facebookVideoUrl=facebookVideoUrl></VideoLinkDialog>
 
       <v-btn v-show="isSignIn" dark small color="cyan" @click="onEditClicked">
         <v-icon dark>edit</v-icon>
@@ -15,6 +10,11 @@
       <v-btn v-show="isSignIn" dark small color="cyan" @click="onDeleteClicked">
         <v-icon dark>delete</v-icon>
       </v-btn>
+    </v-layout>
+    <v-layout>
+      <v-flex pt-5>
+        <h1 class="body-1">{{matchDate}} {{matchTime}} | {{stadium}}</h1>
+      </v-flex>
     </v-layout>
 
     <v-layout>
@@ -195,6 +195,7 @@ export default {
       localStorage.getItem("firebaseui::rememberedAccounts") != null;
 
     this.matchId = this.$route.params.matchId;
+
     firebase
       .firestore()
       .collection("matches")
@@ -239,6 +240,9 @@ export default {
           }
         });
       });
+  },
+  updated() {
+    FB.XFBML.parse();
   },
   computed: {
     teamLogoSize() {
@@ -387,7 +391,10 @@ export default {
         .collection("matches")
         .doc(this.matchId)
         .update(fbVideoUrl)
-        .then(function() {})
+        .then(function() {
+          FB.XFBML.parse();
+          console.log("addVideo: " + this.facebookVideoUrl);
+        })
         .catch(function(error) {
           console.error("Error writing document: ", error);
         });
