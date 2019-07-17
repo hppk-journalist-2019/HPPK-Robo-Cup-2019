@@ -15,7 +15,7 @@ import FullSizeImageViewer from './components/gallery/FullSizeImageViewer.vue'
 import Matches from './components/matches/Matches.vue'
 import AddMatch from './components/matches/add/AddMatch.vue'
 import EditMatch from './components/matches/edit/EditMatch.vue'
-import Match from './components/matches/Match.vue'
+import Match from './components/matches/match/Match.vue'
 import Login from './components/login/Login.vue'
 import NotFound from './components/NotFound.vue'
 

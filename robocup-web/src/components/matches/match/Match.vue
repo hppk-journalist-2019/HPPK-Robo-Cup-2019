@@ -5,6 +5,9 @@
         <h1 class="body-1">{{matchDate}} {{matchTime}} | {{stadium}}</h1>
       </v-flex>
       <v-spacer></v-spacer>
+
+      <VideoLinkDialog v-on:addVideo="addVideo"></VideoLinkDialog>
+
       <v-btn v-show="isSignIn" dark small color="cyan" @click="onEditClicked">
         <v-icon dark>edit</v-icon>
       </v-btn>
@@ -20,7 +23,15 @@
       </v-flex>
     </v-layout>
 
-    <v-layout row align-center pt-5 mt-5>
+    <v-layout pt-3>
+      <!-- Load Facebook SDK for JavaScript -->
+      <div id="fb-root"></div>
+
+      <!-- Your embedded video player code -->
+      <div class="fb-video" :data-href="facebookVideoUrl" data-show-text="false"></div>
+    </v-layout>
+
+    <v-layout row align-center pt-3>
       <v-flex>
         <v-avatar :size="teamLogoSize">
           <img :src="getLogo(teamALogo)" />
@@ -134,12 +145,18 @@
   </v-container>
 </template>
 
+
 <script>
+import VideoLinkDialog from "./VideoLinkDialog";
+
 const EVENT_TYPE_GENERAL = "GENERAL";
 const EVENT_TYPE_GOAL = "GOAL";
 const EVENT_TYPE_FOUL = "FOUL";
 
 export default {
+  components: {
+    VideoLinkDialog
+  },
   data: () => ({
     items: [
       { title: "Click Me" },
@@ -170,7 +187,8 @@ export default {
     eventTypes: [EVENT_TYPE_GENERAL, EVENT_TYPE_GOAL, EVENT_TYPE_FOUL],
     eventType: EVENT_TYPE_GENERAL,
     eventText: "",
-    valid: true
+    valid: true,
+    facebookVideoUrl: ""
   }),
   created() {
     this.isSignIn =
@@ -196,6 +214,7 @@ export default {
         this.teamBName = match.teamBName;
         this.teamBScore = match.teamBScore;
         this.teamBLogo = match.teamBLogo;
+        this.facebookVideoUrl = match.facebookVideoUrl;
       });
 
     let events = this.events;
@@ -356,6 +375,21 @@ export default {
         })
         .catch(function(error) {
           console.error("Error removing document: ", error);
+        });
+    },
+    addVideo(url) {
+      this.facebookVideoUrl = url;
+
+      const fbVideoUrl = { facebookVideoUrl: url };
+
+      firebase
+        .firestore()
+        .collection("matches")
+        .doc(this.matchId)
+        .update(fbVideoUrl)
+        .then(function() {})
+        .catch(function(error) {
+          console.error("Error writing document: ", error);
         });
     }
   }
