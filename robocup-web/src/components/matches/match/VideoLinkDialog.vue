@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="600px">
     <template v-slot:activator="{ on }">
-      <v-btn dark small color="cyan" v-on="on">
+      <v-btn v-show="isSignIn" dark small color="cyan" v-on="on">
         <v-icon dark>video_call</v-icon>
       </v-btn>
     </template>
@@ -33,14 +33,19 @@ export default {
   data: () => ({
     facebookVideoUrl: "",
     dialog: false,
+    isSignIn: false,
   }),
+  created() {
+    this.isSignIn =
+      localStorage.getItem("firebaseui::rememberedAccounts") != null;
+  },
   methods: {
     onLiveVideoClicked() {
       this.dialog = false
       console.log("facebook url: " + this.facebookVideoUrl)
       this.$emit('addVideo', this.facebookVideoUrl);
     }
-  }
+  },
 };
 </script>
 
