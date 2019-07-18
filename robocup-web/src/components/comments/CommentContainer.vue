@@ -2,11 +2,11 @@
   <v-container>
     <v-form ref="form">
       <v-layout row wrap>
-        <v-flex offset-md1 xs12 sm2>
+        <v-flex offset-md1 offset-xl3 xs12 sm2 xl1>
           <v-text-field v-model="writerName" label="Writer Name" outline></v-text-field>
         </v-flex>
-        <v-flex xs9 sm9 md7 lg7 pl-3>
-          <v-textarea v-model="comment" name="input-7-1" label="Comment" rows="1"></v-textarea>
+        <v-flex xs9 sm9 md7 lg7 xl5 pl-3>
+          <v-textarea v-model="comment" name="input-7-1" auto-grow label="Comment" rows="1"></v-textarea>
         </v-flex>
         <v-flex xs1 pl-3>
           <v-btn outline fab small @click="writeComment">
@@ -17,7 +17,7 @@
     </v-form>
 
     <v-layout row v-if="comments.length > 0">
-      <v-flex offset-md1 md10>
+      <v-flex offset-md1 offset-xl3 md10 xl6>
         <v-card>
           <v-list two-line>
             <template v-for="(comment, index) in comments">
@@ -29,6 +29,9 @@
                 </v-list-tile-content>
                 <v-list-tile-action>
                   <v-list-tile-action-text>{{ comment.dateTime }}</v-list-tile-action-text>
+                  <v-btn v-show="isSignIn" fab outline small color="cyan" @click="removeComment(comment)">
+                    <v-icon>remove</v-icon>
+                  </v-btn>
                 </v-list-tile-action>
               </v-list-tile>
             </template>
@@ -45,9 +48,13 @@ export default {
   data: () => ({
     writerName: "",
     comment: "",
-    comments: []
+    comments: [],
+    isSignIn: false,
   }),
   created() {
+    this.isSignIn =
+      localStorage.getItem("firebaseui::rememberedAccounts") != null;
+
     firebase
       .firestore()
       .collection("comments")
@@ -63,7 +70,6 @@ export default {
             if (idx > -1) this.comments.splice(idx, 1);
           } else {
             const comment = change.doc.data();
-            console.log("TEST: " + JSON.stringify(comment));
             this.comments.push(comment);
           }
         });
@@ -73,9 +79,12 @@ export default {
     writeComment() {
       const d = new Date();
       const dateTime = `${d.getFullYear()}-${d.getMonth() +
-        1}-${d.getDate()} ${d.getHours()}:${("0" + d.getMinutes()).slice(-2)}:${("0" + d.getSeconds()).slice(-2)}`;
+        1}-${d.getDate()} ${d.getHours()}:${("0" + d.getMinutes()).slice(
+        -2
+      )}:${("0" + d.getSeconds()).slice(-2)}`;
 
       const comment = {
+        id: d.getTime().toString(),
         type: this.type,
         parentId: this.parentId,
         dateTime: dateTime,
@@ -86,7 +95,7 @@ export default {
       firebase
         .firestore()
         .collection("comments")
-        .doc(d.getTime().toString())
+        .doc(comment.id)
         .set(comment)
         .then(() => {
           this.$refs.form.resetValidation();
@@ -95,6 +104,17 @@ export default {
         })
         .catch(function(error) {
           console.error("Error writing document: ", error);
+        });
+    },
+    removeComment(comment) {
+      firebase
+        .firestore()
+        .collection("comments")
+        .doc(comment.id)
+        .delete()
+        .then(() => {})
+        .catch(function(error) {
+          console.error("Error delete document: ", error);
         });
     }
   }
