@@ -4,16 +4,20 @@
       <v-layout row wrap mt-5>
         <v-flex offset-md1 offset-xl3 sm6 md5>
           <v-radio-group v-model="eventType" row>
-            <v-radio label="GENERAL" value="GENERAL"></v-radio>
+            <v-radio label="PROGRESS" value="PROGRESS"></v-radio>
+            <v-radio label="ETC" value="ETC"></v-radio>
             <v-radio label="GOAL" value="GOAL"></v-radio>
             <v-radio label="FOUL" value="FOUL"></v-radio>
           </v-radio-group>
         </v-flex>
         <v-spacer></v-spacer>
+        <v-flex v-show="eventType == 'PROGRESS'" sm3>
+          <v-select v-model="progress" :items="progressList" label="Progress" outline></v-select>
+        </v-flex>
         <v-flex v-show="eventType == 'GOAL'" sm3>
           <v-select v-model="goalPlayer" :items="players" label="Player" outline></v-select>
         </v-flex>
-        <v-flex offset-md1 offset-xl3 xs12 sm12 md9 xl5>
+        <v-flex offset-md1 offset-xl3 xs10 sm11 md9 xl5>
           <v-text-field
             ref="tfEvent"
             v-model="eventText"
@@ -39,7 +43,8 @@
                 <span style="color: gray">{{event.time}}"</span>
               </v-flex>
               <v-flex ml-2>
-                <strong>{{event.text}}</strong>{{getGoalPlayerName(event.goalPlayer)}}
+                <strong>{{event.text}}</strong>
+                {{getGoalPlayerName(event.goalPlayer)}}
                 <div class="caption mb-2">{{event.type}}</div>
                 <v-avatar v-show="event.type == 'GOAL'">
                   <v-img :src="require('@/assets/icon_goal.png')"></v-img>
@@ -68,9 +73,10 @@
 </template>
 
 <script>
-const EVENT_TYPE_GENERAL = "GENERAL";
+const EVENT_TYPE_PROGRESS = "PROGRESS";
 const EVENT_TYPE_GOAL = "GOAL";
 const EVENT_TYPE_FOUL = "FOUL";
+const EVENT_TYPE_ETC = "ETC";
 
 export default {
   props: ["matchId", "teamAId", "teamBId"],
@@ -78,10 +84,26 @@ export default {
     writerName: "",
     comment: "",
     comments: [],
+    progressList: [
+      "전반전 시작",
+      "전반전 종료",
+      "후반전 시작",
+      "후반전 종료",
+      "연장전 시작",
+      "연장전 종료",
+      "승부 차기 시작",
+      "승부 차기 종료"
+    ],
+    progress: "",
     isSignIn: false,
     events: [],
-    eventTypes: [EVENT_TYPE_GENERAL, EVENT_TYPE_GOAL, EVENT_TYPE_FOUL],
-    eventType: EVENT_TYPE_GENERAL,
+    eventTypes: [
+      EVENT_TYPE_PROGRESS,
+      EVENT_TYPE_ETC,
+      EVENT_TYPE_GOAL,
+      EVENT_TYPE_FOUL
+    ],
+    eventType: EVENT_TYPE_PROGRESS,
     eventText: "",
     baseRules: [
       v => !!v || "required",
@@ -112,7 +134,7 @@ export default {
           } else {
             const event = change.doc.data();
             events.push(event);
-            this.eventType = EVENT_TYPE_GENERAL;
+            this.eventType = EVENT_TYPE_PROGRESS;
             this.eventText = "";
           }
         });
@@ -130,36 +152,44 @@ export default {
   },
   methods: {
     saveEvent() {
-      if (this.$refs.eventForm.validate()) {
-        const d = new Date();
-        const eventTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(
-          -2
-        )}:${("0" + d.getSeconds()).slice(-2)}`;
-        const event = {
-          time: eventTime,
-          text: this.eventText,
-          type: this.eventType
-        };
-
-        if (this.eventType == EVENT_TYPE_GOAL) {
-          event.goalPlayer = this.goalPlayer;
+      if (this.eventType != EVENT_TYPE_PROGRESS) {
+        if (!this.$refs.eventForm.validate()) {
+          return;
         }
-
-        firebase
-          .firestore()
-          .collection("matches")
-          .doc(this.matchId)
-          .collection("events")
-          .doc(eventTime)
-          .set(event)
-          .then(function() {
-            this.goalPlayer = "";
-          })
-          .catch(function(error) {
-            console.error("Error writing document: ", error);
-            this.goalPlayer = "";
-          });
       }
+      
+      const d = new Date();
+      const eventTime = `${d.getHours()}:${("0" + d.getMinutes()).slice(-2)}:${(
+        "0" + d.getSeconds()
+      ).slice(-2)}`;
+      const event = {
+        time: eventTime,
+        text: this.eventText,
+        type: this.eventType
+      };
+
+      if (this.eventType == EVENT_TYPE_GOAL) {
+        event.goalPlayer = this.goalPlayer;
+      } else if (this.eventType == EVENT_TYPE_PROGRESS) {
+        event.text = this.progress;
+      }
+
+      firebase
+        .firestore()
+        .collection("matches")
+        .doc(this.matchId)
+        .collection("events")
+        .doc(eventTime)
+        .set(event)
+        .then(() => {
+          this.goalPlayer = "";
+          this.eventText = "";
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+          this.goalPlayer = "";
+          this.eventText = "";
+        });
     },
     deleteEvent(event) {
       firebase
@@ -178,9 +208,9 @@ export default {
     },
     getGoalPlayerName(playerName) {
       if (playerName === undefined) {
-        return ""
+        return "";
       } else {
-        return ` (${playerName})`
+        return ` (${playerName})`;
       }
     }
   }
