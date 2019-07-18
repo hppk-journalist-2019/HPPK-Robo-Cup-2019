@@ -2,52 +2,52 @@
   <v-container fluid pa-0 ma-0>
     <v-layout row>
       <v-flex offset-md2 md1>
-        <TeamTop :team="getTeamA(matches1[0])" :getLogo="getLogo" :isTeamA=true></TeamTop>
+        <TeamTop :team="getTeamA(matches1[0])" :getLogo="getLogo" :isTeamA="true"></TeamTop>
       </v-flex>
       <v-flex md1>
-        <TeamTop :team="getTeamB(matches1[0])" :getLogo="getLogo" :isTeamA=false></TeamTop>
+        <TeamTop :team="getTeamB(matches1[0])" :getLogo="getLogo" :isTeamA="false"></TeamTop>
       </v-flex>
       <v-flex md1>
-        <TeamTop :team="getTeamA(matches1[1])" :getLogo="getLogo" :isTeamA=true></TeamTop>
+        <TeamTop :team="getTeamA(matches1[1])" :getLogo="getLogo" :isTeamA="true"></TeamTop>
       </v-flex>
       <v-flex md1>
-        <TeamTop :team="getTeamB(matches1[1])" :getLogo="getLogo" :isTeamA=false></TeamTop>
+        <TeamTop :team="getTeamB(matches1[1])" :getLogo="getLogo" :isTeamA="false"></TeamTop>
       </v-flex>
       <v-flex md1>
-        <TeamTop :team="getTeamA(matches1[2])" :getLogo="getLogo" :isTeamA=true></TeamTop>
+        <TeamTop :team="getTeamA(matches1[2])" :getLogo="getLogo" :isTeamA="true"></TeamTop>
       </v-flex>
       <v-flex md1>
-        <TeamTop :team="getTeamB(matches1[2])" :getLogo="getLogo" :isTeamA=false></TeamTop>
+        <TeamTop :team="getTeamB(matches1[2])" :getLogo="getLogo" :isTeamA="false"></TeamTop>
       </v-flex>
       <v-flex md1>
-        <TeamTop :team="getTeamA(matches1[3])" :getLogo="getLogo" :isTeamA=true></TeamTop>
+        <TeamTop :team="getTeamA(matches1[3])" :getLogo="getLogo" :isTeamA="true"></TeamTop>
       </v-flex>
       <v-flex md1>
-        <TeamTop :team="getTeamB(matches1[3])" :getLogo="getLogo" :isTeamA=false></TeamTop>
+        <TeamTop :team="getTeamB(matches1[3])" :getLogo="getLogo" :isTeamA="false"></TeamTop>
       </v-flex>
     </v-layout>
 
     <v-layout row>
       <v-flex offset-md2 md2>
-        <TeamTop :team="getTeamA(matches2[0])" :getLogo="getLogo" :isTeamA=true></TeamTop>
+        <TeamTop :team="getTeamA(matches2[0])" :getLogo="getLogo" :isTeamA="true"></TeamTop>
       </v-flex>
       <v-flex md2>
-        <TeamTop :team="getTeamB(matches2[0])" :getLogo="getLogo" :isTeamA=false></TeamTop>
+        <TeamTop :team="getTeamB(matches2[0])" :getLogo="getLogo" :isTeamA="false"></TeamTop>
       </v-flex>
       <v-flex md2>
-        <TeamTop :team="getTeamA(matches2[1])" :getLogo="getLogo" :isTeamA=true></TeamTop>
+        <TeamTop :team="getTeamA(matches2[1])" :getLogo="getLogo" :isTeamA="true"></TeamTop>
       </v-flex>
       <v-flex md2>
-        <TeamTop :team="getTeamB(matches2[1])" :getLogo="getLogo" :isTeamA=false></TeamTop>
+        <TeamTop :team="getTeamB(matches2[1])" :getLogo="getLogo" :isTeamA="false"></TeamTop>
       </v-flex>
     </v-layout>
 
     <v-layout row>
       <v-flex offset-md2 md4>
-        <TeamTop :team="getTeamA(matches3[0])" :getLogo="getLogo" :isTeamA=true></TeamTop>
+        <TeamTop :team="getTeamA(matches3[0])" :getLogo="getLogo" :isTeamA="true"></TeamTop>
       </v-flex>
       <v-flex md4>
-        <TeamTop :team="getTeamB(matches3[0])" :getLogo="getLogo" :isTeamA=false></TeamTop>
+        <TeamTop :team="getTeamB(matches3[0])" :getLogo="getLogo" :isTeamA="false"></TeamTop>
       </v-flex>
     </v-layout>
 
@@ -59,52 +59,52 @@
 
     <v-layout row>
       <v-flex offset-md2 md4>
-        <TeamBottom :team="getTeamA(matches3[1])" :getLogo="getLogo" :isTeamA=true></TeamBottom>
+        <TeamBottom :team="getTeamA(matches3[1])" :getLogo="getLogo" :isTeamA="true"></TeamBottom>
       </v-flex>
       <v-flex md4>
-        <TeamBottom :team="getTeamB(matches3[1])" :getLogo="getLogo" :isTeamA=false></TeamBottom>
+        <TeamBottom :team="getTeamB(matches3[1])" :getLogo="getLogo" :isTeamA="false"></TeamBottom>
       </v-flex>
     </v-layout>
 
     <v-layout row>
       <v-flex offset-md2 md2>
-        <TeamBottom :team="getTeamA(matches2[2])" :getLogo="getLogo" :isTeamA=true></TeamBottom>
+        <TeamBottom :team="getTeamA(matches2[2])" :getLogo="getLogo" :isTeamA="true"></TeamBottom>
       </v-flex>
       <v-flex md2>
-        <TeamBottom :team="getTeamB(matches2[2])" :getLogo="getLogo" :isTeamA=false></TeamBottom>
+        <TeamBottom :team="getTeamB(matches2[2])" :getLogo="getLogo" :isTeamA="false"></TeamBottom>
       </v-flex>
       <v-flex md2>
-        <TeamBottom :team="getTeamA(matches2[3])" :getLogo="getLogo" :isTeamA=true></TeamBottom>
+        <TeamBottom :team="getTeamA(matches2[3])" :getLogo="getLogo" :isTeamA="true"></TeamBottom>
       </v-flex>
       <v-flex md2>
-        <TeamBottom :team="getTeamB(matches2[3])" :getLogo="getLogo" :isTeamA=false></TeamBottom>
+        <TeamBottom :team="getTeamB(matches2[3])" :getLogo="getLogo" :isTeamA="false"></TeamBottom>
       </v-flex>
     </v-layout>
 
     <v-layout row>
       <v-flex offset-md2 md1>
-        <TeamBottom :team="getTeamA(matches1[4])" :getLogo="getLogo" :isTeamA=true></TeamBottom>
+        <TeamBottom :team="getTeamA(matches1[4])" :getLogo="getLogo" :isTeamA="true"></TeamBottom>
       </v-flex>
       <v-flex md1>
-        <TeamBottom :team="getTeamB(matches1[4])" :getLogo="getLogo" :isTeamA=false></TeamBottom>
+        <TeamBottom :team="getTeamB(matches1[4])" :getLogo="getLogo" :isTeamA="false"></TeamBottom>
       </v-flex>
       <v-flex md1>
-        <TeamBottom :team="getTeamA(matches1[5])" :getLogo="getLogo" :isTeamA=true></TeamBottom>
+        <TeamBottom :team="getTeamA(matches1[5])" :getLogo="getLogo" :isTeamA="true"></TeamBottom>
       </v-flex>
       <v-flex md1>
-        <TeamBottom :team="getTeamB(matches1[5])" :getLogo="getLogo" :isTeamA=false></TeamBottom>
+        <TeamBottom :team="getTeamB(matches1[5])" :getLogo="getLogo" :isTeamA="false"></TeamBottom>
       </v-flex>
       <v-flex md1>
-        <TeamBottom :team="getTeamA(matches1[6])" :getLogo="getLogo" :isTeamA=true></TeamBottom>
+        <TeamBottom :team="getTeamA(matches1[6])" :getLogo="getLogo" :isTeamA="true"></TeamBottom>
       </v-flex>
       <v-flex md1>
-        <TeamBottom :team="getTeamB(matches1[6])" :getLogo="getLogo" :isTeamA=false></TeamBottom>
+        <TeamBottom :team="getTeamB(matches1[6])" :getLogo="getLogo" :isTeamA="false"></TeamBottom>
       </v-flex>
       <v-flex md1>
-        <TeamBottom :team="getTeamA(matches1[7])" :getLogo="getLogo" :isTeamA=true></TeamBottom>
+        <TeamBottom :team="getTeamA(matches1[7])" :getLogo="getLogo" :isTeamA="true"></TeamBottom>
       </v-flex>
       <v-flex md1>
-        <TeamBottom :team="getTeamB(matches1[7])" :getLogo="getLogo" :isTeamA=false></TeamBottom>
+        <TeamBottom :team="getTeamB(matches1[7])" :getLogo="getLogo" :isTeamA="false"></TeamBottom>
       </v-flex>
     </v-layout>
   </v-container>
@@ -202,6 +202,14 @@ export default {
       }
     },
     getTeamA(match) {
+      if (match === undefined) {
+        return {
+          id: "",
+          name: "",
+          logo: "",
+        }
+      }
+
       return {
         id: match.teamAId.slice(5),
         name: match.teamAName,
@@ -209,6 +217,14 @@ export default {
       };
     },
     getTeamB(match) {
+      if (match === undefined) {
+        return {
+          id: "",
+          name: "",
+          logo: "",
+        }
+      }
+      
       return {
         id: match.teamBId.slice(5),
         name: match.teamBName,

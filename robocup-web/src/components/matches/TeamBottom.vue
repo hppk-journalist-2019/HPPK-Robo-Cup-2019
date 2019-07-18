@@ -15,8 +15,8 @@
           <img :src="logo(team.logo)" />
         </v-avatar>
       </v-flex>
-      <v-flex class="hidden-md-and-down" xs12 sm12 md12>{{team.name}}</v-flex>
-      <v-flex class="hidden-lg-and-up" xs12 sm12 md12>{{team.id}}</v-flex>
+      <v-flex class="hidden-md-and-down" sm12 md12>{{getTeamName()}}</v-flex>
+      <v-flex class="hidden-lg-and-up" xs12 sm12 md12>{{getTeamId()}}</v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -40,9 +40,32 @@ export default {
       }
     }
   },
+  created() {
+    if (this.team.id == "") {
+      this.team.id = "?";
+    }
+
+    if (this.team.name == "") {
+      this.team.name = "?";
+    }
+  },
   methods: {
     logo(logo) {
       return this.getLogo(logo);
+    },
+    getTeamName() {
+      if (this.team.name == "") {
+        return "?"
+      } else {
+        return this.team.name
+      }
+    },
+    getTeamId() {
+      if (this.team.id == "") {
+        return "?"
+      } else {
+        return this.team.id
+      }
     }
   }
 };

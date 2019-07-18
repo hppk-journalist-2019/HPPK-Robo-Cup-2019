@@ -78,7 +78,7 @@ export default {
     teams: [],
     stadiums: ["St-1", "St-2", "Prt Bd. 1F C9-10"],
     stadium: "St-1",
-    types: ["Friendly Match (친선)", "Preliminary Round (예선)", "Quarter-Finals (8강)", "Semifinals (준결승)", "Final (결승)"],
+    types: ["Friendly Match (친선)", "Preliminary Round (예선)", "Quarter-Finals (8강)", "Semifinals (준결승)", "Third place match (3-4위전)", "Final (결승)"],
     type: "Preliminary Round (예선)",
     matchDate: new Date("2019-07-19").toISOString().substr(0, 10),
     matchDateMenu: false,
