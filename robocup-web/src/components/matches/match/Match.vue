@@ -142,11 +142,13 @@
         </v-timeline>
       </v-flex>
     </v-layout>
+    <CommentContainer :type="collectionName" :parentId="matchId"></CommentContainer>
   </v-container>
 </template>
 
 
 <script>
+import CommentContainer from "../../comments/CommentContainer";
 import VideoLinkDialog from "./VideoLinkDialog";
 
 const EVENT_TYPE_GENERAL = "GENERAL";
@@ -155,9 +157,11 @@ const EVENT_TYPE_FOUL = "FOUL";
 
 export default {
   components: {
+    CommentContainer,
     VideoLinkDialog
   },
   data: () => ({
+    collectionName: "matches",
     items: [
       { title: "Click Me" },
       { title: "Click Me" },
