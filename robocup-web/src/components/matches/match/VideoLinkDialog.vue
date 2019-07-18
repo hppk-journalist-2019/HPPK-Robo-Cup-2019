@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="600px">
     <template v-slot:activator="{ on }">
-      <v-btn v-show="isSignIn" dark small color="cyan" v-on="on">
+      <v-btn class="hidden-sm-and-down" v-show="isSignIn" dark small color="cyan" v-on="on">
         <v-icon dark>video_call</v-icon>
       </v-btn>
     </template>

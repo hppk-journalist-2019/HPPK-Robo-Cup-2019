@@ -1,7 +1,13 @@
 <template>
   <v-container pa-3>
     <v-layout>
-      <VideoLinkDialog v-show="isSignIn" v-on:addVideo="addVideo" :facebookVideoUrl=facebookVideoUrl></VideoLinkDialog>
+      <v-btn v-show="isSignIn && state!='DONE'" dark small color="cyan" @click="doneMatch">경기 종료</v-btn>
+
+      <VideoLinkDialog
+        v-show="isSignIn"
+        v-on:addVideo="addVideo"
+        :facebookVideoUrl="facebookVideoUrl"
+      ></VideoLinkDialog>
 
       <v-btn v-show="isSignIn" dark small color="cyan" @click="onEditClicked">
         <v-icon dark>edit</v-icon>
@@ -92,7 +98,7 @@ export default {
   components: {
     CommentContainer,
     VideoLinkDialog,
-    ReportContainer,
+    ReportContainer
   },
   data: () => ({
     collectionName: "matches",
@@ -119,7 +125,8 @@ export default {
     teamBName: "",
     teamBScore: 0,
     teamBLogo: "icon_help.png",
-    facebookVideoUrl: ""
+    facebookVideoUrl: "",
+    state: "SCHEDULED"
   }),
   created() {
     this.isSignIn =
@@ -149,6 +156,7 @@ export default {
         this.teamBScore = match.teamBScore;
         this.teamBLogo = match.teamBLogo;
         this.facebookVideoUrl = match.facebookVideoUrl;
+        this.state = match.state;
       });
   },
   updated() {
@@ -266,7 +274,18 @@ export default {
           console.log("addVideo: " + this.facebookVideoUrl);
         })
         .catch(function(error) {
-          console.error("Error writing document: ", error);
+          console.error("Error addVideo: ", error);
+        });
+    },
+    doneMatch() {
+      firebase
+        .firestore()
+        .collection("matches")
+        .doc(this.matchId)
+        .update({ state: "DONE" })
+        .then(function() {})
+        .catch(function(error) {
+          console.error("Error doneMatch: ", error);
         });
     }
   }
@@ -280,7 +299,7 @@ function updateScore(score, matchId) {
     .update(score)
     .then(function() {})
     .catch(function(error) {
-      console.error("Error writing document: ", error);
+      console.error("Error updateScore: ", error);
     });
 }
 </script>
