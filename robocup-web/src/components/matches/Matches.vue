@@ -38,6 +38,14 @@
 
     <v-layout row wrap pt-5>
       <v-flex offset-md2>
+        <h1>Third place match (3-4위전)</h1>
+      </v-flex>
+
+      <MatchTable :matches="matches5"></MatchTable>
+    </v-layout>
+
+    <v-layout row wrap pt-5>
+      <v-flex offset-md2>
         <img :src="require('@/assets/trophy.png')" height="56" contain />
         <h1>Final (결승)</h1>
       </v-flex>
@@ -67,6 +75,7 @@ export default {
     matches2: [],
     matches3: [],
     matches4: [],
+    matches5: [],
     rowsPerPageItems: [20],
     headers: [
       {
@@ -120,6 +129,9 @@ export default {
               break;
               case "Semifinals (준결승)":
               this.matches3.push(match);
+              break;
+              case "Third place match (3-4위전)":
+              this.matches5.push(match);
               break;
               default:
               this.matches4.push(match);
