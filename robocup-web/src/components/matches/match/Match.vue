@@ -29,12 +29,19 @@
       </v-flex>
     </v-layout>
 
-    <v-layout pt-3>
-      <!-- Load Facebook SDK for JavaScript -->
-      <div id="fb-root"></div>
+    <v-layout pa-4>
+      <v-flex>
+        <!-- Load Facebook SDK for JavaScript -->
+        <div id="fb-root"></div>
 
-      <!-- Your embedded video player code -->
-      <div class="fb-video" :data-href="facebookVideoUrl" data-show-text="false"></div>
+        <!-- Your embedded video player code -->
+        <div
+          class="fb-video"
+          :data-href="facebookVideoUrl"
+          data-show-text="false"
+          :data-width="liveWidth"
+        ></div>
+      </v-flex>
     </v-layout>
 
     <v-layout row align-center pt-3>
@@ -203,6 +210,22 @@ export default {
           return { margin: "32px", fontSize: "20px" };
         case "xl":
           return { margin: "32px", fontSize: "20px" };
+      }
+    },
+    liveWidth() {
+      console.log(this.$vuetify.breakpoint.name)
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "400";
+        case "sm":
+          return "600";
+        case "md":
+          return "600";
+        case "lg":
+          return "800";
+        case "xl":
+        default:
+          return "800";
       }
     }
   },
