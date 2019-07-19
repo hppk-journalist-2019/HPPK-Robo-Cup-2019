@@ -19,6 +19,12 @@
       </div>
     </v-flex>
 
+    <v-dialog v-model="dialog" :width="goDialogWidth">
+      <v-card>
+        <v-img src="go.png" />
+      </v-card>
+    </v-dialog>
+
     <!-- 1. 대진표 -->
     <v-flex xs10 offset-xs1 sm8 offset-sm2 md6 offset-md3 mt-5 mb-5>
       <v-layout row>
@@ -85,9 +91,29 @@ import GoogleMap from "../../components/googleMap/GoogleMap";
 export default {
   components: {
     GoogleMap
-  }
+  },
+  data: () => ({
+    dialog: true,
+  }),
+  computed: {
+    goDialogWidth() {
+      console.log(this.$vuetify.breakpoint.name)
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return "200";
+        case "sm":
+          return "600";
+        case "md":
+          return "600";
+        case "lg":
+          return "800";
+        case "xl":
+        default:
+          return "800";
+      }
+    }
+  },
 };
-</script>
 </script>
 
 <style>
